@@ -161,10 +161,10 @@ function place(instant = false) {
   layout(index, game, view);
 }
 
-function step(direction) {
+function step(direction, playSound = true) {
   const nextIndex = Math.max(0, Math.min(view.length - 1, index + direction));
   if (nextIndex !== index) {
-    window.rycadeAudio?.play('move');
+    if (playSound) window.rycadeAudio?.play('move');
     index = nextIndex;
     place();
   }
@@ -203,7 +203,7 @@ function hold(direction) {
       letterJump(direction);
       holding.timer = setTimeout(repeat, 320 * multiplier);
     } else {
-      step(direction);
+      step(direction, false);
       holding.timer = setTimeout(repeat, elapsed < 900 * multiplier ? 110 * multiplier : 55 * multiplier);
     }
   };

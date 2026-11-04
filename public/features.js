@@ -14,7 +14,7 @@ const DEFAULT_SETTINGS = {
   theme: 'Lightbox',
   boot: 'Insert Coin',
   controls: { skimSpeed: 'Normal', letterJump: true },
-  sound: { master: 100, navigation: 75, confirm: 80, notifications: 85, muted: false },
+  sound: { master: 100, navigation: 40, confirm: 80, notifications: 85, muted: false },
   remote: { enabled: true }
 };
 
