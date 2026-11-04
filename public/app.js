@@ -169,20 +169,23 @@ function letterJump(direction) {
 }
 
 function hold(direction) {
+  const settings = window.rycadeFeatures?.settings;
+  const multiplier = ({ Slow: 1.5, Normal: 1, Fast: .6 })[settings?.controls?.skimSpeed] || 1;
+  const letterJumpEnabled = settings?.controls?.letterJump !== false;
   const startedAt = performance.now();
   step(direction);
   const repeat = () => {
     if (!holding) return;
     const elapsed = performance.now() - startedAt;
-    if (elapsed > 1700) {
+    if (letterJumpEnabled && elapsed > 1700 * multiplier) {
       letterJump(direction);
-      holding.timer = setTimeout(repeat, 320);
+      holding.timer = setTimeout(repeat, 320 * multiplier);
     } else {
       step(direction);
-      holding.timer = setTimeout(repeat, elapsed < 900 ? 110 : 55);
+      holding.timer = setTimeout(repeat, elapsed < 900 * multiplier ? 110 * multiplier : 55 * multiplier);
     }
   };
-  holding = { direction, timer: setTimeout(repeat, 300) };
+  holding = { direction, timer: setTimeout(repeat, 300 * multiplier) };
 }
 
 function release() {

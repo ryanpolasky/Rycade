@@ -1,0 +1,209 @@
+:root {
+  color-scheme: dark;
+  font-family: "Barlow Condensed", sans-serif;
+  background: #09080c;
+  color: #f3eee6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(ellipse at 50% -10%, rgba(143, 58, 74, .25), transparent 55%),
+    #09080c;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.remote-shell {
+  width: min(100%, 540px);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: max(26px, env(safe-area-inset-top)) 18px max(24px, env(safe-area-inset-bottom));
+}
+
+.remote-header {
+  padding: 12px 2px 20px;
+}
+
+.eyebrow,
+.remote-pairing label,
+.search-label {
+  color: #b8adb9;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2.4px;
+}
+
+.remote-header h1 {
+  margin: 7px 0 0;
+  color: #fff;
+  font-size: 38px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  line-height: 1;
+}
+
+.remote-header p {
+  margin: 8px 0 0;
+  color: #aaa3ae;
+  font-size: 18px;
+}
+
+.remote-pairing {
+  display: grid;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  background: rgba(255, 255, 255, .045);
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 8px 14px;
+}
+
+.remote-pairing label {
+  grid-column: 1 / -1;
+}
+
+#cab-code {
+  width: 100%;
+  height: 48px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, .2);
+  outline: 0;
+  color: #fff;
+  background: #100e14;
+  font-size: 27px;
+  font-weight: 800;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+}
+
+#cab-code:focus,
+.remote-search:focus {
+  border-color: #bd5661;
+  box-shadow: 0 0 0 1px #bd5661;
+}
+
+.remote-pairing small {
+  grid-column: 1 / -1;
+  color: #8e8793;
+  font-size: 15px;
+}
+
+.search-label {
+  display: block;
+  margin: 22px 0 7px;
+}
+
+.remote-search {
+  width: 100%;
+  height: 48px;
+  padding: 0 13px;
+  border: 1px solid rgba(255, 255, 255, .18);
+  outline: 0;
+  color: #fff;
+  background: rgba(255, 255, 255, .06);
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.remote-status {
+  min-height: 26px;
+  padding-top: 6px;
+  color: #d6a2a8;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.remote-status.success {
+  color: #b4d28c;
+}
+
+.remote-results {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.remote-game {
+  display: flex;
+  width: 100%;
+  min-height: 82px;
+  padding: 8px;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid rgba(255, 255, 255, .12);
+  color: #f3eee6;
+  background: rgba(255, 255, 255, .05);
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.remote-game:active {
+  border-color: #bd5661;
+  background: rgba(189, 86, 97, .2);
+  transform: scale(.99);
+}
+
+.remote-game img {
+  width: 96px;
+  height: 64px;
+  flex: 0 0 auto;
+  object-fit: cover;
+  background: #17141b;
+}
+
+.remote-game .game-copy {
+  min-width: 0;
+  flex: 1;
+}
+
+.remote-game strong,
+.remote-game small {
+  display: block;
+}
+
+.remote-game strong {
+  overflow: hidden;
+  font-size: 22px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.remote-game small {
+  margin-top: 3px;
+  color: #a59eaa;
+  font-size: 15px;
+  letter-spacing: 1.3px;
+}
+
+.remote-game .send-mark {
+  color: #bd5661;
+  font-size: 26px;
+}
+
+.remote-empty {
+  padding: 22px 12px;
+  color: #9a929e;
+  font-size: 20px;
+}
+
+footer {
+  padding: 24px 0 0;
+  color: #6e6873;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-align: center;
+}
