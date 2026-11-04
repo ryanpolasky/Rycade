@@ -11,8 +11,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="features.css">
+    <link rel="stylesheet" href="themes/lightbox.css">
+    <link rel="stylesheet" href="themes/rycade-tv.css">
+    <link rel="stylesheet" href="themes/neo-gold.css">
+    <link rel="stylesheet" href="themes/vector-phosphor.css">
   </head>
-  <body>
+  <body data-theme="lightbox">
     <main id="stage">
       <div class="bg" aria-hidden="true">
         <div class="pair" id="backdrop">
@@ -22,6 +26,7 @@
       </div>
       <div class="dim" aria-hidden="true"></div>
       <div class="spill" aria-hidden="true"></div>
+      <div id="theme-layout" aria-hidden="true"></div>
 
       <header class="mq" aria-label="Selected game">
         <img id="mlogo" alt="">
@@ -44,9 +49,9 @@
       </button>
 
       <header class="topbar">
-        <div class="wm">RYCADE <span id="clock" aria-label="Current time"></span><button id="settings-open" type="button" aria-label="Settings">⚙</button></div>
+        <div class="wm">RYCADE <span id="clock" aria-label="Current time"></span><button id="settings-open" type="button" aria-label="Settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.93 4.93l2.12 2.12m9.9 9.9 2.12 2.12m0-14.14-2.12 2.12m-9.9 9.9-2.12 2.12"/><circle cx="12" cy="12" r="4"/></svg></button></div>
         <div class="topbar-tabs">
-          <button id="search-open" type="button" aria-label="Search games">⌕</button>
+          <button id="search-open" type="button" aria-label="Search games"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></button>
           <nav id="tabs" class="tabs" aria-label="Game system"></nav>
         </div>
       </header>
@@ -93,12 +98,15 @@
             <nav id="settings-nav" class="settings-nav" aria-label="Settings sections"></nav>
             <div id="settings-content" class="settings-content"></div>
           </div>
+          <footer class="settings-footer">▲▼ move · ◀▶ change · SHOOT select · ESC close</footer>
         </div>
       </section>
       <div id="remote-toast" class="remote-toast" role="status" aria-live="polite"></div>
       <div id="boot-screen" class="boot-screen" aria-hidden="true"><img alt="Boot animation"></div>
     </main>
     <script src="games.js"></script>
+    <script src="themes.js"></script>
+    <script src="audio.js"></script>
     <script src="app.js"></script>
     <script src="vendor/qrcode-generator.js"></script>
     <script src="features.js"></script>

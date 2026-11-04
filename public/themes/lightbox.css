@@ -1,0 +1,23 @@
+body[data-theme="lightbox"] #settings-open svg,
+body[data-theme="lightbox"] #search-open svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
+body[data-theme="lightbox"] .theme-swatch {
+  background: linear-gradient(90deg, #e5dbea 0 50%, #17131d 50%);
+}
+
+body[data-theme="lightbox"] .theme-choice.selected {
+  border-color: var(--sp);
+}
+
+body[data-theme="lightbox"] .sound-row {
+  border-color: rgba(255, 255, 255, .18);
+  background: rgba(255, 255, 255, .035);
+}

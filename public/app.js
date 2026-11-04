@@ -19,6 +19,7 @@ let launched = false;
 let statusTimer = 0;
 let swipe = null;
 let ignoreClick = false;
+let tvStaticTimer = 0;
 
 function fit() {
   const scale = Math.min(innerWidth / 1280, innerHeight / 960);
@@ -49,7 +50,6 @@ function build(keepId) {
     row.className = 'lr';
     row.dataset.index = rowIndex;
     row.dataset.letter = letterOf(game);
-    row.textContent = game.title;
     return row;
   }));
   renderTabs();
@@ -58,9 +58,21 @@ function build(keepId) {
 
 function changeTab(nextTab) {
   if (launched || nextTab === tab) return;
+  window.rycadeAudio?.play('tab');
   const selectedId = view[index] && view[index].id;
+  const selectedGame = GAMES.find(game => game.id === selectedId);
+  if (document.body.dataset.theme === 'rycade-tv' && selectedGame &&
+      (nextTab === 0 || selectedGame.sys === SYSTEMS[nextTab])) flashTvStatic();
   tab = nextTab;
   build(selectedId);
+}
+
+function flashTvStatic() {
+  stage.classList.remove('channel-static');
+  void stage.offsetWidth;
+  stage.classList.add('channel-static');
+  clearTimeout(tvStaticTimer);
+  tvStaticTimer = setTimeout(() => stage.classList.remove('channel-static'), 120);
 }
 
 function updatePair(id, source) {
@@ -102,20 +114,27 @@ function renderControls(game) {
 }
 
 function place(instant = false) {
+  const game = view[index];
+  if (!game) return;
+  layout(index, game, view);
   const rows = [...list.children];
   rows.forEach((row, rowIndex) => {
     const distance = Math.min(Math.abs(rowIndex - index), 5);
     row.classList.toggle('on', rowIndex === index);
     row.style.opacity = [1, .62, .42, .3, .2, .13][distance];
   });
-  const maxOffset = Math.max(0, rows.length * 46 + 14 - roster.clientHeight);
-  const selectedCenter = index * 46 + 30;
+  const totalHeight = rows.reduce((height, row) => height + row.offsetHeight, 0);
+  const selectedCenter = rows.slice(0, index).reduce((height, row) => height + row.offsetHeight, 0) + rows[index].offsetHeight / 2;
+  const maxOffset = Math.max(0, totalHeight - roster.clientHeight);
   const offset = Math.max(0, Math.min(maxOffset, selectedCenter - roster.clientHeight / 2));
   list.style.transition = instant ? 'none' : '';
   list.style.transform = `translateY(${-offset}px)`;
 
-  const game = view[index];
-  if (!game) return;
+  const previousId = stage.dataset.gameId;
+  if (previousId && previousId !== game.id && document.body.dataset.theme === 'rycade-tv') {
+    flashTvStatic();
+  }
+  stage.dataset.gameId = game.id;
   stage.style.setProperty('--acc', game.color);
   stage.style.setProperty('--sp', `rgb(${game.spill.join(',')})`);
   stage.style.setProperty('--spa', `rgba(${game.spill.join(',')},.28)`);
@@ -139,11 +158,13 @@ function place(instant = false) {
   updatePair('flyer', game.box);
   updatePair('screen', game.snap);
   renderControls(game);
+  layout(index, game, view);
 }
 
 function step(direction) {
   const nextIndex = Math.max(0, Math.min(view.length - 1, index + direction));
   if (nextIndex !== index) {
+    window.rycadeAudio?.play('move');
     index = nextIndex;
     place();
   }
@@ -163,6 +184,7 @@ function letterJump(direction) {
     }
   }
   index = nextIndex;
+  window.rycadeAudio?.play('letter');
   place();
   letterOverlay.querySelector('b').textContent = letterOf(view[index]);
   letterOverlay.classList.add('on');
@@ -198,6 +220,7 @@ function release() {
 
 function launch() {
   if (launched) return;
+  window.rycadeAudio?.play('launch');
   launched = true;
   monitor.classList.add('live', 'show-status');
   clearTimeout(statusTimer);
@@ -206,6 +229,7 @@ function launch() {
 
 function exitGame() {
   if (!launched) return;
+  window.rycadeAudio?.play('back');
   launched = false;
   monitor.classList.remove('live', 'show-status');
   clearTimeout(statusTimer);
@@ -218,6 +242,7 @@ function moveByGesture(delta) {
 }
 
 window.addEventListener('resize', fit);
+document.addEventListener('rycade-theme-change', () => place(true));
 window.addEventListener('keydown', event => {
   if (event.repeat) return;
   const pressed = event.key.toLowerCase();

@@ -8,12 +8,13 @@ const SEARCH_KEYS = [
   'DEL',
   'DONE'
 ];
-const SETTINGS_TABS = ['Display', 'Themes', 'Boot', 'Controls', 'Remote', 'About'];
+const SETTINGS_TABS = ['Display', 'Themes', 'Boot', 'Controls', 'Sound', 'Remote', 'About'];
 const DEFAULT_SETTINGS = {
   display: { scanlines: true, backgroundArt: true, controls: true, clock: false },
   theme: 'Lightbox',
   boot: 'Insert Coin',
   controls: { skimSpeed: 'Normal', letterJump: true },
+  sound: { master: 100, navigation: 75, confirm: 80, notifications: 85, muted: false },
   remote: { enabled: true }
 };
 
@@ -28,6 +29,7 @@ function readSettings() {
     theme: saved.theme || DEFAULT_SETTINGS.theme,
     boot: saved.boot || DEFAULT_SETTINGS.boot,
     controls: { ...DEFAULT_SETTINGS.controls, ...(saved.controls || {}) },
+    sound: { ...DEFAULT_SETTINGS.sound, ...(saved.sound || {}) },
     remote: { ...DEFAULT_SETTINGS.remote, ...(saved.remote || {}) }
   };
 }
@@ -89,6 +91,7 @@ function saveSettings() {
   try {
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
   } catch {}
+  window.rycadeAudio?.setVolumes(settings.sound);
 }
 
 function applySettings() {
@@ -115,6 +118,7 @@ function closeOverlays() {
 
 function openSearch() {
   if (launched) return;
+  window.rycadeAudio?.play('open');
   closeSettings();
   searchOpen = true;
   searchOverlay.classList.add('visible');
@@ -127,6 +131,7 @@ function openSearch() {
 }
 
 function closeSearch() {
+  if (searchOpen) window.rycadeAudio?.play('close');
   searchOpen = false;
   searchOverlay.classList.remove('visible');
   searchOverlay.setAttribute('aria-hidden', 'true');
@@ -180,7 +185,11 @@ function updateSearchFocus() {
 
 function selectGame(gameId) {
   const game = GAMES.find(item => item.id === gameId);
-  if (!game) return;
+  if (!game) {
+    window.rycadeAudio?.play('error');
+    return;
+  }
+  window.rycadeAudio?.play('confirm');
   closeOverlays();
   tab = 0;
   build(game.id);
@@ -204,6 +213,7 @@ function buildSearchKeyboard() {
 }
 
 function pressSearchKey(label) {
+  window.rycadeAudio?.play('confirm');
   if (label === 'DONE') {
     closeSearch();
     return;
@@ -218,6 +228,7 @@ function pressSearchKey(label) {
 
 function moveSearchResult(delta) {
   if (!searchGames.length) return;
+  window.rycadeAudio?.play('move');
   searchResultIndex = (searchResultIndex + delta + searchGames.length) % searchGames.length;
   updateSearchFocus();
   searchResults.children[searchResultIndex]?.focus();
@@ -227,6 +238,7 @@ function moveSearchResult(delta) {
 function moveSearchKey(delta) {
   const next = searchKeyIndex + delta;
   if (next < 0 || next >= SEARCH_KEYS.length) return;
+  window.rycadeAudio?.play('move');
   searchKeyIndex = next;
   updateSearchFocus();
   searchKeyboard.children[searchKeyIndex]?.focus();
@@ -234,6 +246,7 @@ function moveSearchKey(delta) {
 
 function openSettings() {
   if (launched) return;
+  window.rycadeAudio?.play('open');
   closeSearch();
   settingsOpen = true;
   settingsOverlay.classList.add('visible');
@@ -244,13 +257,14 @@ function openSettings() {
 }
 
 function closeSettings() {
+  if (settingsOpen) window.rycadeAudio?.play('close');
   settingsOpen = false;
   settingsOverlay.classList.remove('visible');
   settingsOverlay.setAttribute('aria-hidden', 'true');
 }
 
 function settingsActions() {
-  return [...settingsContent.querySelectorAll('.setting-action:not(:disabled), .boot-choice')];
+  return [...settingsContent.querySelectorAll('.setting-action:not(:disabled), .boot-choice, .mixer-slider')];
 }
 
 function refreshSettingsFocus() {
@@ -269,6 +283,7 @@ function renderSettings() {
     button.className = index === settingsTabIndex ? 'active' : '';
     button.textContent = label;
     button.addEventListener('click', () => {
+      window.rycadeAudio?.play('tab');
       settingsTabIndex = index;
       settingsArea = 'tabs';
       settingsActionIndex = 0;
@@ -282,50 +297,120 @@ function renderSettings() {
   else if (settingsTabIndex === 1) renderThemeSettings();
   else if (settingsTabIndex === 2) renderBootSettings();
   else if (settingsTabIndex === 3) renderControlsSettings();
-  else if (settingsTabIndex === 4) renderRemoteSettings();
+  else if (settingsTabIndex === 4) renderSoundSettings();
+  else if (settingsTabIndex === 5) renderRemoteSettings();
   else renderAboutSettings();
   refreshSettingsFocus();
 }
 
-function settingRow(label, value, action) {
+function settingRow(label, value, action, description = '', sound = 'toggle') {
   const button = document.createElement('button');
   button.type = 'button';
   button.className = 'setting-action';
-  button.innerHTML = `<span>${label}</span><b>${value}</b>`;
-  button.addEventListener('click', action);
+  button.setAttribute('aria-label', `${label}: ${value}${description ? `. ${description}` : ''}`);
+  const copy = document.createElement('span');
+  copy.className = 'setting-copy';
+  const title = document.createElement('strong');
+  title.textContent = label;
+  copy.append(title);
+  if (description) {
+    const detail = document.createElement('small');
+    detail.textContent = description;
+    copy.append(detail);
+  }
+  button.append(copy);
+  if (value === 'ON' || value === 'OFF') {
+    button.setAttribute('aria-pressed', String(value === 'ON'));
+    const toggle = document.createElement('span');
+    toggle.className = `setting-toggle${value === 'ON' ? ' on' : ''}`;
+    toggle.setAttribute('aria-hidden', 'true');
+    const state = document.createElement('b');
+    state.textContent = value;
+    const track = document.createElement('i');
+    toggle.append(state, track);
+    button.append(toggle);
+  } else if (label === 'Skim speed') {
+    const segments = document.createElement('span');
+    segments.className = 'setting-segments';
+    ['Slow', 'Normal', 'Fast'].forEach(option => {
+      const segment = document.createElement('i');
+      segment.className = option === value ? 'selected' : '';
+      segment.textContent = option;
+      segments.append(segment);
+    });
+    segments.setAttribute('aria-hidden', 'true');
+    button.append(segments);
+  } else {
+    const state = document.createElement('b');
+    state.className = 'setting-state';
+    state.textContent = value;
+    button.append(state);
+  }
+  button.addEventListener('click', () => {
+    window.rycadeAudio?.play(sound);
+    action();
+  });
   return button;
 }
 
 function renderDisplaySettings() {
   settingsContent.innerHTML = '<h3 class="settings-section-title">DISPLAY</h3>';
   [
-    ['Scanlines on CRT', 'scanlines'],
-    ['Background art', 'backgroundArt'],
-    ['Show controls row', 'controls'],
-    ['Clock in header', 'clock']
-  ].forEach(([label, key]) => {
+    ['Scanlines on CRT', 'scanlines', 'Adds a soft raster to the snap monitor.'],
+    ['Background art', 'backgroundArt', 'Use the selected game flyer behind the cabinet.'],
+    ['Show controls row', 'controls', 'Show controls available for the selected game.'],
+    ['Clock in header', 'clock', 'Display the local time beside the wordmark.']
+  ].forEach(([label, key, description]) => {
     const button = settingRow(label, settings.display[key] ? 'ON' : 'OFF', () => {
       settings.display[key] = !settings.display[key];
       saveSettings();
       applySettings();
       renderSettings();
-    });
+    }, description);
     settingsContent.append(button);
   });
 }
 
 function renderThemeSettings() {
-  settingsContent.innerHTML = '<h3 class="settings-section-title">THEME</h3>';
-  settingsContent.append(settingRow('Lightbox', 'ACTIVE', () => {
-    settings.theme = 'Lightbox';
-    saveSettings();
-    renderSettings();
-  }));
-  ['Rycade TV', 'Neo Gold', 'Vector'].forEach(label => {
-    const row = document.createElement('div');
-    row.className = 'setting-action disabled';
-    row.innerHTML = `<span>${label}</span><b>COMING SOON</b>`;
-    settingsContent.append(row);
+  settingsContent.innerHTML = '<h3 class="settings-section-title">THEMES</h3>';
+  const themes = [
+    { label: 'Lightbox', id: 'lightbox', colors: ['#e5dbea', '#17131d'] },
+    { label: 'Rycade TV', id: 'rycade-tv', colors: ['#70ef95', '#151d7a'] },
+    { label: 'Neo Gold', id: 'neo-gold', colors: ['#ffc43d', '#9d1622'] },
+    { label: 'Vector Phosphor', id: 'vector-phosphor', colors: ['#9fffd4', '#09160f'] }
+  ];
+  themes.forEach(theme => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = `setting-action theme-choice${settings.theme === theme.label ? ' selected' : ''}`;
+    button.setAttribute('aria-pressed', String(settings.theme === theme.label));
+    const swatch = document.createElement('i');
+    swatch.className = 'theme-swatch';
+    swatch.style.setProperty('--swatch-a', theme.colors[0]);
+    swatch.style.setProperty('--swatch-b', theme.colors[1]);
+    const label = document.createElement('span');
+    label.className = 'theme-copy';
+    const name = document.createElement('strong');
+    name.textContent = theme.label;
+    const description = document.createElement('small');
+    description.textContent = ({
+      lightbox: 'Flyer lightbox and marquee',
+      'rycade-tv': 'Channel guide and green OSD',
+      'neo-gold': 'MVS roster and arcade BIOS',
+      'vector-phosphor': 'Starfield and phosphor vectors'
+    })[theme.id];
+    label.append(name, description);
+    const state = document.createElement('b');
+    state.textContent = settings.theme === theme.label ? 'ACTIVE' : 'SELECT';
+    button.append(swatch, label, state);
+    button.addEventListener('click', () => {
+      window.rycadeAudio?.play('confirm');
+      settings.theme = theme.label;
+      saveSettings();
+      applyRycadeTheme(theme.label);
+      renderSettings();
+    });
+    settingsContent.append(button);
   });
 }
 
@@ -338,16 +423,18 @@ function bootAsset(name) {
 }
 
 function renderBootSettings() {
-  settingsContent.innerHTML = '<h3 class="settings-section-title">BOOT ANIMATION</h3>';
+  settingsContent.innerHTML = '<h3 class="settings-section-title">BOOT ANIMATION</h3><p class="settings-intro">Choose what appears when the cabinet wakes.</p>';
   const choices = document.createElement('div');
   choices.className = 'boot-options';
   ['Insert Coin', 'Lights On', 'CRT Power-on', 'None'].forEach(label => {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = `boot-choice${settings.boot === label ? ' selected' : ''}`;
+    button.setAttribute('aria-pressed', String(settings.boot === label));
     const asset = bootAsset(label);
     button.innerHTML = `${asset ? `<img src="${asset}" alt="">` : '<span class="no-preview">—</span>'}<span>${label}</span>`;
     button.addEventListener('click', () => {
+      window.rycadeAudio?.play('toggle');
       settings.boot = label;
       saveSettings();
       renderSettings();
@@ -355,7 +442,7 @@ function renderBootSettings() {
     choices.append(button);
   });
   settingsContent.append(choices);
-  const play = settingRow('Play boot now', '▶', playBoot);
+  const play = settingRow('Play boot now', '▶', playBoot, 'Preview the selected animation for five seconds.', 'confirm');
   play.disabled = settings.boot === 'None';
   if (play.disabled) play.classList.add('disabled');
   settingsContent.append(play);
@@ -369,12 +456,67 @@ function renderControlsSettings() {
     settings.controls.skimSpeed = speeds[(current + 1) % speeds.length];
     saveSettings();
     renderSettings();
-  }));
+  }, 'Changes how quickly the list repeats while held.'));
   settingsContent.append(settingRow('Letter-jump after 1.7s', settings.controls.letterJump ? 'ON' : 'OFF', () => {
     settings.controls.letterJump = !settings.controls.letterJump;
     saveSettings();
     renderSettings();
-  }));
+  }, 'Long holds jump by the selected game’s first letter.'));
+}
+
+function renderSoundSettings() {
+  settingsContent.innerHTML = '<h3 class="settings-section-title">SOUND</h3><p class="settings-intro">Levels apply when you release the control.</p>';
+  [
+    ['Master', 'master', 'Overall cabinet output.'],
+    ['Navigation', 'navigation', 'List movement, letters and tabs.'],
+    ['Confirm / Back', 'confirm', 'Selection, launch and overlays.'],
+    ['Notifications', 'notifications', 'Phone-remote arrival toast.']
+  ].forEach(([label, key, description]) => {
+    const row = document.createElement('label');
+    row.className = 'sound-row';
+    const copy = document.createElement('span');
+    copy.className = 'setting-copy';
+    copy.innerHTML = `<strong>${label}</strong><small>${description}</small>`;
+    const input = document.createElement('input');
+    input.type = 'range';
+    input.className = 'mixer-slider';
+    input.min = '0';
+    input.max = '100';
+    input.step = '1';
+    input.value = settings.sound[key];
+    input.dataset.key = key;
+    input.setAttribute('aria-label', `${label} volume`);
+    const value = document.createElement('b');
+    value.className = 'mixer-value';
+    value.textContent = `${input.value}%`;
+    input.addEventListener('input', () => {
+      input.dataset.pending = input.value;
+      value.textContent = `${input.value}%`;
+    });
+    input.addEventListener('pointerup', () => commitMixer(input));
+    input.addEventListener('pointercancel', () => {
+      delete input.dataset.pending;
+      input.value = settings.sound[key];
+      value.textContent = `${input.value}%`;
+    });
+    row.append(copy, input, value);
+    settingsContent.append(row);
+  });
+  settingsContent.append(settingRow('Mute all', settings.sound.muted ? 'ON' : 'OFF', () => {
+    settings.sound.muted = !settings.sound.muted;
+    saveSettings();
+    renderSettings();
+  }, 'Silence every cabinet sound.'));
+}
+
+function commitMixer(input) {
+  if (!Object.prototype.hasOwnProperty.call(input.dataset, 'pending')) return;
+  settings.sound[input.dataset.key] = Number(input.dataset.pending);
+  delete input.dataset.pending;
+  saveSettings();
+  const preview = input.dataset.key === 'navigation' ? 'move' :
+    input.dataset.key === 'notifications' ? 'notification' : 'confirm';
+  window.rycadeAudio?.play(preview);
 }
 
 function renderRemoteSettings() {
@@ -385,7 +527,11 @@ function renderRemoteSettings() {
     saveSettings();
     applyRemoteSetting();
     renderSettings();
-  }));
+  }, 'Allow paired phones to send a game to this cab.'));
+  const codeLabel = document.createElement('span');
+  codeLabel.className = 'pairing-label';
+  codeLabel.textContent = 'PAIRING CODE';
+  details.append(codeLabel);
   const code = document.createElement('div');
   code.className = 'pairing-code';
   code.textContent = getPairingCode();
@@ -394,7 +540,7 @@ function renderRemoteSettings() {
     createPairingCode();
     applyRemoteSetting(true);
     renderSettings();
-  });
+  }, 'Generate a new six-character pairing code.');
   details.append(newCode);
   const note = document.createElement('p');
   note.className = 'settings-note';
@@ -441,6 +587,7 @@ function setToast(game) {
   clearTimeout(toastTimer);
   toast.textContent = `FROM YOUR PHONE · ${game.title} · SHOOT TO PLAY`;
   toast.classList.add('visible');
+  window.rycadeAudio?.play('notification');
   toastTimer = setTimeout(() => toast.classList.remove('visible'), 5000);
 }
 
@@ -536,12 +683,23 @@ function handleSearchKey(event) {
 function handleSettingsKey(event) {
   event.stopPropagation();
   const key = event.key;
+  if (event.target.matches?.('.mixer-slider') && (key === 'ArrowLeft' || key === 'ArrowRight')) {
+    event.preventDefault();
+    const input = event.target;
+    const current = Number(input.dataset.pending ?? input.value);
+    const next = Math.max(0, Math.min(100, current + (key === 'ArrowRight' ? 10 : -10)));
+    input.value = String(next);
+    input.dataset.pending = String(next);
+    input.closest('.sound-row').querySelector('.mixer-value').textContent = `${next}%`;
+    return;
+  }
   if (key === 'Escape') {
     event.preventDefault();
     closeSettings();
   } else if (key === 'ArrowUp' || key === 'ArrowDown') {
     event.preventDefault();
     if (settingsArea === 'tabs') {
+      window.rycadeAudio?.play('tab');
       const step = key === 'ArrowDown' ? 1 : -1;
       settingsTabIndex = (settingsTabIndex + step + SETTINGS_TABS.length) % SETTINGS_TABS.length;
       settingsActionIndex = 0;
@@ -559,12 +717,14 @@ function handleSettingsKey(event) {
     }
   } else if (key === 'ArrowRight' && settingsArea === 'tabs') {
     event.preventDefault();
+    window.rycadeAudio?.play('tab');
     settingsArea = 'options';
     settingsActionIndex = 0;
     refreshSettingsFocus();
     settingsActions()[0]?.focus();
   } else if (key === 'ArrowLeft' && settingsArea === 'options') {
     event.preventDefault();
+    window.rycadeAudio?.play('tab');
     settingsArea = 'tabs';
     refreshSettingsFocus();
     settingsNav.children[settingsTabIndex]?.focus();
@@ -580,6 +740,14 @@ function handleSettingsKey(event) {
     }
   }
 }
+
+window.addEventListener('keyup', event => {
+  if (settingsOpen && event.target.matches?.('.mixer-slider') && ['ArrowLeft', 'ArrowRight'].includes(event.key)) {
+    commitMixer(event.target);
+  }
+});
+
+applyRycadeTheme(settings.theme);
 
 window.addEventListener('keydown', event => {
   if (searchOpen) {
@@ -619,6 +787,7 @@ settingsOverlay.addEventListener('click', event => {
 });
 
 applySettings();
+window.rycadeAudio?.setVolumes(settings.sound);
 getPairingCode();
 buildSearchKeyboard();
 updateSearchResults();
