@@ -1,0 +1,16 @@
+# RYCADE
+
+A static, playable game-library frontend for a four-player arcade cabinet. The library is a visual prototype; it does not run emulators.
+
+## Controls
+
+- Up / Down: browse; hold to repeat and skim by letter.
+- Left / Right or Z / C: switch systems.
+- X, Enter, or Space: launch the selected game; Escape or Enter exits.
+- Click or tap a row to select it, tap it again or the CRT to launch, and tap while launched to exit. Scroll or swipe the list to browse.
+
+## Deploy
+
+```sh
+npx wrangler deploy
+```

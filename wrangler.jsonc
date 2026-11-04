@@ -1,0 +1,13 @@
+{
+  "name": "rycade",
+  "compatibility_date": "2025-01-01",
+  "assets": {
+    "directory": "./public"
+  },
+  "routes": [
+    {
+      "pattern": "arcade.ryanpolasky.com",
+      "custom_domain": true
+    }
+  ]
+}

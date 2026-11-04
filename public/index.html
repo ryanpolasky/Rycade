@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <title>RYCADE · Game Library</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main id="stage">
+      <div class="bg" aria-hidden="true">
+        <div class="pair" id="backdrop">
+          <img class="active" alt="">
+          <img alt="">
+        </div>
+      </div>
+      <div class="dim" aria-hidden="true"></div>
+      <div class="spill" aria-hidden="true"></div>
+
+      <header class="mq" aria-label="Selected game">
+        <img id="mlogo" alt="">
+        <span id="mtext"></span>
+      </header>
+
+      <section class="lb" aria-label="Game flyer">
+        <div class="in pair" id="flyer">
+          <img class="active" alt="">
+          <img alt="">
+        </div>
+      </section>
+
+      <button id="monitor" class="mon" type="button" aria-label="Launch selected game">
+        <div class="s pair" id="screen">
+          <img class="active" alt="">
+          <img alt="">
+          <span id="now-playing">NOW PLAYING · ESC TO EXIT</span>
+        </div>
+      </button>
+
+      <div class="wm">RYCADE</div>
+      <nav id="tabs" class="tabs" aria-label="Game system"></nav>
+      <section id="roster" class="roster" aria-label="Games">
+        <div id="list"></div>
+      </section>
+
+      <section class="cap" aria-live="polite">
+        <h1 id="title"></h1>
+        <p id="sub"></p>
+      </section>
+
+      <div id="controls" class="ctl" aria-label="Game controls"></div>
+      <div class="hint"><b>HOLD ▲▼</b> skim &nbsp; <b>SHOOT</b> play</div>
+      <div id="letter" class="letter" aria-hidden="true">
+        <b></b>
+        <small>JUMP BY LETTER</small>
+      </div>
+    </main>
+    <script src="games.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
