@@ -1,4 +1,5 @@
 const SETTINGS_KEY = 'rycade.settings';
+const SOUND_SETTINGS_VERSION = 2;
 const CODE_KEY = 'rycade.code';
 const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const SEARCH_KEYS = [
@@ -14,7 +15,8 @@ const DEFAULT_SETTINGS = {
   theme: 'Lightbox',
   boot: 'Insert Coin',
   controls: { skimSpeed: 'Normal', letterJump: true },
-  sound: { master: 100, navigation: 40, confirm: 80, notifications: 85, muted: false },
+  sound: { master: 70, navigation: 50, confirm: 60, notifications: 60, muted: false },
+  soundSet: 'cabinet',
   remote: { enabled: true }
 };
 
@@ -24,14 +26,26 @@ function readSettings() {
     saved = JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}');
   } catch {}
   if (!saved || typeof saved !== 'object' || Array.isArray(saved)) saved = {};
-  return {
+  const soundSettingsCurrent = saved.soundVersion === SOUND_SETTINGS_VERSION;
+  const next = {
+    ...saved,
     display: { ...DEFAULT_SETTINGS.display, ...(saved.display || {}) },
     theme: saved.theme || DEFAULT_SETTINGS.theme,
     boot: saved.boot || DEFAULT_SETTINGS.boot,
     controls: { ...DEFAULT_SETTINGS.controls, ...(saved.controls || {}) },
-    sound: { ...DEFAULT_SETTINGS.sound, ...(saved.sound || {}) },
+    sound: soundSettingsCurrent
+      ? { ...DEFAULT_SETTINGS.sound, ...(saved.sound || {}) }
+      : { ...DEFAULT_SETTINGS.sound },
+    soundSet: ['cabinet', 'chip', 'neo'].includes(saved.soundSet) ? saved.soundSet : DEFAULT_SETTINGS.soundSet,
+    soundVersion: SOUND_SETTINGS_VERSION,
     remote: { ...DEFAULT_SETTINGS.remote, ...(saved.remote || {}) }
   };
+  if (!soundSettingsCurrent) {
+    try {
+      localStorage.setItem(SETTINGS_KEY, JSON.stringify(next));
+    } catch {}
+  }
+  return next;
 }
 
 const settings = readSettings();
@@ -92,6 +106,7 @@ function saveSettings() {
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
   } catch {}
   window.rycadeAudio?.setVolumes(settings.sound);
+  window.rycadeAudio?.setSoundSet(settings.soundSet);
 }
 
 function applySettings() {
@@ -347,7 +362,7 @@ function settingRow(label, value, action, description = '', sound = 'toggle') {
     button.append(state);
   }
   button.addEventListener('click', () => {
-    window.rycadeAudio?.play(sound);
+    if (sound) window.rycadeAudio?.play(sound);
     action();
   });
   return button;
@@ -466,6 +481,14 @@ function renderControlsSettings() {
 
 function renderSoundSettings() {
   settingsContent.innerHTML = '<h3 class="settings-section-title">SOUND</h3><p class="settings-intro">Levels apply when you release the control.</p>';
+  const soundSets = ['cabinet', 'chip', 'neo'];
+  settingsContent.append(settingRow('Sound set', settings.soundSet[0].toUpperCase() + settings.soundSet.slice(1), () => {
+    const nextIndex = (soundSets.indexOf(settings.soundSet) + 1) % soundSets.length;
+    settings.soundSet = soundSets[nextIndex];
+    saveSettings();
+    renderSettings();
+    window.rycadeAudio?.play('confirm');
+  }, 'Choose the cabinet’s sound character.', null));
   [
     ['Master', 'master', 'Overall cabinet output.'],
     ['Navigation', 'navigation', 'List movement, letters and tabs.'],
@@ -788,6 +811,7 @@ settingsOverlay.addEventListener('click', event => {
 
 applySettings();
 window.rycadeAudio?.setVolumes(settings.sound);
+window.rycadeAudio?.setSoundSet(settings.soundSet);
 getPairingCode();
 buildSearchKeyboard();
 updateSearchResults();

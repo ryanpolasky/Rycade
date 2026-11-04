@@ -11,6 +11,10 @@ A static, playable game-library frontend for a four-player arcade cabinet. The l
 - `/` or `S`: search the library; `M`: open settings. Settings persist in the browser.
 - Use the Phone Remote section in settings to scan the pairing QR code and send a game selection from your phone.
 
+## Audio credits
+
+Cabinet sounds are synthesized in-browser with the Web Audio API in the Cabinet, Chip, and Neo sound sets. No third-party sound samples are used.
+
 ## Deploy
 
 ```sh

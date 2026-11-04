@@ -34,7 +34,7 @@ body[data-theme="rycade-tv"] #monitor {
   box-shadow: none;
 }
 
-body[data-theme="rycade-tv"] #screen img {
+body[data-theme="rycade-tv"] #screen img.active {
   opacity: .43;
   filter: saturate(.5) contrast(1.2);
 }
