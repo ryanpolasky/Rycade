@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#09080c">
+    <link rel="icon" href="data:,">
+    <title>RYCADE · Phone Remote</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/remote/remote.css">
+  </head>
+  <body>
+    <main class="remote-shell">
+      <header class="remote-header">
+        <span class="eyebrow">RYCADE · PHONE REMOTE</span>
+        <h1>CHOOSE A GAME</h1>
+        <p>Send a game to your cab. Shoot to play.</p>
+      </header>
+      <section class="remote-pairing" aria-label="Cab pairing">
+        <label for="cab-code">CAB CODE</label>
+        <input id="cab-code" type="text" maxlength="6" autocomplete="one-time-code" autocapitalize="characters" spellcheck="false" placeholder="ABC234">
+        <small>Enter the six-character code shown in your cab's Remote settings.</small>
+      </section>
+      <label class="search-label" for="remote-search">SEARCH LIBRARY</label>
+      <input id="remote-search" class="remote-search" type="search" autocomplete="off" placeholder="TITLE OR SYSTEM">
+      <div id="remote-status" class="remote-status" role="status" aria-live="polite"></div>
+      <section id="remote-results" class="remote-results" aria-label="Game search results"></section>
+      <footer>RYCADE WEB PROTOTYPE</footer>
+    </main>
+    <script src="/games.js"></script>
+    <script src="/remote/remote.js"></script>
+  </body>
+</html>
