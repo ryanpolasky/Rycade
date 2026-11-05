@@ -725,6 +725,48 @@
         "arc_rallyx_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Rally%20X.png"
       },
       "note": "Named_Boxarts/Rally X.png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Bosconian%20%28Midway%2C%20new%20version%29.png",
+      "files": {
+        "arc_bosco_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Bosconian%20%28Midway%2C%20new%20version%29.png"
+      },
+      "note": "Named_Boxarts/Bosconian (Midway, new version).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Lady%20Bug.png",
+      "files": {
+        "arc_ladybug_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Lady%20Bug.png"
+      },
+      "note": "Named_Boxarts/Lady Bug.png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Bomb%20Jack.png",
+      "files": {
+        "arc_bombjack_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Bomb%20Jack.png"
+      },
+      "note": "Named_Boxarts/Bomb Jack.png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Popeye%20%28revision%20D%29.png",
+      "files": {
+        "arc_popeye_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Popeye%20%28revision%20D%29.png"
+      },
+      "note": "Named_Boxarts/Popeye (revision D).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Tapper%20%28Budweiser%29.png",
+      "files": {
+        "arc_tapper_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Tapper%20%28Budweiser%29.png"
+      },
+      "note": "Named_Boxarts/Tapper (Budweiser).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Elevator%20Action%20%28BA3%2C%204%20PCB%20version%2C%201.1%29.png",
+      "files": {
+        "arc_elevator_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Elevator%20Action%20%28BA3%2C%204%20PCB%20version%2C%201.1%29.png"
+      },
+      "note": "Named_Boxarts/Elevator Action (BA3, 4 PCB version, 1.1).png"
     }
   ]
 }

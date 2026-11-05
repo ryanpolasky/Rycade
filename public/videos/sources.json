@@ -1260,6 +1260,60 @@
       "start_seconds": 0.5,
       "duration_seconds": 25,
       "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "bosco",
+      "url": "https://archive.org/download/mamearcade-video-snaps/bosco.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "bosco.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "ladybug",
+      "url": "https://archive.org/download/mamearcade-video-snaps/ladybug.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "ladybug.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "bombjack",
+      "url": "https://archive.org/download/mamearcade-video-snaps/bombjack.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "bombjack.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "popeye",
+      "url": "https://archive.org/download/mamearcade-video-snaps/popeye.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "popeye.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "tapper",
+      "url": "https://archive.org/download/mamearcade-video-snaps/tapper.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "tapper.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "elevator",
+      "url": "https://archive.org/download/mamearcade-video-snaps/elevator.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "elevator.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
     }
   ]
 }
