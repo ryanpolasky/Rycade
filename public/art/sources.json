@@ -3167,11 +3167,11 @@
       },
       "box": {
         "path": "art/arc_xevious_Box.png",
-        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Xevious%20%28Namco%29.png",
-        "upstream": "Named_Boxarts/Xevious (Namco).png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Xevious%20%28Atari%20set%201%29.png",
+        "upstream": "Named_Boxarts/Xevious (Atari set 1).png",
         "size": [
           512,
-          726
+          659
         ]
       },
       "logo": {
@@ -3476,11 +3476,11 @@
       },
       "logo": {
         "path": "art/arc_tapper_Logos.png",
-        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Tapper%20%28Budweiser%2C%201_27_84%29.png",
-        "upstream": "Named_Logos/Tapper (Budweiser, 1_27_84).png",
+        "url": "https://adb.arcadeitalia.net/media/mame.current/marquees/tapper.png",
+        "upstream": "Arcade Database / tapper / Budweiser marquee (not Root Beer Tapper)",
         "size": [
-          512,
-          178
+          640,
+          253
         ]
       }
     },
@@ -3497,11 +3497,11 @@
       },
       "box": {
         "path": "art/arc_elevator_Box.png",
-        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Elevator%20Action%20%28BA3%2C%204%20PCB%20version%2C%201.1%29.png",
-        "upstream": "Named_Boxarts/Elevator Action (BA3, 4 PCB version, 1.1).png",
+        "url": "https://adb.arcadeitalia.net/media/mame.current/flyers/elevator.png",
+        "upstream": "Arcade Database / elevator / original arcade flyer",
         "size": [
-          512,
-          719
+          464,
+          656
         ]
       },
       "logo": {

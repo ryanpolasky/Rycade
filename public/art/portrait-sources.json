@@ -685,11 +685,11 @@
       "note": "Named_Boxarts/Mappy (US).png"
     },
     {
-      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Xevious%20%28Namco%29.png",
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Xevious%20%28Atari%20set%201%29.png",
       "files": {
-        "arc_xevious_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Xevious%20%28Namco%29.png"
+        "arc_xevious_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Xevious%20%28Atari%20set%201%29.png"
       },
-      "note": "Named_Boxarts/Xevious (Namco).png"
+      "note": "Original Xevious arcade flyer; replaces a libretro thumbnail incorrectly showing a later sequel."
     },
     {
       "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Time%20Pilot.png",
@@ -762,11 +762,11 @@
       "note": "Named_Boxarts/Tapper (Budweiser).png"
     },
     {
-      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Elevator%20Action%20%28BA3%2C%204%20PCB%20version%2C%201.1%29.png",
+      "url": "https://adb.arcadeitalia.net/media/mame.current/flyers/elevator.png",
       "files": {
-        "arc_elevator_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Elevator%20Action%20%28BA3%2C%204%20PCB%20version%2C%201.1%29.png"
+        "arc_elevator_Box.png": "https://adb.arcadeitalia.net/media/mame.current/flyers/elevator.png"
       },
-      "note": "Named_Boxarts/Elevator Action (BA3, 4 PCB version, 1.1).png"
+      "note": "Original Elevator Action arcade flyer; replaces a libretro thumbnail incorrectly showing a later sequel."
     },
     {
       "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Kung-Fu%20Master%20%28World%29.png",
