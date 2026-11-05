@@ -1143,6 +1143,15 @@
       "start_seconds": 0.5,
       "duration_seconds": 25,
       "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "dlair",
+      "url": "https://archive.org/download/emumovies_ftp_mirror_2/EmuFTP.Official.Video%20Snaps%20%28SQ%29.zip/EmuMovies_FTP%2FOfficial%2FVideo%20Snaps%20%28SQ%29%2FDaphne%20%28Video%20Snaps%29%28SQ%29%28EM%201.0%29%2Flair.mp4",
+      "collection": "https://archive.org/details/emumovies_ftp_mirror_2",
+      "source_file": "EmuMovies_FTP/Official/Video Snaps (SQ)/Daphne (Video Snaps)(SQ)(EM 1.0)/lair.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
     }
   ]
 }

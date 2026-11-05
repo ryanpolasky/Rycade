@@ -2943,6 +2943,36 @@
           299
         ]
       }
+    },
+    {
+      "id": "dlair",
+      "snap": {
+        "path": "art/arc_dlair_Snaps.png",
+        "url": "https://archive.org/download/emumovies_ftp_mirror_2/EmuFTP.Official.Video%20Snaps%20%28SQ%29.zip/EmuMovies_FTP%2FOfficial%2FVideo%20Snaps%20%28SQ%29%2FDaphne%20%28Video%20Snaps%29%28SQ%29%28EM%201.0%29%2Flair.mp4",
+        "upstream": "Daphne (Video Snaps)(SQ)(EM 1.0)/lair.mp4; frame at 8 seconds",
+        "size": [
+          320,
+          240
+        ]
+      },
+      "box": {
+        "path": "art/arc_dlair_Box.png",
+        "url": "https://adb.arcadeitalia.net/media/mame.current/flyers/dlair.png",
+        "upstream": "Arcade Database / dlair / flyers",
+        "size": [
+          512,
+          663
+        ]
+      },
+      "logo": {
+        "path": "art/arc_dlair_Logos.png",
+        "url": "https://adb.arcadeitalia.net/media/mame.current/marquees/dlair.png",
+        "upstream": "Arcade Database / dlair / marquees",
+        "size": [
+          512,
+          136
+        ]
+      }
     }
   ]
 }

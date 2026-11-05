@@ -634,6 +634,13 @@
         "arc_dkongjr_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Donkey%20Kong%20Junior%20%28US%20set%20F-2%29.png"
       },
       "note": "Named_Boxarts/Donkey Kong Junior (US set F-2).png"
+    },
+    {
+      "url": "https://adb.arcadeitalia.net/media/mame.current/flyers/dlair.png",
+      "files": {
+        "arc_dlair_Box.png": "https://adb.arcadeitalia.net/media/mame.current/flyers/dlair.png"
+      },
+      "note": "Arcade Database / dlair / flyers"
     }
   ]
 }
