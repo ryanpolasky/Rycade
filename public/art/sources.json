@@ -2763,6 +2763,36 @@
           256
         ]
       }
+    },
+    {
+      "id": "btime",
+      "snap": {
+        "path": "art/arc_btime_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Burger%20Time%20%28Data%20East%20set%201%29.png",
+        "upstream": "Named_Snaps/Burger Time (Data East set 1).png",
+        "size": [
+          240,
+          240
+        ]
+      },
+      "box": {
+        "path": "art/arc_btime_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Burger%20Time%20%28Data%20East%20set%201%29.png",
+        "upstream": "Named_Boxarts/Burger Time (Data East set 1).png",
+        "size": [
+          512,
+          683
+        ]
+      },
+      "logo": {
+        "path": "art/arc_btime_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Burger%20Time%20%28Bandai%29.png",
+        "upstream": "Named_Logos/Burger Time (Data East set 1).png",
+        "size": [
+          512,
+          228
+        ]
+      }
     }
   ]
 }

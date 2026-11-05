@@ -592,6 +592,13 @@
         "con_bubblenes_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Bubble%20Bobble%20%28USA%29.png"
       },
       "note": "Named_Boxarts/Bubble Bobble (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Burger%20Time%20%28Data%20East%20set%201%29.png",
+      "files": {
+        "arc_btime_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Burger%20Time%20%28Data%20East%20set%201%29.png"
+      },
+      "note": "Named_Boxarts/Burger Time (Data East set 1).png"
     }
   ]
 }

@@ -18,6 +18,7 @@ All rows use digital controls; 1–3 independent gameplay actions except retaine
 
 | Title | Players | Exact set | Parent / clone; controls and caveats |
 | --- | ---: | --- | --- |
+| BurgerTime | 2 | [`btime`](https://github.com/mamedev/mame/blob/master/src/mame/dataeast/btime.cpp) | parent (Data East set 1), 1982; TURBO: unused; SHOOT: Pepper; PASS: unused. Two players alternate, not simultaneous; no multitap. Four-way digital movement: restrict/filter diagonals on the eight-way stick. Use the matching MAME core release's DAT; FBNeo requires its own matching set, not an interchangeable MAME ZIP. Not the `btimem` Midway clone or DECO Cassette version. |
 | NBA Jam T.E. | 4 | [`nbajamte`](https://github.com/mamedev/mame/blob/master/src/mame/williams/midtunit.cpp) | parent; TURBO: Turbo; SHOOT: Shoot / Block; PASS: Pass / Steal.  |
 | Michael Jackson's Moonwalker | 3 | [`mwalk`](https://github.com/mamedev/mame/blob/master/src/mame/sega/segas18.cpp) | parent; TURBO: unused; SHOOT: Attack; PASS: Magic.  |
 | Turtles in Time | 4 | [`tmnt2`](https://github.com/mamedev/mame/blob/master/src/mame/konami/tmnt2.cpp) | parent; TURBO: unused; SHOOT: Attack; PASS: Jump.  |
