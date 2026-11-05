@@ -3153,6 +3153,186 @@
           85
         ]
       }
+    },
+    {
+      "id": "xevious",
+      "snap": {
+        "path": "art/arc_xevious_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Xevious%20%28Namco%29.png",
+        "upstream": "Named_Snaps/Xevious (Namco).png",
+        "size": [
+          224,
+          288
+        ]
+      },
+      "box": {
+        "path": "art/arc_xevious_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Xevious%20%28Namco%29.png",
+        "upstream": "Named_Boxarts/Xevious (Namco).png",
+        "size": [
+          512,
+          726
+        ]
+      },
+      "logo": {
+        "path": "art/arc_xevious_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Xevious%20%28Namco%29.png",
+        "upstream": "Named_Logos/Xevious (Namco).png",
+        "size": [
+          512,
+          177
+        ]
+      }
+    },
+    {
+      "id": "timeplt",
+      "snap": {
+        "path": "art/arc_timeplt_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Time%20Pilot.png",
+        "upstream": "Named_Snaps/Time Pilot.png",
+        "size": [
+          224,
+          256
+        ]
+      },
+      "box": {
+        "path": "art/arc_timeplt_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Time%20Pilot.png",
+        "upstream": "Named_Boxarts/Time Pilot.png",
+        "size": [
+          512,
+          663
+        ]
+      },
+      "logo": {
+        "path": "art/arc_timeplt_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Time%20Pilot.png",
+        "upstream": "Named_Logos/Time Pilot.png",
+        "size": [
+          512,
+          215
+        ]
+      }
+    },
+    {
+      "id": "gyruss",
+      "snap": {
+        "path": "art/arc_gyruss_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Gyruss.png",
+        "upstream": "Named_Snaps/Gyruss.png",
+        "size": [
+          224,
+          256
+        ]
+      },
+      "box": {
+        "path": "art/arc_gyruss_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Gyruss.png",
+        "upstream": "Named_Boxarts/Gyruss.png",
+        "size": [
+          512,
+          731
+        ]
+      },
+      "logo": {
+        "path": "art/arc_gyruss_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Gyruss.png",
+        "upstream": "Named_Logos/Gyruss.png",
+        "size": [
+          512,
+          296
+        ]
+      }
+    },
+    {
+      "id": "1942",
+      "snap": {
+        "path": "art/arc_1942_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/1942%20%28Revision%20B%29.png",
+        "upstream": "Named_Snaps/1942 (Revision B).png",
+        "size": [
+          224,
+          256
+        ]
+      },
+      "box": {
+        "path": "art/arc_1942_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/1942%20%28Revision%20B%29.png",
+        "upstream": "Named_Boxarts/1942 (Revision B).png",
+        "size": [
+          512,
+          676
+        ]
+      },
+      "logo": {
+        "path": "art/arc_1942_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/1942%20%28Revision%20B%29.png",
+        "upstream": "Named_Logos/1942 (Revision B).png",
+        "size": [
+          512,
+          167
+        ]
+      }
+    },
+    {
+      "id": "scramble",
+      "snap": {
+        "path": "art/arc_scramble_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Scramble.png",
+        "upstream": "Named_Snaps/Scramble.png",
+        "size": [
+          224,
+          256
+        ]
+      },
+      "box": {
+        "path": "art/arc_scramble_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Scramble.png",
+        "upstream": "Named_Boxarts/Scramble.png",
+        "size": [
+          512,
+          676
+        ]
+      },
+      "logo": {
+        "path": "art/arc_scramble_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Scramble.png",
+        "upstream": "Named_Logos/Scramble.png",
+        "size": [
+          512,
+          189
+        ]
+      }
+    },
+    {
+      "id": "rallyx",
+      "snap": {
+        "path": "art/arc_rallyx_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Rally%20X.png",
+        "upstream": "Named_Snaps/Rally X.png",
+        "size": [
+          288,
+          224
+        ]
+      },
+      "box": {
+        "path": "art/arc_rallyx_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Rally%20X.png",
+        "upstream": "Named_Boxarts/Rally X.png",
+        "size": [
+          512,
+          661
+        ]
+      },
+      "logo": {
+        "path": "art/arc_rallyx_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Rally%20X%20%2832k%20Ver._%29.png",
+        "upstream": "Named_Logos/Rally X (32k Ver._).png",
+        "size": [
+          512,
+          171
+        ]
+      }
     }
   ]
 }

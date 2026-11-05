@@ -683,6 +683,48 @@
         "arc_mappy_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Mappy%20%28US%29.png"
       },
       "note": "Named_Boxarts/Mappy (US).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Xevious%20%28Namco%29.png",
+      "files": {
+        "arc_xevious_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Xevious%20%28Namco%29.png"
+      },
+      "note": "Named_Boxarts/Xevious (Namco).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Time%20Pilot.png",
+      "files": {
+        "arc_timeplt_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Time%20Pilot.png"
+      },
+      "note": "Named_Boxarts/Time Pilot.png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Gyruss.png",
+      "files": {
+        "arc_gyruss_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Gyruss.png"
+      },
+      "note": "Named_Boxarts/Gyruss.png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/1942%20%28Revision%20B%29.png",
+      "files": {
+        "arc_1942_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/1942%20%28Revision%20B%29.png"
+      },
+      "note": "Named_Boxarts/1942 (Revision B).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Scramble.png",
+      "files": {
+        "arc_scramble_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Scramble.png"
+      },
+      "note": "Named_Boxarts/Scramble.png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Rally%20X.png",
+      "files": {
+        "arc_rallyx_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Rally%20X.png"
+      },
+      "note": "Named_Boxarts/Rally X.png"
     }
   ]
 }

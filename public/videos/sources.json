@@ -1206,6 +1206,60 @@
       "start_seconds": 0.5,
       "duration_seconds": 25,
       "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "xevious",
+      "url": "https://archive.org/download/mamearcade-video-snaps/xevious.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "xevious.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "timeplt",
+      "url": "https://archive.org/download/mamearcade-video-snaps/timeplt.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "timeplt.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "gyruss",
+      "url": "https://archive.org/download/mamearcade-video-snaps/gyruss.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "gyruss.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "1942",
+      "url": "https://archive.org/download/mamearcade-video-snaps/1942.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "1942.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "scramble",
+      "url": "https://archive.org/download/mamearcade-video-snaps/scramble.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "scramble.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "rallyx",
+      "url": "https://archive.org/download/mamearcade-video-snaps/rallyx.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "rallyx.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
     }
   ]
 }
