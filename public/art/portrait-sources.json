@@ -641,6 +641,48 @@
         "arc_dlair_Box.png": "https://adb.arcadeitalia.net/media/mame.current/flyers/dlair.png"
       },
       "note": "Arcade Database / dlair / flyers"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Mario%20Bros.%20%28US%29.png",
+      "files": {
+        "arc_mario_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Mario%20Bros.%20%28US%29.png"
+      },
+      "note": "Named_Boxarts/Mario Bros. (US).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Galaxian%20%28Namco%20set%201%29.png",
+      "files": {
+        "arc_galaxian_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Galaxian%20%28Namco%20set%201%29.png"
+      },
+      "note": "Named_Boxarts/Galaxian (Namco set 1).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Space%20Invaders.png",
+      "files": {
+        "arc_invaders_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Space%20Invaders.png"
+      },
+      "note": "Named_Boxarts/Space Invaders.png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Q_bert%20%28US%29.png",
+      "files": {
+        "arc_qbert_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Q_bert%20%28US%29.png"
+      },
+      "note": "Named_Boxarts/Q_bert (US).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Mr.%20Do%21.png",
+      "files": {
+        "arc_mrdo_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Mr.%20Do%21.png"
+      },
+      "note": "Named_Boxarts/Mr. Do!.png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Mappy%20%28US%29.png",
+      "files": {
+        "arc_mappy_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Mappy%20%28US%29.png"
+      },
+      "note": "Named_Boxarts/Mappy (US).png"
     }
   ]
 }

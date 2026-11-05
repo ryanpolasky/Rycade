@@ -2973,6 +2973,186 @@
           136
         ]
       }
+    },
+    {
+      "id": "mario",
+      "snap": {
+        "path": "art/arc_mario_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Mario%20Bros.%20%28US%29.png",
+        "upstream": "Named_Snaps/Mario Bros. (US).png",
+        "size": [
+          256,
+          224
+        ]
+      },
+      "box": {
+        "path": "art/arc_mario_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Mario%20Bros.%20%28US%29.png",
+        "upstream": "Named_Boxarts/Mario Bros. (US).png",
+        "size": [
+          512,
+          669
+        ]
+      },
+      "logo": {
+        "path": "art/arc_mario_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Mario%20Bros.%20%28US%2C%20Revision%20G%29.png",
+        "upstream": "Named_Logos/Mario Bros. (US, Revision G).png",
+        "size": [
+          512,
+          138
+        ]
+      }
+    },
+    {
+      "id": "galaxian",
+      "snap": {
+        "path": "art/arc_galaxian_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Galaxian%20%28Namco%20set%201%29.png",
+        "upstream": "Named_Snaps/Galaxian (Namco set 1).png",
+        "size": [
+          224,
+          256
+        ]
+      },
+      "box": {
+        "path": "art/arc_galaxian_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Galaxian%20%28Namco%20set%201%29.png",
+        "upstream": "Named_Boxarts/Galaxian (Namco set 1).png",
+        "size": [
+          512,
+          664
+        ]
+      },
+      "logo": {
+        "path": "art/arc_galaxian_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Galaxian%20%28Bandai%29.png",
+        "upstream": "Named_Logos/Galaxian (Namco set 1).png",
+        "size": [
+          512,
+          151
+        ]
+      }
+    },
+    {
+      "id": "invaders",
+      "snap": {
+        "path": "art/arc_invaders_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Space%20Invaders.png",
+        "upstream": "Named_Snaps/Space Invaders.png",
+        "size": [
+          224,
+          260
+        ]
+      },
+      "box": {
+        "path": "art/arc_invaders_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Space%20Invaders.png",
+        "upstream": "Named_Boxarts/Space Invaders.png",
+        "size": [
+          512,
+          663
+        ]
+      },
+      "logo": {
+        "path": "art/arc_invaders_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Space%20Invaders%20%28MSI%20Plug%20_%20Play%29.png",
+        "upstream": "Named_Logos/Space Invaders (Tiny Arcade).png",
+        "size": [
+          512,
+          217
+        ]
+      }
+    },
+    {
+      "id": "qbert",
+      "snap": {
+        "path": "art/arc_qbert_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Q_bert%20%28US%29.png",
+        "upstream": "Named_Snaps/Q_bert (US).png",
+        "size": [
+          240,
+          256
+        ]
+      },
+      "box": {
+        "path": "art/arc_qbert_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Q_bert%20%28US%29.png",
+        "upstream": "Named_Boxarts/Q_bert (US).png",
+        "size": [
+          512,
+          660
+        ]
+      },
+      "logo": {
+        "path": "art/arc_qbert_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Q_Bert%20%28Parker%20Brothers%29.png",
+        "upstream": "Named_Logos/Q_bert (US set 1).png",
+        "size": [
+          512,
+          166
+        ]
+      }
+    },
+    {
+      "id": "mrdo",
+      "snap": {
+        "path": "art/arc_mrdo_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Mr.%20Do%21.png",
+        "upstream": "Named_Snaps/Mr. Do!.png",
+        "size": [
+          192,
+          240
+        ]
+      },
+      "box": {
+        "path": "art/arc_mrdo_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Mr.%20Do%21.png",
+        "upstream": "Named_Boxarts/Mr. Do!.png",
+        "size": [
+          512,
+          664
+        ]
+      },
+      "logo": {
+        "path": "art/arc_mrdo_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Mr.%20Do%21.png",
+        "upstream": "Named_Logos/Mr. Do!.png",
+        "size": [
+          400,
+          120
+        ]
+      }
+    },
+    {
+      "id": "mappy",
+      "snap": {
+        "path": "art/arc_mappy_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Mappy%20%28US%29.png",
+        "upstream": "Named_Snaps/Mappy (US).png",
+        "size": [
+          224,
+          288
+        ]
+      },
+      "box": {
+        "path": "art/arc_mappy_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Mappy%20%28US%29.png",
+        "upstream": "Named_Boxarts/Mappy (US).png",
+        "size": [
+          512,
+          683
+        ]
+      },
+      "logo": {
+        "path": "art/arc_mappy_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Mappy%20%28US%29.png",
+        "upstream": "Named_Logos/Mappy (US).png",
+        "size": [
+          400,
+          85
+        ]
+      }
     }
   ]
 }
