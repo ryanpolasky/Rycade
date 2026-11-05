@@ -1458,6 +1458,24 @@
       "start_seconds": 0.5,
       "duration_seconds": 25,
       "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "mk2gen",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Mortal%20Kombat%20II%20%28World%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Mortal Kombat II (World).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "mk3gen",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Mortal%20Kombat%203%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Mortal Kombat 3 (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
     }
   ]
 }

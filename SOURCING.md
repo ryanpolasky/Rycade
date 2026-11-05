@@ -117,6 +117,8 @@ All rows use digital controls; 0–3 independent action buttons except retained-
 
 | Title | Players | Exact No-Intro filename | Controls / multiplayer notes |
 | --- | ---: | --- | --- |
+| Mortal Kombat II | 2 | `Mortal Kombat II (World).md` | A: Punch; B: Low kick; C: High kick. simultaneous. Use three-button pad / Activator mode, not six-button mode, in Genesis Plus GX. A = low punch (left/right + A gives high punch); B = low kick; C = high kick; dedicated START = Block during combat, not pause. START does NOT toggle button banks. Some six-button-only finishers are unavailable (including Kung Lao decapitation); normal fighting uses the available controls. See [Sega Retro controls](https://segaretro.org/Mortal_Kombat_II). No multitap required. |
+| Mortal Kombat 3 | 2 | `Mortal Kombat 3 (USA).md` | A: Punch; B: Block; C: Kick. simultaneous. Use three-button pad mode in Genesis Plus GX: A = low punch, A+B = high punch, B = Block, C = low kick, B+C = high kick; dedicated START = Run during combat, not pause. START does NOT toggle button banks. Keep simultaneous button chords enabled. See [Sega Retro controls](https://segaretro.org/Mortal_Kombat_3). No multitap required. |
 | Sonic the Hedgehog 2 | 2 | `Sonic The Hedgehog 2 (World).md` | A: Jump; B: Jump; C: Jump. Two-player competition or second player controls Tails. |
 | Streets of Rage 2 | 2 | `Streets of Rage 2 (USA).md` | A: Special; B: Attack; C: Jump. Digital D-pad and the listed face actions; no multitap needed. |
 | Gunstar Heroes | 2 | `Gunstar Heroes (USA).md` | A: Shot type; B: Shoot; C: Jump. Digital D-pad and the listed face actions; no multitap needed. |

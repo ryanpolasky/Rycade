@@ -879,6 +879,20 @@
         "arc_19xx_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/19XX_%20The%20War%20Against%20Destiny%20%28USA%20951207%29.png"
       },
       "note": "Named_Boxarts/19XX_ The War Against Destiny (USA 951207).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Mortal%20Kombat%20II%20%28World%29.png",
+      "files": {
+        "con_mk2gen_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Mortal%20Kombat%20II%20%28World%29.png"
+      },
+      "note": "Named_Boxarts/Mortal Kombat II (World).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Mortal%20Kombat%203%20%28USA%29.png",
+      "files": {
+        "con_mk3gen_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Mortal%20Kombat%203%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Mortal Kombat 3 (USA).png"
     }
   ]
 }

@@ -3993,6 +3993,66 @@
           161
         ]
       }
+    },
+    {
+      "id": "mk2gen",
+      "snap": {
+        "path": "art/con_mk2gen_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Snaps/Mortal%20Kombat%20II%20%28World%29.png",
+        "upstream": "Named_Snaps/Mortal Kombat II (World).png",
+        "size": [
+          320,
+          224
+        ]
+      },
+      "box": {
+        "path": "art/con_mk2gen_Boxarts.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Mortal%20Kombat%20II%20%28World%29.png",
+        "upstream": "Named_Boxarts/Mortal Kombat II (World).png",
+        "size": [
+          479,
+          680
+        ]
+      },
+      "logo": {
+        "path": "art/con_mk2gen_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Logos/Mortal%20Kombat%20II%20%28World%29.png",
+        "upstream": "Named_Logos/Mortal Kombat II (World).png",
+        "size": [
+          512,
+          171
+        ]
+      }
+    },
+    {
+      "id": "mk3gen",
+      "snap": {
+        "path": "art/con_mk3gen_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Snaps/Mortal%20Kombat%203%20%28USA%29.png",
+        "upstream": "Named_Snaps/Mortal Kombat 3 (USA).png",
+        "size": [
+          320,
+          224
+        ]
+      },
+      "box": {
+        "path": "art/con_mk3gen_Boxarts.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Mortal%20Kombat%203%20%28USA%29.png",
+        "upstream": "Named_Boxarts/Mortal Kombat 3 (USA).png",
+        "size": [
+          479,
+          680
+        ]
+      },
+      "logo": {
+        "path": "art/con_mk3gen_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Logos/Mortal%20Kombat%203%20%28Europe%29.png",
+        "upstream": "Named_Logos/Mortal Kombat 3 (USA).png",
+        "size": [
+          512,
+          256
+        ]
+      }
     }
   ]
 }
