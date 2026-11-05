@@ -19,7 +19,7 @@ A static, playable game-library frontend for a four-player arcade cabinet. The l
 
 ## Demo videos
 
-Drop local MP4 clips in `public/videos/<game-id>.mp4`, for example `public/videos/jamte.mp4`. A game's optional `video` field can override that path for another video format or location. No clips are bundled.
+Real gameplay/attract video snaps are bundled for every library entry in `public/videos/<game-id>.mp4`, for example `public/videos/jamte.mp4`. Sources and encoding details are recorded in `public/videos/sources.json`. Clips are approximately 25 seconds, H.264 + AAC, at most 480 pixels wide, with faststart and a short fade through black at the loop boundary. A game's optional `video` field can override that path for another video format or location.
 
 SHOOT opens a looping, full-screen demo. SHOOT or Escape closes it; START stops the demo and launches the selected game. Missing or unplayable clips return to the menu with an unavailable message. Demo audio follows the master volume and mute setting.
 

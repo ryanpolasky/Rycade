@@ -1,6 +1,6 @@
 {
-  "region": "Japan",
-  "artwork": "Original Super Famicom front covers",
+  "region": "Japan, plus original promotional advertisements where no portrait box is available",
+  "artwork": "Original front covers, arcade flyers, and publisher print advertisements; no recreated or generated artwork",
   "sources": [
     {
       "url": "https://github.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/tree/master/Named_Boxarts",
@@ -18,6 +18,580 @@
       "files": {
         "con_smetroid_Portrait.png": "https://babysoftmurderhands.com/wp-content/uploads/2012/11/Super-Metroid-SNES-Super-Famicom-Box-Art.jpeg"
       }
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Double%20Dragon%20%28World%29.png",
+      "files": {
+        "arc_ddragon_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Double%20Dragon%20%28World%29.png"
+      },
+      "note": "Named_Boxarts/Double Dragon (World).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/NBA%20Jam%20%28rev%201.00%202_1_93%29.png",
+      "files": {
+        "arc_nbajam_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/NBA%20Jam%20%28rev%201.00%202_1_93%29.png"
+      },
+      "note": "Named_Boxarts/NBA Jam (rev 1.00 2_1_93).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/NBA%20Hangtime%20%28rev%20L1.1%2004-16-96%29.png",
+      "files": {
+        "arc_nbahangt_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/NBA%20Hangtime%20%28rev%20L1.1%2004-16-96%29.png"
+      },
+      "note": "Named_Boxarts/NBA Hangtime (rev L1.1 04-16-96).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/NFL%20Blitz.png",
+      "files": {
+        "arc_blitz_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/NFL%20Blitz.png"
+      },
+      "note": "Named_Boxarts/NFL Blitz.png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Gauntlet%20II.png",
+      "files": {
+        "arc_gaunt2_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Gauntlet%20II.png"
+      },
+      "note": "Named_Boxarts/Gauntlet II.png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Captain%20America%20and%20The%20Avengers%20%28UK%20Rev%201.4%29.png",
+      "files": {
+        "arc_captaven_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Captain%20America%20and%20The%20Avengers%20%28UK%20Rev%201.4%29.png"
+      },
+      "note": "Named_Boxarts/Captain America and The Avengers (UK Rev 1.4).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Bucky%20O%27Hare%20%28World%20version%20EA%29.png",
+      "files": {
+        "arc_bucky_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Bucky%20O%27Hare%20%28World%20version%20EA%29.png"
+      },
+      "note": "Named_Boxarts/Bucky O'Hare (World version EA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Wild%20West%20C.O.W.-Boys%20of%20Moo%20Mesa%20%28World%20version%20EA%29.png",
+      "files": {
+        "arc_moomesa_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Wild%20West%20C.O.W.-Boys%20of%20Moo%20Mesa%20%28World%20version%20EA%29.png"
+      },
+      "note": "Named_Boxarts/Wild West C.O.W.-Boys of Moo Mesa (World version EA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Mystic%20Warriors%20%28ver%20EAA%29.png",
+      "files": {
+        "arc_mystwarr_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Mystic%20Warriors%20%28ver%20EAA%29.png"
+      },
+      "note": "Named_Boxarts/Mystic Warriors (ver EAA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Metamorphic%20Force%20%28ver%20EAA%29.png",
+      "files": {
+        "arc_metamrph_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Metamorphic%20Force%20%28ver%20EAA%29.png"
+      },
+      "note": "Named_Boxarts/Metamorphic Force (ver EAA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Vendetta%20%28World%204%20Players%20ver.%20T%29.png",
+      "files": {
+        "arc_vendetta_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Vendetta%20%28World%204%20Players%20ver.%20T%29.png"
+      },
+      "note": "Named_Boxarts/Vendetta (World 4 Players ver. T).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/GI%20Joe%20%28World%29.png",
+      "files": {
+        "arc_gijoe_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/GI%20Joe%20%28World%29.png"
+      },
+      "note": "Named_Boxarts/GI Joe (World).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Spider-Man_%20The%20Videogame%20%28World%29.png",
+      "files": {
+        "arc_spidman_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Spider-Man_%20The%20Videogame%20%28World%29.png"
+      },
+      "note": "Named_Boxarts/Spider-Man_ The Videogame (World).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Captain%20Commando%20%28World%20911014%29.png",
+      "files": {
+        "arc_captcomm_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Captain%20Commando%20%28World%20911014%29.png"
+      },
+      "note": "Named_Boxarts/Captain Commando (World 911014).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Saturday%20Night%20Slam%20Masters%20%28World%20930713%29.png",
+      "files": {
+        "arc_slammast_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Saturday%20Night%20Slam%20Masters%20%28World%20930713%29.png"
+      },
+      "note": "Named_Boxarts/Saturday Night Slam Masters (World 930713).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Ninja%20Baseball%20Bat%20Man%20%28World%29.png",
+      "files": {
+        "arc_nbbatman_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Ninja%20Baseball%20Bat%20Man%20%28World%29.png"
+      },
+      "note": "Named_Boxarts/Ninja Baseball Bat Man (World).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/WWF%20WrestleFest%20%28World%29.png",
+      "files": {
+        "arc_wwfwfest_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/WWF%20WrestleFest%20%28World%29.png"
+      },
+      "note": "Named_Boxarts/WWF WrestleFest (World).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Track%20_%20Field.png",
+      "files": {
+        "arc_trackfld_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Track%20_%20Field.png"
+      },
+      "note": "Named_Boxarts/Track _ Field.png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Golden%20Axe_%20The%20Revenge%20of%20Death%20Adder%20%28World%29.png",
+      "files": {
+        "arc_ga2_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Golden%20Axe_%20The%20Revenge%20of%20Death%20Adder%20%28World%29.png"
+      },
+      "note": "Named_Boxarts/Golden Axe_ The Revenge of Death Adder (World).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Alien%20vs.%20Predator%20%28USA%20940520%29.png",
+      "files": {
+        "arc_avsp_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Alien%20vs.%20Predator%20%28USA%20940520%29.png"
+      },
+      "note": "Named_Boxarts/Alien vs. Predator (USA 940520).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Knights%20of%20the%20Round%20%28World%20911127%29.png",
+      "files": {
+        "arc_knights_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Knights%20of%20the%20Round%20%28World%20911127%29.png"
+      },
+      "note": "Named_Boxarts/Knights of the Round (World 911127).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Warriors%20of%20Fate%20%28World%20921002%29.png",
+      "files": {
+        "arc_wof_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Warriors%20of%20Fate%20%28World%20921002%29.png"
+      },
+      "note": "Named_Boxarts/Warriors of Fate (World 921002).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Rampage%20%28revision%202%29.png",
+      "files": {
+        "arc_rampage_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Rampage%20%28revision%202%29.png"
+      },
+      "note": "Named_Boxarts/Rampage (revision 2).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Battletoads.png",
+      "files": {
+        "arc_btoads_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Battletoads.png"
+      },
+      "note": "Named_Boxarts/Battletoads.png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Pac-Man%20%28Midway%29.png",
+      "files": {
+        "arc_pacman_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Pac-Man%20%28Midway%29.png"
+      },
+      "note": "Named_Boxarts/Pac-Man (Midway).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Ms.%20Pac-Man.png",
+      "files": {
+        "arc_mspacman_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Ms.%20Pac-Man.png"
+      },
+      "note": "Named_Boxarts/Ms. Pac-Man.png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Joust%20%28Green%20label%29.png",
+      "files": {
+        "arc_joust_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Joust%20%28Green%20label%29.png"
+      },
+      "note": "Named_Boxarts/Joust (Green label).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Frogger%20%28Sega%20set%201%29.png",
+      "files": {
+        "arc_frogger_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Frogger%20%28Sega%20set%201%29.png"
+      },
+      "note": "Named_Boxarts/Frogger (Sega set 1).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/1943_%20The%20Battle%20of%20Midway%20%28US%29.png",
+      "files": {
+        "arc_1943_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/1943_%20The%20Battle%20of%20Midway%20%28US%29.png"
+      },
+      "note": "Named_Boxarts/1943_ The Battle of Midway (US).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Snow%20Bros.%20-%20Nick%20_%20Tom%20%28set%201%29.png",
+      "files": {
+        "arc_snowbros_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Snow%20Bros.%20-%20Nick%20_%20Tom%20%28set%201%29.png"
+      },
+      "note": "Named_Boxarts/Snow Bros. - Nick _ Tom (set 1).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Rainbow%20Islands%20%28Extra%29.png",
+      "files": {
+        "arc_rainbow_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Rainbow%20Islands%20%28Extra%29.png"
+      },
+      "note": "Named_Boxarts/Rainbow Islands (Extra).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Puzzle%20Bobble%20_%20Bust-A-Move%20%28Neo-Geo%29%20%28NGM-083%29.png",
+      "files": {
+        "arc_pbobblen_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Puzzle%20Bobble%20_%20Bust-A-Move%20%28Neo-Geo%29%20%28NGM-083%29.png"
+      },
+      "note": "Named_Boxarts/Puzzle Bobble _ Bust-A-Move (Neo-Geo) (NGM-083).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Metal%20Slug%20X%20-%20Super%20Vehicle-001.png",
+      "files": {
+        "arc_mslugx_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Metal%20Slug%20X%20-%20Super%20Vehicle-001.png"
+      },
+      "note": "Named_Boxarts/Metal Slug X - Super Vehicle-001.png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Metal%20Slug%203.png",
+      "files": {
+        "arc_mslug3_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Metal%20Slug%203.png"
+      },
+      "note": "Named_Boxarts/Metal Slug 3.png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Tetris%20%28set%201%29.png",
+      "files": {
+        "arc_atetris_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Tetris%20%28set%201%29.png"
+      },
+      "note": "Named_Boxarts/Tetris (set 1).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Gauntlet%20IV%20%28USA%2C%20Europe%29.png",
+      "files": {
+        "con_gaunt4gen_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Gauntlet%20IV%20%28USA%2C%20Europe%29.png"
+      },
+      "note": "Named_Boxarts/Gauntlet IV (USA, Europe).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Mega%20Bomberman%20%28USA%29.png",
+      "files": {
+        "con_megabomb_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Mega%20Bomberman%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Mega Bomberman (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/NBA%20Jam%20-%20Tournament%20Edition%20%28World%29.png",
+      "files": {
+        "con_jamtegen_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/NBA%20Jam%20-%20Tournament%20Edition%20%28World%29.png"
+      },
+      "note": "Named_Boxarts/NBA Jam - Tournament Edition (World).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Micro%20Machines%202%20-%20Turbo%20Tournament%20%28Europe%29.png",
+      "files": {
+        "con_mm2gen_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Micro%20Machines%202%20-%20Turbo%20Tournament%20%28Europe%29.png"
+      },
+      "note": "Named_Boxarts/Micro Machines 2 - Turbo Tournament (Europe).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/General%20Chaos%20%28USA%2C%20Europe%29.png",
+      "files": {
+        "con_genchaos_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/General%20Chaos%20%28USA%2C%20Europe%29.png"
+      },
+      "note": "Named_Boxarts/General Chaos (USA, Europe).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Sonic%20The%20Hedgehog%20%28USA%29.png",
+      "files": {
+        "con_sonic1_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Sonic%20The%20Hedgehog%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Sonic The Hedgehog (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Sonic%20_%20Knuckles%20%2B%20Sonic%20The%20Hedgehog%203%20%28USA%29.png",
+      "files": {
+        "con_sonic3k_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Sonic%20_%20Knuckles%20%2B%20Sonic%20The%20Hedgehog%203%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Sonic _ Knuckles + Sonic The Hedgehog 3 (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Streets%20of%20Rage%20%28World%29.png",
+      "files": {
+        "con_sor1_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Streets%20of%20Rage%20%28World%29.png"
+      },
+      "note": "Named_Boxarts/Streets of Rage (World).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Streets%20of%20Rage%203%20%28USA%29.png",
+      "files": {
+        "con_sor3_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Streets%20of%20Rage%203%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Streets of Rage 3 (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Shinobi%20III%20-%20Return%20of%20the%20Ninja%20Master%20%28USA%29.png",
+      "files": {
+        "con_shinobi3_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Shinobi%20III%20-%20Return%20of%20the%20Ninja%20Master%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Shinobi III - Return of the Ninja Master (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Comix%20Zone%20%28USA%29.png",
+      "files": {
+        "con_comix_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Comix%20Zone%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Comix Zone (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Aladdin%20%28USA%29.png",
+      "files": {
+        "con_aladdin_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Aladdin%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Aladdin (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Castle%20of%20Illusion%20Starring%20Mickey%20Mouse%20%28USA%29.png",
+      "files": {
+        "con_castleill_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Castle%20of%20Illusion%20Starring%20Mickey%20Mouse%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Castle of Illusion Starring Mickey Mouse (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Rocket%20Knight%20Adventures%20%28USA%29.png",
+      "files": {
+        "con_rocket_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Rocket%20Knight%20Adventures%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Rocket Knight Adventures (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/ToeJam%20_%20Earl%20%28World%29%20%28Rev%20A%29.png",
+      "files": {
+        "con_toejam_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/ToeJam%20_%20Earl%20%28World%29%20%28Rev%20A%29.png"
+      },
+      "note": "Named_Boxarts/ToeJam _ Earl (World) (Rev A).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Vectorman%20%28USA%2C%20Europe%29.png",
+      "files": {
+        "con_vectorman_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Vectorman%20%28USA%2C%20Europe%29.png"
+      },
+      "note": "Named_Boxarts/Vectorman (USA, Europe).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Earthworm%20Jim%20%28USA%29.png",
+      "files": {
+        "con_earthjim_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Earthworm%20Jim%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Earthworm Jim (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Super%20Bomberman%202%20%28Japan%29%20%28En%29.png",
+      "files": {
+        "con_sbomber2_Portrait.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Super%20Bomberman%202%20%28Japan%29%20%28En%29.png"
+      },
+      "note": "Named_Boxarts/Super Bomberman 2 (Japan) (En).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Super%20Bomberman%203%20%28Japan%29.png",
+      "files": {
+        "con_sbomber3_Portrait.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Super%20Bomberman%203%20%28Japan%29.png"
+      },
+      "note": "Named_Boxarts/Super Bomberman 3 (Japan).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/NBA%20Jam%20-%20Tournament%20Edition%20%28Japan%29%20%28En%29.png",
+      "files": {
+        "con_jamtesnes_Portrait.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/NBA%20Jam%20-%20Tournament%20Edition%20%28Japan%29%20%28En%29.png"
+      },
+      "note": "Named_Boxarts/NBA Jam - Tournament Edition (Japan) (En).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Muscle%20Bomber%20-%20The%20Body%20Explosion%20%28Japan%29.png",
+      "files": {
+        "con_slamsnes_Portrait.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Muscle%20Bomber%20-%20The%20Body%20Explosion%20%28Japan%29.png"
+      },
+      "note": "Named_Boxarts/Muscle Bomber - The Body Explosion (Japan).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Super%20Mario%20Collection%20%28Japan%29.png",
+      "files": {
+        "con_allstars_Portrait.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Super%20Mario%20Collection%20%28Japan%29.png"
+      },
+      "note": "Named_Boxarts/Super Mario Collection (Japan).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Super%20Mario%20-%20Yoshi%20Island%20%28Japan%29.png",
+      "files": {
+        "con_yoshi_Portrait.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Super%20Mario%20-%20Yoshi%20Island%20%28Japan%29.png"
+      },
+      "note": "Named_Boxarts/Super Mario - Yoshi Island (Japan).png"
+    },
+    {
+      "url": "https://www.vgmuseum.com/mrp/cv4/manual/ad1.jpeg",
+      "files": {
+        "con_scv4_Portrait.png": "https://www.vgmuseum.com/mrp/cv4/manual/ad1.jpeg"
+      },
+      "note": "Original Konami Super Castlevania IV magazine advertisement; Japan/US/EU boxes are landscape"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Rockman%20X%20%28Japan%29.png",
+      "files": {
+        "con_mmx_Portrait.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Rockman%20X%20%28Japan%29.png"
+      },
+      "note": "Named_Boxarts/Rockman X (Japan).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Final%20Fight%20Tough%20%28Japan%29.png",
+      "files": {
+        "con_ffight3_Portrait.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Final%20Fight%20Tough%20%28Japan%29.png"
+      },
+      "note": "Named_Boxarts/Final Fight Tough (Japan).png"
+    },
+    {
+      "url": "https://carlocarrasco.com/2024/08/26/retro-gaming-ads-blast-part-16/",
+      "files": {
+        "con_sunsetsnes_Portrait.png": "https://carlocarrasco.com/wp-content/uploads/2024/07/screenshot_20240630-085600_facebook8407698219951358263.jpg"
+      },
+      "note": "Original Konami SNES Sunset Riders magazine advertisement; port was not released in Japan; US/EU boxes are landscape"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Chou%20Makaimura%20%28Japan%29.png",
+      "files": {
+        "con_sghouls_Portrait.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Chou%20Makaimura%20%28Japan%29.png"
+      },
+      "note": "Named_Boxarts/Chou Makaimura (Japan).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Gauntlet%20II%20%28USA%29.png",
+      "files": {
+        "con_gaunt2nes_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Gauntlet%20II%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Gauntlet II (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Super%20Spike%20V%27Ball%20%28USA%29.png",
+      "files": {
+        "con_vball_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Super%20Spike%20V%27Ball%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Super Spike V'Ball (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Nintendo%20World%20Cup%20%28USA%29.png",
+      "files": {
+        "con_worldcup_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Nintendo%20World%20Cup%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Nintendo World Cup (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Ivan%20%27Ironman%27%20Stewart%27s%20Super%20Off%20Road%20%28USA%29.png",
+      "files": {
+        "con_offroadnes_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Ivan%20%27Ironman%27%20Stewart%27s%20Super%20Off%20Road%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Ivan 'Ironman' Stewart's Super Off Road (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/R.C.%20Pro-Am%20II%20%28USA%29.png",
+      "files": {
+        "con_rcproam2_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/R.C.%20Pro-Am%20II%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/R.C. Pro-Am II (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Super%20Mario%20Bros.%20%28World%29.png",
+      "files": {
+        "con_smb1_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Super%20Mario%20Bros.%20%28World%29.png"
+      },
+      "note": "Named_Boxarts/Super Mario Bros. (World).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Super%20Mario%20Bros.%202%20%28USA%29.png",
+      "files": {
+        "con_smb2_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Super%20Mario%20Bros.%202%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Super Mario Bros. 2 (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Mega%20Man%203%20%28USA%29.png",
+      "files": {
+        "con_mm3_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Mega%20Man%203%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Mega Man 3 (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Castlevania%20%28USA%29.png",
+      "files": {
+        "con_castlevania_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Castlevania%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Castlevania (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Battletoads%20%28USA%29.png",
+      "files": {
+        "con_btoadsnes_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Battletoads%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Battletoads (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Double%20Dragon%20II%20-%20The%20Revenge%20%28USA%29.png",
+      "files": {
+        "con_ddragon2_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Double%20Dragon%20II%20-%20The%20Revenge%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Double Dragon II - The Revenge (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/River%20City%20Ransom%20%28USA%29.png",
+      "files": {
+        "con_rivercity_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/River%20City%20Ransom%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/River City Ransom (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Kirby%27s%20Adventure%20%28USA%29.png",
+      "files": {
+        "con_kirby_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Kirby%27s%20Adventure%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Kirby's Adventure (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/DuckTales%20%28USA%29.png",
+      "files": {
+        "con_ducktales_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/DuckTales%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/DuckTales (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Ninja%20Gaiden%20%28USA%29.png",
+      "files": {
+        "con_ninjagaiden_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Ninja%20Gaiden%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Ninja Gaiden (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Metroid%20%28USA%29.png",
+      "files": {
+        "con_metroid_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Metroid%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Metroid (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Tecmo%20Bowl%20%28USA%29.png",
+      "files": {
+        "con_tecmobowl_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Tecmo%20Bowl%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Tecmo Bowl (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Dr.%20Mario%20%28Europe%29.png",
+      "files": {
+        "con_drmario_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Dr.%20Mario%20%28Europe%29.png"
+      },
+      "note": "Named_Boxarts/Dr. Mario (Europe).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Bubble%20Bobble%20%28USA%29.png",
+      "files": {
+        "con_bubblenes_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Bubble%20Bobble%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Bubble Bobble (USA).png"
     }
   ]
 }

@@ -1,0 +1,175 @@
+# Cabinet ROM sourcing checklist
+
+This repository contains a static frontend and media, **not ROMs**, emulator cores, BIOS files or automatic control profiles. Source your own legally obtained dumps. No ROM download links are provided here. Artwork region need not match the ROM region: Japanese portraits are intentionally used with English-language games.
+
+## Before sourcing
+
+- Cabinet: four stations, digital eight-way stick, three face buttons and START each. `ctl` describes the intended left-to-right actions, not an implemented emulator remap. Arcade caps read TURBO / SHOOT / PASS; Genesis A / B / C; SNES Y / B / A; NES B / A / SELECT. Where noted, bind a face button to a **virtual** Select/L/R input: no physical shoulder/Select button is assumed. START remains available. Arcade coin input must be provided by the host's coin/start policy; this frontend does not add a coin input or emulator launcher.
+- “Players” is the catalog maximum, not a promise of simultaneous play. Four-player filters include alternating games and originally five/six-player titles capped by the cabinet. Notes identify these cases.
+- MAME names below follow current upstream driver definitions. Use the **exact release's matching DAT/listxml**, not an arbitrary same-named ZIP. Non-merged sets simplify clone dependencies; split clones need their parent. A current MAME libretro core is the default recommendation. FBNeo supports many 2D games, but must use its own matching DAT (typically labeled 1.0.0.03); it is not interchangeable with a current MAME set. For MAME 2003-Plus use its own DAT, not the current names below. BIOS/device ROMs and CHDs must also match the selected core version. Check that core's support for the chosen title before sourcing; no blanket FBNeo compatibility is claimed.
+- Console filenames are exact No-Intro-style names from the libretro DAT mirrors (snapshots dated 2026-10-07); revisions and DAT updates can change names/checksums. Verify checksums against your DAT, not filename alone. NES uses the No-Intro headered NES DAT. The filenames are identifiers/checklist items, not files bundled here.
+- Genesis: **Genesis Plus GX**, 3-button pads. Set the indicated Team Player / 4-Way Play device before starting a multitap title; reset after changing devices. Micro Machines 2 uses automatic J-Cart cartridge hardware detection instead. Ordinary 1–2P games need no adapter.
+- SNES: **Snes9x**; configure a Multitap on emulated port 2 for the named 4P/5P battle modes, four RetroPads connected. Ordinary 1–2P games use two normal pads. Bind only the three actions indicated; notes explicitly identify optional unavailable actions.
+- NES: **FCEUmm**, enable the Four Score core option for the five listed four-player games (or use an equivalent Four Score/Satellite mode in Nestopia UE). Use ordinary controllers for other games. B/A plus a third face button assigned virtual Select cover the noted cases.
+
+## ARCADE (MAME)
+
+All rows use digital controls; 1–3 independent gameplay actions except retained-original caveats. “Parent” is a game relationship, not a file distribution format. Linked drivers are the primary references for player ports, action inputs, revisions and DIP settings.
+
+| Title | Players | Exact set | Parent / clone; controls and caveats |
+| --- | ---: | --- | --- |
+| NBA Jam T.E. | 4 | [`nbajamte`](https://github.com/mamedev/mame/blob/master/src/mame/williams/midtunit.cpp) | parent; TURBO: Turbo; SHOOT: Shoot / Block; PASS: Pass / Steal.  |
+| Michael Jackson's Moonwalker | 3 | [`mwalk`](https://github.com/mamedev/mame/blob/master/src/mame/sega/segas18.cpp) | parent; TURBO: unused; SHOOT: Attack; PASS: Magic.  |
+| Turtles in Time | 4 | [`tmnt2`](https://github.com/mamedev/mame/blob/master/src/mame/konami/tmnt2.cpp) | parent; TURBO: unused; SHOOT: Attack; PASS: Jump.  |
+| Teenage Mutant Ninja Turtles | 4 | [`tmnt`](https://github.com/mamedev/mame/blob/master/src/mame/konami/tmnt.cpp) | parent; TURBO: unused; SHOOT: Attack; PASS: Jump.  |
+| The Simpsons | 4 | [`simpsons`](https://github.com/mamedev/mame/blob/master/src/mame/konami/simpsons.cpp) | parent; TURBO: unused; SHOOT: Attack; PASS: Jump.  |
+| X-Men | 6 | [`xmen`](https://github.com/mamedev/mame/blob/master/src/mame/konami/xmen.cpp) | parent; TURBO: Mutant power; SHOOT: Attack; PASS: Jump. Catalog retains the original 6-player maximum; use this 4-player parent on this cabinet, not the dual-screen `xmen6p` clone. |
+| Sunset Riders | 4 | [`ssriders`](https://github.com/mamedev/mame/blob/master/src/mame/konami/tmnt2.cpp) | parent; TURBO: unused; SHOOT: Shoot; PASS: Jump.  |
+| Cadillacs and Dinosaurs | 3 | [`dino`](https://github.com/mamedev/mame/blob/master/src/mame/capcom/cps1.cpp) | parent; TURBO: unused; SHOOT: Attack; PASS: Jump.  |
+| Final Fight | 2 | [`ffight`](https://github.com/mamedev/mame/blob/master/src/mame/capcom/cps1.cpp) | parent; TURBO: unused; SHOOT: Attack; PASS: Jump.  |
+| Metal Slug | 2 | [`mslug`](https://github.com/mamedev/mame/blob/master/src/mame/snk/neogeo.cpp) | BIOS root `neogeo`; TURBO: Grenade; SHOOT: Shoot; PASS: Jump. Neo Geo BIOS required; three action buttons, no fourth gameplay button. |
+| Gauntlet | 4 | [`gauntlet`](https://github.com/mamedev/mame/blob/master/src/mame/atari/gauntlet.cpp) | parent; TURBO: unused; SHOOT: Fire; PASS: Magic.  |
+| Bubble Bobble | 2 | [`bublbobl`](https://github.com/mamedev/mame/blob/master/src/mame/taito/bublbobl.cpp) | parent; TURBO: unused; SHOOT: Bubble; PASS: Jump.  |
+| Galaga | 2 | [`galaga`](https://github.com/mamedev/mame/blob/master/src/mame/namco/galaga.cpp) | parent; TURBO: unused; SHOOT: Fire; PASS: unused.  |
+| Donkey Kong | 2 | [`dkong`](https://github.com/mamedev/mame/blob/master/src/mame/nintendo/dkong.cpp) | parent; TURBO: unused; SHOOT: Jump; PASS: unused.  |
+| Golden Axe | 3 | [`goldnaxe`](https://github.com/mamedev/mame/blob/master/src/mame/sega/segas16b.cpp) | parent; TURBO: Magic; SHOOT: Attack; PASS: Jump.  |
+| Dig Dug | 2 | [`digdug`](https://github.com/mamedev/mame/blob/master/src/mame/namco/digdug.cpp) | parent; TURBO: unused; SHOOT: Pump; PASS: unused.  |
+| Asteroids | 2 | [`asteroid`](https://github.com/mamedev/mame/blob/master/src/mame/atari/asteroid.cpp) | parent; TURBO: Thrust; SHOOT: Fire; PASS: Hyperspace. Retained original: physical stick left/right must be mapped to digital rotate buttons; map thrust, fire, hyperspace to the three face buttons. |
+| Aliens | 2 | [`aliens`](https://github.com/mamedev/mame/blob/master/src/mame/konami/aliens.cpp) | parent; TURBO: unused; SHOOT: Shoot; PASS: Jump.  |
+| Double Dragon | 2 | [`ddragon`](https://github.com/mamedev/mame/blob/master/src/mame/technos/ddragon.cpp) | parent; TURBO: Punch; SHOOT: Kick; PASS: Jump.  |
+| NBA Jam | 4 | [`nbajam`](https://github.com/mamedev/mame/blob/master/src/mame/williams/midtunit.cpp) | parent; TURBO: Turbo; SHOOT: Shoot / Block; PASS: Pass / Steal.  |
+| NBA Hangtime | 4 | [`nbahangt`](https://github.com/mamedev/mame/blob/master/src/mame/williams/midwunit.cpp) | parent; TURBO: Turbo; SHOOT: Shoot / Block; PASS: Pass / Steal.  |
+| NFL Blitz | 2 | [`blitz`](https://github.com/mamedev/mame/blob/master/src/mame/williams/seattle.cpp) | parent; TURBO: Turbo; SHOOT: Pass / Change player; PASS: Jump / Tackle. Set Joysticks DIP to 8-Way, not 49-Way. Requires a correctly matched CHD in addition to the set. Use current MAME; FBNeo is not a substitute for this 3D driver. |
+| Gauntlet II | 4 | [`gaunt2`](https://github.com/mamedev/mame/blob/master/src/mame/atari/gauntlet.cpp) | parent; TURBO: unused; SHOOT: Fire; PASS: Magic.  |
+| Captain America and The Avengers | 4 | [`captaven`](https://github.com/mamedev/mame/blob/master/src/mame/dataeast/captaven.cpp) | parent; TURBO: unused; SHOOT: Attack; PASS: Jump.  |
+| Bucky O'Hare | 4 | [`bucky`](https://github.com/mamedev/mame/blob/master/src/mame/konami/moo.cpp) | parent; TURBO: Bomb; SHOOT: Shoot; PASS: Jump.  |
+| Wild West C.O.W.-Boys of Moo Mesa | 4 | [`moomesa`](https://github.com/mamedev/mame/blob/master/src/mame/konami/moo.cpp) | parent; TURBO: unused; SHOOT: Shoot; PASS: Jump.  |
+| Mystic Warriors | 4 | [`mystwarr`](https://github.com/mamedev/mame/blob/master/src/mame/konami/mystwarr.cpp) | parent; TURBO: unused; SHOOT: Attack; PASS: Jump. MAME joystick inputs are the authority for directional mapping; Attack and Jump are the two actions. |
+| Metamorphic Force | 4 | [`metamrph`](https://github.com/mamedev/mame/blob/master/src/mame/konami/mystwarr.cpp) | parent; TURBO: unused; SHOOT: Attack; PASS: Jump.  |
+| Vendetta | 4 | [`vendetta`](https://github.com/mamedev/mame/blob/master/src/mame/konami/vendetta.cpp) | parent; TURBO: unused; SHOOT: Punch; PASS: Kick.  |
+| G.I. Joe | 4 | [`gijoe`](https://github.com/mamedev/mame/blob/master/src/mame/konami/gijoe.cpp) | parent; TURBO: unused; SHOOT: Fire; PASS: Bomb.  |
+| Spider-Man: The Video Game | 4 | [`spidman`](https://github.com/mamedev/mame/blob/master/src/mame/sega/segas32.cpp) | parent; TURBO: unused; SHOOT: Attack; PASS: Jump.  |
+| Captain Commando | 4 | [`captcomm`](https://github.com/mamedev/mame/blob/master/src/mame/capcom/cps1.cpp) | parent; TURBO: unused; SHOOT: Attack; PASS: Jump.  |
+| Saturday Night Slam Masters | 4 | [`slammast`](https://github.com/mamedev/mame/blob/master/src/mame/capcom/cps1.cpp) | parent; TURBO: Pin; SHOOT: Attack; PASS: Jump.  |
+| Ninja Baseball Bat Man | 4 | [`nbbatman`](https://github.com/mamedev/mame/blob/master/src/mame/irem/m92.cpp) | parent; TURBO: unused; SHOOT: Attack; PASS: Jump.  |
+| WWF WrestleFest | 4 | [`wwfwfest`](https://github.com/mamedev/mame/blob/master/src/mame/technos/ddragon3.cpp) | parent; TURBO: unused; SHOOT: Punch / Pin; PASS: Kick / Grapple.  |
+| Track & Field | 4 | [`trackfld`](https://github.com/mamedev/mame/blob/master/src/mame/konami/trackfld.cpp) | parent; TURBO: Run left; SHOOT: Action; PASS: Run right. 4 players take turns in pairs. Three buttons: run, jump/throw, run; stick is unused. |
+| Golden Axe: The Revenge of Death Adder | 4 | [`ga2`](https://github.com/mamedev/mame/blob/master/src/mame/sega/segas32.cpp) | parent; TURBO: Magic; SHOOT: Attack; PASS: Jump.  |
+| Alien vs. Predator | 3 | [`avsp`](https://github.com/mamedev/mame/blob/master/src/mame/capcom/cps2.cpp) | parent; TURBO: Shoot; SHOOT: Attack; PASS: Jump.  |
+| Knights of the Round | 3 | [`knights`](https://github.com/mamedev/mame/blob/master/src/mame/capcom/cps1.cpp) | parent; TURBO: unused; SHOOT: Attack; PASS: Jump.  |
+| Warriors of Fate | 3 | [`wof`](https://github.com/mamedev/mame/blob/master/src/mame/capcom/cps1.cpp) | parent; TURBO: unused; SHOOT: Attack; PASS: Jump.  |
+| Rampage | 3 | [`rampage`](https://github.com/mamedev/mame/blob/master/src/mame/bally/mcr3.cpp) | parent; TURBO: unused; SHOOT: Punch; PASS: Jump. Three simultaneous players, one cabinet station unused. |
+| Battletoads | 3 | [`btoads`](https://github.com/mamedev/mame/blob/master/src/mame/rare/btoads.cpp) | parent; TURBO: unused; SHOOT: Attack; PASS: Jump.  |
+| Pac-Man | 2 | [`pacman`](https://github.com/mamedev/mame/blob/master/src/mame/pacman/pacman.cpp) | clone of `puckman`; TURBO: unused; SHOOT: unused; PASS: unused. Clone of `puckman`; obtain the matching parent dependencies if using split sets. Four-way game: restrict/filter diagonals. |
+| Ms. Pac-Man | 2 | [`mspacman`](https://github.com/mamedev/mame/blob/master/src/mame/pacman/pacman.cpp) | parent; TURBO: unused; SHOOT: unused; PASS: unused. Four-way movement; restrict/filter diagonals. |
+| Joust | 2 | [`joust`](https://github.com/mamedev/mame/blob/master/src/mame/williams/williams.cpp) | parent; TURBO: unused; SHOOT: Flap; PASS: unused. Two-way left/right movement plus flap; no analog input. |
+| Frogger | 2 | [`frogger`](https://github.com/mamedev/mame/blob/master/src/mame/galaxian/galaxian.cpp) | parent; TURBO: unused; SHOOT: unused; PASS: unused. Four-way movement; restrict/filter diagonals. |
+| 1943 | 2 | [`1943`](https://github.com/mamedev/mame/blob/master/src/mame/capcom/1943.cpp) | parent; TURBO: unused; SHOOT: Fire; PASS: Special attack.  |
+| Snow Bros. | 2 | [`snowbros`](https://github.com/mamedev/mame/blob/master/src/mame/kaneko/snowbros.cpp) | parent; TURBO: unused; SHOOT: Snow shot; PASS: Jump.  |
+| Rainbow Islands | 2 | [`rbisland`](https://github.com/mamedev/mame/blob/master/src/mame/taito/rbisland.cpp) | parent; TURBO: unused; SHOOT: Rainbow; PASS: Jump. Current MAME set is `rbisland`; older MAME/FBNeo DATs may call it `rainbow`. Match the core DAT, not the frontend ID. |
+| Puzzle Bobble | 2 | [`pbobblen`](https://github.com/mamedev/mame/blob/master/src/mame/snk/neogeo.cpp) | BIOS root `neogeo`; TURBO: unused; SHOOT: Launch bubble; PASS: unused. Left/right plus fire. Neo Geo BIOS required; `neogeo` is a BIOS root, not a different game revision. |
+| Metal Slug X | 2 | [`mslugx`](https://github.com/mamedev/mame/blob/master/src/mame/snk/neogeo.cpp) | BIOS root `neogeo`; TURBO: Grenade; SHOOT: Shoot; PASS: Jump. Neo Geo BIOS required; fire, jump, grenade. |
+| Metal Slug 3 | 2 | [`mslug3`](https://github.com/mamedev/mame/blob/master/src/mame/snk/neogeo.cpp) | BIOS root `neogeo`; TURBO: Grenade; SHOOT: Shoot; PASS: Jump. Neo Geo BIOS required; fire, jump, grenade. |
+| Tetris (Atari) | 2 | [`atetris`](https://github.com/mamedev/mame/blob/master/src/mame/atari/atetris.cpp) | parent; TURBO: Rotate; SHOOT: Rotate; PASS: Rotate. Left/right/down plus rotate; no analog input. |
+
+## GENESIS
+
+| Title | Players | Exact No-Intro filename | Controls / multiplayer notes |
+| --- | ---: | --- | --- |
+| Sonic the Hedgehog 2 | 2 | `Sonic The Hedgehog 2 (World).md` | A: Jump; B: Jump; C: Jump. Two-player competition or second player controls Tails. |
+| Streets of Rage 2 | 2 | `Streets of Rage 2 (USA).md` | A: Special; B: Attack; C: Jump. Digital D-pad and the listed face actions; no multitap needed. |
+| Gunstar Heroes | 2 | `Gunstar Heroes (USA).md` | A: Shot type; B: Shoot; C: Jump. Digital D-pad and the listed face actions; no multitap needed. |
+| Golden Axe | 2 | `Golden Axe (World).md` | A: Magic; B: Attack; C: Jump. Digital D-pad and the listed face actions; no multitap needed. |
+| NBA Jam | 4 | `NBA Jam (USA, Europe).md` | A: Turbo; B: Shoot; C: Pass. 4P: EA 4-Way Play, Genesis Plus GX; original catalog caps/labels are retained, verify the ROM control configuration. |
+| Contra: Hard Corps | 2 | `Contra - Hard Corps (USA, Korea) (En).md` | A: Weapon; B: Fire; C: Jump. Digital D-pad and the listed face actions; no multitap needed. |
+| Moonwalker | 1 | `Michael Jackson's Moonwalker (Japan, USA) (En).md` | A: Magic; B: Attack; C: Jump. Digital D-pad and the listed face actions; no multitap needed. |
+| Ecco the Dolphin | 1 | `Ecco the Dolphin (USA, Europe, Korea) (En).md` | A: Sonar; B: Dash; C: Swim. Digital D-pad and the listed face actions; no multitap needed. |
+| Gauntlet IV | 4 | `Gauntlet IV (USA, Europe) (En,Ja).md` | A: Melee / Ring; B: Fire; C: Magic. 4P: Team Player or EA 4-Way Play. Arcade mode has four players; Quest mode is single player. Genesis Plus GX supports both adapter modes. |
+| Mega Bomberman | 4 | `Mega Bomberman (USA).md` | A: unused; B: Louie ability; C: Bomb. 4P battle: Sega Team Player, Genesis Plus GX. B = Louie ability; C = bomb; A unused. Story is single player. |
+| NBA Jam T.E. | 4 | `NBA Jam - Tournament Edition (World).md` | A: Shoot / Block; B: Turbo; C: Pass / Steal. 4P: EA 4-Way Play, Genesis Plus GX. Default A = shoot/block, B = turbo, C = pass/steal. |
+| Micro Machines 2 | 4 | `Micro Machines 2 - Turbo Tournament (Europe).md` | A: Brake / Reverse; B: Accelerate; C: Horn. 4P: cartridge J-Cart extra ports (not a standard Team Player setup). Genesis Plus GX emulates J-Cart; use four RetroPads. Do not use the eight-player shared-pad mode. |
+| General Chaos | 4 | `General Chaos (USA, Europe).md` | A: Fire; B: Move / Regroup; C: Select soldier. 4P: EA 4-Way Play, Genesis Plus GX, three-button pad mode. A fires, B moves/regroups, C selects; hand-to-hand uses A/B/C plus directions. |
+| Sonic the Hedgehog | 1 | `Sonic The Hedgehog (USA, Europe).md` | A: Jump; B: Jump; C: Jump. Digital D-pad and the listed face actions; no multitap needed. |
+| Sonic 3 & Knuckles | 2 | `Sonic & Knuckles + Sonic The Hedgehog 3 (USA) (Lock-On).md` | A: Jump; B: Jump; C: Jump. Use the combined lock-on image listed, not Sonic 3 alone. Second player can control Tails; no Sonic 3 competition mode in the combined game. |
+| Streets of Rage | 2 | `Streets of Rage (World) (En,Ja).md` | A: Police special; B: Attack; C: Jump. Digital D-pad and the listed face actions; no multitap needed. |
+| Streets of Rage 3 | 2 | `Streets of Rage 3 (USA).md` | A: Special; B: Attack; C: Jump. Three-button mode is supported. Back attack uses B+C, running uses a double-tap; six-button shortcuts are optional. |
+| Shinobi III | 1 | `Shinobi III - Return of the Ninja Master (USA).md` | A: Ninjitsu; B: Attack; C: Jump. Digital D-pad and the listed face actions; no multitap needed. |
+| Comix Zone | 1 | `Comix Zone (USA).md` | A: Attack / Use item; B: Jump; C: Select item. A action/use selected item; B jump; C select inventory item. This is a three-button game, not a six-button requirement. |
+| Aladdin | 1 | `Aladdin (USA).md` | A: Throw apple; B: Sword; C: Jump. Digital D-pad and the listed face actions; no multitap needed. |
+| Castle of Illusion | 1 | `Castle of Illusion Starring Mickey Mouse (USA, Europe).md` | A: Throw; B: Throw; C: Jump. Digital D-pad and the listed face actions; no multitap needed. |
+| Rocket Knight Adventures | 1 | `Rocket Knight Adventures (USA).md` | A: Attack / Charge; B: Jump; C: Attack / Charge. Digital D-pad and the listed face actions; no multitap needed. |
+| ToeJam & Earl | 2 | `ToeJam & Earl (USA, Europe, Korea) (En).md` | A: Action; B: Present menu; C: Map. A action/use present, B present list, C map. |
+| Vectorman | 1 | `Vectorman (USA, Europe).md` | A: Shoot; B: Shoot; C: Jump. Digital D-pad and the listed face actions; no multitap needed. |
+| Earthworm Jim | 1 | `Earthworm Jim (USA).md` | A: Whip; B: Shoot; C: Jump. Digital D-pad and the listed face actions; no multitap needed. |
+
+## SNES
+
+| Title | Players | Exact No-Intro filename | Controls / multiplayer notes |
+| --- | ---: | --- | --- |
+| Super Mario World | 2 | `Super Mario World (USA).sfc` | Y: Run; B: Jump; A: Spin jump. Retained original: spin jump, run/fire and jump fit three buttons; map/Select extras require a profile/menu. |
+| Donkey Kong Country | 2 | `Donkey Kong Country (USA).sfc` | Y: Roll; B: Jump; A: Swap. Retained original: Y run/attack, B jump; virtual Select switches characters. Needs a per-game profile, not a universal three-button layout. |
+| Super Metroid | 1 | `Super Metroid (Japan, USA) (En,Ja).sfc` | Y: Fire; B: Jump; A: Dash. Retained original, not newly certified as a three-button game: run, shoot, jump, aim, item select/cancel and shoulder aiming exceed the available independent controls. |
+| The Legend of Zelda: A Link to the Past | 1 | `Legend of Zelda, The - A Link to the Past (USA).sfc` | Y: Item; B: Sword; A: Action. Retained original, not newly certified: sword, item, action, map and menus need a per-game compromise/profile. |
+| Super Bomberman | 4 | `Super Bomberman (USA).sfc` | Y: unused; B: Bomb; A: Punch. 4P battle: SNES multitap, Snes9x. Single-player story. Original catalog mapping is retained. |
+| Contra III | 2 | `Contra III - The Alien Wars (USA).sfc` | Y: Fire; B: Jump; A: Bomb. Retained original, not newly certified: fire, jump, bomb, weapon switch and shoulder aim/rotation exceed three independent actions. |
+| TMNT IV: Turtles in Time | 2 | `Teenage Mutant Ninja Turtles IV - Turtles in Time (USA).sfc` | Y: Attack; B: Jump; A: unused. Digital D-pad and the listed face actions; no multitap needed. |
+| Super Bomberman 2 | 4 | `Super Bomberman 2 (USA).sfc` | Y: Battle-stage jump; B: Remote detonate; A: Bomb / Grab. 4P battle: SNES multitap, Snes9x. Y = special battle-stage jump, B = remote detonate, A = place/grab bomb. X stops kicked bombs: optional kick-stop is unavailable, let kicked bombs run. Choose stages/items accordingly. |
+| Super Bomberman 3 | 5 | `Super Bomberman 3 (Japan).sfc` | Y: Louie ability; B: Remote detonate; A: Bomb / Grab. Up to 5P in the original, limited to 4 on this cabinet: SNES multitap, Snes9x. Y = Louie ability, B = remote detonate, A = place/grab bomb. Optional X kick-stop is unavailable. Story supports two players. |
+| NBA Jam T.E. | 4 | `NBA Jam - Tournament Edition (USA).sfc` | Y: Pass / Steal; B: Shoot / Block; A: Turbo (remap L). 4P: SNES multitap, Snes9x. Y = pass/steal, B = shoot/block; remap the third face button to virtual L (Turbo). No physical shoulder button needed. |
+| Saturday Night Slam Masters | 4 | `Saturday Night Slam Masters (USA).sfc` | Y: Attack; B: Jump; A: Pin. 4P Team Battle Royal: SNES multitap, Snes9x. Defaults Y attack, B jump, A pin; in-game button assignment available. |
+| Super Mario All-Stars | 2 | `Super Mario All-Stars (USA).sfc` | Y: Run / Fire; B: Jump; A: Jump. Two players alternate except SMB2 (one player); menu uses START. SMB3 battle mode is two-player simultaneous. |
+| Yoshi's Island | 1 | `Super Mario World 2 - Yoshi's Island (USA).sfc` | Y: Tongue; B: Jump / Flutter; A: Aim / Throw egg. Y tongue/spit, B jump/flutter, A aim/throw egg. Shoulder lock/scroll shortcuts can be omitted; no physical shoulder required for core play. |
+| Super Castlevania IV | 1 | `Super Castlevania IV (USA).sfc` | Y: Whip; B: Jump; A: Subweapon. Y whip and B jump; map the third face button to virtual R for subweapon. Do not leave it bound to unused A. |
+| Mega Man X | 1 | `Mega Man X (USA).sfc` | Y: Shoot; B: Jump; A: Dash. Y shoot, B jump, A dash. Use START weapon menu instead of L/R weapon cycling. |
+| Final Fight 3 | 2 | `Final Fight 3 (USA).sfc` | Y: Attack; B: Jump; A: Special. Y attack, B jump, A special. Automatic/manual special setting changes combinations, not the three-button budget. |
+| Sunset Riders | 2 | `Sunset Riders (USA).sfc` | Y: Shoot; B: Jump; A: Slide. Y fire, B jump, A slide. START joins; the original Select pause function is not a required action. SNES port is two-player, not the arcade four-player game. |
+| Super Ghouls 'n Ghosts | 1 | `Super Ghouls 'N Ghosts (USA).sfc` | Y: Attack / Charge magic; B: Jump / Double jump; A: unused. Y attack/charge magic, B jump/double jump; third action unused. |
+
+## NES
+
+| Title | Players | Exact No-Intro filename | Controls / multiplayer notes |
+| --- | ---: | --- | --- |
+| Super Mario Bros. 3 | 2 | `Super Mario Bros. 3 (USA).nes` | B: Run; A: Jump; SEL: unused. Two-player adventure alternates; battle mode simultaneous. |
+| Contra | 2 | `Contra (USA).nes` | B: Fire; A: Jump; SEL: unused. Digital D-pad and the listed face actions; no multitap needed. |
+| Mega Man 2 | 1 | `Mega Man 2 (USA).nes` | B: Fire; A: Jump; SEL: unused. Digital D-pad and the listed face actions; no multitap needed. |
+| TMNT II: The Arcade Game | 2 | `Teenage Mutant Ninja Turtles II - The Arcade Game (USA).nes` | B: Attack; A: Jump; SEL: unused. Digital D-pad and the listed face actions; no multitap needed. |
+| The Legend of Zelda | 1 | `Legend of Zelda, The (USA).nes` | B: Item; A: Sword; SEL: unused. Digital D-pad and the listed face actions; no multitap needed. |
+| Punch-Out!! | 1 | `Punch-Out!! (USA).nes` | B: Left jab; A: Right jab; SEL: unused. Retained original: map third face button to virtual Select for recovery and stick up for upper punches; START also launches star punch. |
+| Gauntlet II | 4 | `Gauntlet II (USA).nes` | B: Throw weapon; A: Use item; SEL: unused. 4P: Four Score/Satellite emulation, FCEUmm. B weapon, A item; START pauses. Do not bind an extra physical Select. |
+| Super Spike V'Ball | 4 | `Super Spike V'Ball (USA).nes` | B: Jump / Block; A: Hit / Serve; SEL: unused. 4P: Four Score/Satellite, FCEUmm. B jump/block, A hit/serve. |
+| Nintendo World Cup | 4 | `Nintendo World Cup (USA).nes` | B: Shoot / Slide; A: Pass / Tackle; SEL: unused. 4P: Four Score/Satellite, FCEUmm. B shoot/slide, A pass/tackle. |
+| Super Off Road | 4 | `Ivan 'Ironman' Stewart's Super Off Road (USA).nes` | B: Nitro; A: Accelerate; SEL: Menu select. 4P: Four Score/Satellite, FCEUmm. B nitro, A accelerate; third face button may map virtual Select for menus. Digital steering, not the arcade wheel version. |
+| R.C. Pro-Am II | 4 | `R.C. Pro-Am II (USA).nes` | B: Accelerate; A: Nitro / Weapon; SEL: Cancel. 4P: Four Score/Satellite, FCEUmm. B accelerate, A weapon/nitro, virtual Select on third button for cancel. |
+| Super Mario Bros. | 2 | `Super Mario Bros. (World).nes` | B: Run / Fire; A: Jump; SEL: unused. Two players alternate; B run/fire, A jump. |
+| Super Mario Bros. 2 | 1 | `Super Mario Bros. 2 (USA).nes` | B: Run / Pick up; A: Jump; SEL: unused. Single player; B lift/throw/run, A jump. |
+| Mega Man 3 | 1 | `Mega Man 3 (USA).nes` | B: Shoot; A: Jump / Slide; SEL: unused. Digital D-pad and the listed face actions; no multitap needed. |
+| Castlevania | 1 | `Castlevania (USA).nes` | B: Whip / Subweapon; A: Jump; SEL: unused. Digital D-pad and the listed face actions; no multitap needed. |
+| Battletoads | 2 | `Battletoads (USA).nes` | B: Attack; A: Jump; SEL: unused. Digital D-pad and the listed face actions; no multitap needed. |
+| Double Dragon II | 2 | `Double Dragon II - The Revenge (USA).nes` | B: Attack left; A: Attack right; SEL: unused. B attacks left, A attacks right; press both together to jump. |
+| River City Ransom | 2 | `River City Ransom (USA).nes` | B: Punch; A: Kick; SEL: unused. B punch, A kick; press both together to jump. START opens status/menu. |
+| Kirby's Adventure | 1 | `Kirby's Adventure (USA).nes` | B: Inhale / Ability; A: Jump; SEL: Drop ability. B inhale/exhale/use ability, A jump; map third face button to virtual Select to discard an ability. |
+| DuckTales | 1 | `DuckTales (USA).nes` | B: Cane / Pick up; A: Jump; SEL: unused. Digital D-pad and the listed face actions; no multitap needed. |
+| Ninja Gaiden | 1 | `Ninja Gaiden (USA).nes` | B: Sword / Ninjitsu; A: Jump; SEL: unused. Digital D-pad and the listed face actions; no multitap needed. |
+| Metroid | 1 | `Metroid (USA).nes` | B: Fire; A: Jump; SEL: Missile toggle. B fire, A jump; third face button maps virtual Select for missile toggle. START pauses. |
+| Tecmo Bowl | 2 | `Tecmo Bowl (USA).nes` | B: Pass / Tackle; A: Change player; SEL: unused. Digital D-pad and the listed face actions; no multitap needed. |
+| Dr. Mario | 2 | `Dr. Mario (Japan, USA) (En).nes` | B: Rotate left; A: Rotate right; SEL: unused. Digital D-pad and the listed face actions; no multitap needed. |
+| Bubble Bobble | 2 | `Bubble Bobble (USA).nes` | B: Bubble; A: Jump; SEL: unused. Digital D-pad and the listed face actions; no multitap needed. |
+
+## New additions not retained
+
+- **Donkey Kong Country 2 (SNES)**: A team-up/split, B jump, Y run/attack/pick-up, X dismount, plus Select switching. Too many independent actions to preserve its full normal controls with this cabinet. The original Donkey Kong Country entry remains, as requested.
+- **Pocky & Rocky (SNES)**: projectile, melee, slide and bomb are four distinct actions (A/B/X plus L/R; Y also supplies rapid fire). It cannot fit all normal actions on three buttons without combos/macros, so it is omitted.
+- No requested game was dropped for a missing portrait/video. Super Bomberman 2/3 remain playable with an explicit **optional kick-stop limitation**, not advertised as having all SNES shortcuts. See their rows. No new analog, wheel, gun or trackball title was added.
+
+## Reference material (no ROM links)
+
+The per-row MAME driver links identify the exact inputs and current set relationships. Useful manual/control and core references:
+
+- [No-Intro DAT mirrors](https://github.com/libretro/libretro-database/tree/master/dat) (metadata/checksums only).
+- [Genesis Plus GX devices and multitap options](https://docs.libretro.com/library/genesis_plus_gx/), [Snes9x](https://docs.libretro.com/library/snes9x/), [FCEUmm](https://docs.libretro.com/library/fceumm/).
+- [Gauntlet IV manual](https://www.retrogames.cz/manualy/Genesis/Gauntlet_4_-_Genesis_-_Manual.pdf), [Micro Machines 2 manual](https://www.retrogames.cz/manualy/Genesis/Micro_Machines_2_-_Genesis_-_Manual.pdf), [General Chaos manual](https://emubox.net/resources/GAME/779/sGw4bIdy.pdf).
+- [Shinobi III publisher manual](https://manuals.sega.com/genesismini/pdf/SHINOBI_III.pdf), [Streets of Rage 3 manual](https://segaretro.org/images/8/83/SoR3_MD_US_MDMini2_manual.pdf), [Vectorman manual controls](http://www.genesisproject-online.com/Genesis/U-w/VectormanM/vectorman03.html), [Rocket Knight Adventures manual](https://www.fichier-pdf.fr/2018/03/20/rocket-knight-adventures/rocket-knight-adventures.pdf).
+- [Super Castlevania IV manual transcription](https://frameadvance.net/sources/super-castlevania-iv-us-manual/), [Mega Man X Nintendo manual](https://www.nintendo.com/es-es/games/oms/snes-classic/manuals/mega-man-x/manual.pdf), [Saturday Night Slam Masters manual](https://www.video-games-museum.com/en/manual/Super%20NES/8014_us-Saturday-Night-Slam-Masters.pdf).
+- [Super Bomberman 2 controls](https://strategywiki.org/wiki/Super_Bomberman_2/Controls), [Super Bomberman 3 controls](https://strategywiki.org/wiki/Super_Bomberman_3/Controls), [NBA Jam T.E. SNES control table](http://www.consoleclassix.com/snes/nba_jam_tournament_edition.html).
+
+Media provenance, independent of ROM sourcing: `public/art/sources.json`, `public/art/portrait-sources.json` and `public/videos/sources.json`. Media availability does not grant rights to redistribute ROMs or imply a media license beyond that of the original source.
