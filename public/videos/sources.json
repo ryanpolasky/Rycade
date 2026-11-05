@@ -1143,6 +1143,375 @@
       "start_seconds": 0.5,
       "duration_seconds": 25,
       "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "dlair",
+      "url": "https://archive.org/download/emumovies_ftp_mirror_2/EmuFTP.Official.Video%20Snaps%20%28SQ%29.zip/EmuMovies_FTP%2FOfficial%2FVideo%20Snaps%20%28SQ%29%2FDaphne%20%28Video%20Snaps%29%28SQ%29%28EM%201.0%29%2Flair.mp4",
+      "collection": "https://archive.org/details/emumovies_ftp_mirror_2",
+      "source_file": "EmuMovies_FTP/Official/Video Snaps (SQ)/Daphne (Video Snaps)(SQ)(EM 1.0)/lair.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "mario",
+      "url": "https://archive.org/download/mamearcade-video-snaps/mario.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "mario.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "galaxian",
+      "url": "https://archive.org/download/mamearcade-video-snaps/galaxian.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "galaxian.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "invaders",
+      "url": "https://archive.org/download/mamearcade-video-snaps/invaders.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "invaders.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "qbert",
+      "url": "https://archive.org/download/mamearcade-video-snaps/qbert.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "qbert.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "mrdo",
+      "url": "https://archive.org/download/mamearcade-video-snaps/mrdo.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "mrdo.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "mappy",
+      "url": "https://archive.org/download/mamearcade-video-snaps/mappy.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "mappy.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "xevious",
+      "url": "https://archive.org/download/mamearcade-video-snaps/xevious.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "xevious.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "timeplt",
+      "url": "https://archive.org/download/mamearcade-video-snaps/timeplt.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "timeplt.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "gyruss",
+      "url": "https://archive.org/download/mamearcade-video-snaps/gyruss.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "gyruss.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "1942",
+      "url": "https://archive.org/download/mamearcade-video-snaps/1942.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "1942.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "scramble",
+      "url": "https://archive.org/download/mamearcade-video-snaps/scramble.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "scramble.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "rallyx",
+      "url": "https://archive.org/download/mamearcade-video-snaps/rallyx.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "rallyx.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "bosco",
+      "url": "https://archive.org/download/mamearcade-video-snaps/bosco.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "bosco.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "ladybug",
+      "url": "https://archive.org/download/mamearcade-video-snaps/ladybug.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "ladybug.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "bombjack",
+      "url": "https://archive.org/download/mamearcade-video-snaps/bombjack.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "bombjack.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "popeye",
+      "url": "https://archive.org/download/mamearcade-video-snaps/popeye.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "popeye.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "tapper",
+      "url": "https://archive.org/download/mamearcade-video-snaps/tapper.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "tapper.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "elevator",
+      "url": "https://archive.org/download/mamearcade-video-snaps/elevator.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "elevator.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "kungfum",
+      "url": "https://archive.org/download/mamearcade-video-snaps/kungfum.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "kungfum.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "baddudes",
+      "url": "https://archive.org/download/mamearcade-video-snaps/baddudes.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "baddudes.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "contraarc",
+      "url": "https://archive.org/download/mamearcade-video-snaps/contra.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "contra.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "gng",
+      "url": "https://archive.org/download/mamearcade-video-snaps/gng.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "gng.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "commando",
+      "url": "https://archive.org/download/mamearcade-video-snaps/commando.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "commando.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 21.234,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "rygar",
+      "url": "https://archive.org/download/mamearcade-video-snaps/rygar.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "rygar.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "crimfghtu",
+      "url": "https://archive.org/download/mamearcade-video-snaps/crimfght.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "crimfght.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "klax",
+      "url": "https://archive.org/download/mamearcade-video-snaps/klax.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "klax.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "pitfight",
+      "url": "https://archive.org/download/mamearcade-video-snaps/pitfight.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "pitfight.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "xybots",
+      "url": "https://archive.org/download/mamearcade-video-snaps/xybots.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "xybots.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "robotron",
+      "url": "https://archive.org/download/mamearcade-video-snaps/robotron.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "robotron.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "jjack",
+      "url": "https://archive.org/download/mamearcade-video-snaps/jjack.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "jjack.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "spf2t",
+      "url": "https://archive.org/download/mamearcade-video-snaps/spf2t.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "spf2t.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "vanvan",
+      "url": "https://archive.org/download/mamearcade-video-snaps/vanvan.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "vanvan.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "congo",
+      "url": "https://archive.org/download/mamearcade-video-snaps/congo.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "congo.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "19xx",
+      "url": "https://archive.org/download/mamearcade-video-snaps/19xx.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "19xx.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "mk2gen",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Mortal%20Kombat%20II%20%28World%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Mortal Kombat II (World).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "mk3gen",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Mortal%20Kombat%203%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Mortal Kombat 3 (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "tetrisnes",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Tetris%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Tetris (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "excitebike",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Excitebike%20%28Japan%2C%20USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Excitebike (Japan, USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "iceclimber",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Ice%20Climber%20%28USA%2C%20Europe%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Ice Climber (USA, Europe).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "balloonfight",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Balloon%20Fight%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Balloon Fight (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
     }
   ]
 }
