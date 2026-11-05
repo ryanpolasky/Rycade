@@ -537,18 +537,12 @@ body[data-theme="cover-flow"] #attract-overlay::after {
   object-fit: contain;
 }
 
-.attract-copy small,
 .attract-prompt {
   font-family: "Press Start 2P", monospace;
 }
 
-.attract-copy small {
-  font-size: 10px;
-  color: var(--attract-accent);
-}
-
 .attract-title {
-  margin: 12px 0 6px;
+  margin: 0 0 6px;
   font-size: 38px;
   line-height: 1.05;
   text-transform: uppercase;
