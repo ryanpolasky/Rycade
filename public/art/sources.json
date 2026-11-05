@@ -2823,6 +2823,36 @@
           140
         ]
       }
+    },
+    {
+      "id": "pengo",
+      "snap": {
+        "path": "art/arc_pengo_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Pengo%20%28set%201%20rev%20C%2C%20encrypted%29.png",
+        "upstream": "Named_Snaps/Pengo (set 1 rev C, encrypted).png",
+        "size": [
+          224,
+          288
+        ]
+      },
+      "box": {
+        "path": "art/arc_pengo_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Pengo%20%28set%201%20rev%20C%2C%20encrypted%29.png",
+        "upstream": "Named_Boxarts/Pengo (set 1 rev C, encrypted).png",
+        "size": [
+          512,
+          641
+        ]
+      },
+      "logo": {
+        "path": "art/arc_pengo_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Pengo%20%28Bandai%29.png",
+        "upstream": "Named_Logos/Pengo (World, not encrypted, rev A).png",
+        "size": [
+          400,
+          135
+        ]
+      }
     }
   ]
 }

@@ -1107,6 +1107,15 @@
       "start_seconds": 0.5,
       "duration_seconds": 25,
       "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "pengo",
+      "url": "https://archive.org/download/mamearcade-video-snaps/pengo.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "pengo.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
     }
   ]
 }

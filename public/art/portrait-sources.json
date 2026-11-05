@@ -606,6 +606,13 @@
         "arc_qix_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Qix%20%28Rev%202%29.png"
       },
       "note": "Named_Boxarts/Qix (Rev 2).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Pengo%20%28set%201%20rev%20C%2C%20encrypted%29.png",
+      "files": {
+        "arc_pengo_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Pengo%20%28set%201%20rev%20C%2C%20encrypted%29.png"
+      },
+      "note": "Named_Boxarts/Pengo (set 1 rev C, encrypted).png"
     }
   ]
 }
