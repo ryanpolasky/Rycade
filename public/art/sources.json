@@ -2763,6 +2763,186 @@
           256
         ]
       }
+    },
+    {
+      "id": "btime",
+      "snap": {
+        "path": "art/arc_btime_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Burger%20Time%20%28Data%20East%20set%201%29.png",
+        "upstream": "Named_Snaps/Burger Time (Data East set 1).png",
+        "size": [
+          240,
+          240
+        ]
+      },
+      "box": {
+        "path": "art/arc_btime_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Burger%20Time%20%28Data%20East%20set%201%29.png",
+        "upstream": "Named_Boxarts/Burger Time (Data East set 1).png",
+        "size": [
+          512,
+          683
+        ]
+      },
+      "logo": {
+        "path": "art/arc_btime_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Burger%20Time%20%28Bandai%29.png",
+        "upstream": "Named_Logos/Burger Time (Data East set 1).png",
+        "size": [
+          512,
+          228
+        ]
+      }
+    },
+    {
+      "id": "qix",
+      "snap": {
+        "path": "art/arc_qix_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Qix%20%28Rev%202%29.png",
+        "upstream": "Named_Snaps/Qix (Rev 2).png",
+        "size": [
+          256,
+          256
+        ]
+      },
+      "box": {
+        "path": "art/arc_qix_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Qix%20%28Rev%202%29.png",
+        "upstream": "Named_Boxarts/Qix (Rev 2).png",
+        "size": [
+          512,
+          665
+        ]
+      },
+      "logo": {
+        "path": "art/arc_qix_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Qix%20%28Rev%202%29.png",
+        "upstream": "Named_Logos/Qix (Rev 2).png",
+        "size": [
+          512,
+          140
+        ]
+      }
+    },
+    {
+      "id": "pengo",
+      "snap": {
+        "path": "art/arc_pengo_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Pengo%20%28set%201%20rev%20C%2C%20encrypted%29.png",
+        "upstream": "Named_Snaps/Pengo (set 1 rev C, encrypted).png",
+        "size": [
+          224,
+          288
+        ]
+      },
+      "box": {
+        "path": "art/arc_pengo_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Pengo%20%28set%201%20rev%20C%2C%20encrypted%29.png",
+        "upstream": "Named_Boxarts/Pengo (set 1 rev C, encrypted).png",
+        "size": [
+          512,
+          641
+        ]
+      },
+      "logo": {
+        "path": "art/arc_pengo_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Pengo%20%28Bandai%29.png",
+        "upstream": "Named_Logos/Pengo (World, not encrypted, rev A).png",
+        "size": [
+          400,
+          135
+        ]
+      }
+    },
+    {
+      "id": "smashtv",
+      "snap": {
+        "path": "art/arc_smashtv_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Smash%20T.V.%20%28rev%208.00%29.png",
+        "upstream": "Named_Snaps/Smash T.V. (rev 8.00).png",
+        "size": [
+          410,
+          256
+        ]
+      },
+      "box": {
+        "path": "art/arc_smashtv_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Smash%20T.V.%20%28rev%208.00%29.png",
+        "upstream": "Named_Boxarts/Smash T.V. (rev 8.00).png",
+        "size": [
+          512,
+          676
+        ]
+      },
+      "logo": {
+        "path": "art/arc_smashtv_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Smash%20T.V.%20%28rev%208.00%29.png",
+        "upstream": "Named_Logos/Smash T.V. (rev 8.00).png",
+        "size": [
+          512,
+          293
+        ]
+      }
+    },
+    {
+      "id": "dkong3",
+      "snap": {
+        "path": "art/arc_dkong3_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Donkey%20Kong%203%20%28US%29.png",
+        "upstream": "Named_Snaps/Donkey Kong 3 (US).png",
+        "size": [
+          224,
+          256
+        ]
+      },
+      "box": {
+        "path": "art/arc_dkong3_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Donkey%20Kong%203%20%28US%29.png",
+        "upstream": "Named_Boxarts/Donkey Kong 3 (US).png",
+        "size": [
+          512,
+          730
+        ]
+      },
+      "logo": {
+        "path": "art/arc_dkong3_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Donkey%20Kong%203%20%28US%29.png",
+        "upstream": "Named_Logos/Donkey Kong 3 (US).png",
+        "size": [
+          512,
+          260
+        ]
+      }
+    },
+    {
+      "id": "dkongjr",
+      "snap": {
+        "path": "art/arc_dkongjr_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Donkey%20Kong%20Junior%20%28US%20set%20F-2%29.png",
+        "upstream": "Named_Snaps/Donkey Kong Junior (US set F-2).png",
+        "size": [
+          224,
+          256
+        ]
+      },
+      "box": {
+        "path": "art/arc_dkongjr_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Donkey%20Kong%20Junior%20%28US%20set%20F-2%29.png",
+        "upstream": "Named_Boxarts/Donkey Kong Junior (US set F-2).png",
+        "size": [
+          512,
+          685
+        ]
+      },
+      "logo": {
+        "path": "art/arc_dkongjr_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Donkey%20Kong%20Junior%20%28US%20set%20F-2%29.png",
+        "upstream": "Named_Logos/Donkey Kong Junior (US set F-2).png",
+        "size": [
+          512,
+          299
+        ]
+      }
     }
   ]
 }

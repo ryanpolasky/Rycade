@@ -1089,6 +1089,60 @@
       "start_seconds": 0.5,
       "duration_seconds": 25,
       "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "btime",
+      "url": "https://archive.org/download/mamearcade-video-snaps/btime.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "btime.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "qix",
+      "url": "https://archive.org/download/mamearcade-video-snaps/qix.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "qix.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "pengo",
+      "url": "https://archive.org/download/mamearcade-video-snaps/pengo.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "pengo.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "smashtv",
+      "url": "https://archive.org/download/mamearcade-video-snaps/smashtv.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "smashtv.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "dkong3",
+      "url": "https://archive.org/download/mamearcade-video-snaps/dkong3.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "dkong3.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "dkongjr",
+      "url": "https://archive.org/download/mamearcade-video-snaps/dkongjr.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "dkongjr.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
     }
   ]
 }
