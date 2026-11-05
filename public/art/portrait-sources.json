@@ -767,6 +767,48 @@
         "arc_elevator_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Elevator%20Action%20%28BA3%2C%204%20PCB%20version%2C%201.1%29.png"
       },
       "note": "Named_Boxarts/Elevator Action (BA3, 4 PCB version, 1.1).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Kung-Fu%20Master%20%28World%29.png",
+      "files": {
+        "arc_kungfum_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Kung-Fu%20Master%20%28World%29.png"
+      },
+      "note": "Named_Boxarts/Kung-Fu Master (World).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Bad%20Dudes%20vs.%20Dragonninja%20%28US%29.png",
+      "files": {
+        "arc_baddudes_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Bad%20Dudes%20vs.%20Dragonninja%20%28US%29.png"
+      },
+      "note": "Named_Boxarts/Bad Dudes vs. Dragonninja (US).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Contra%20%28US%29.png",
+      "files": {
+        "arc_contraarc_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Contra%20%28US%29.png"
+      },
+      "note": "Named_Boxarts/Contra (US).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Ghosts%27n%20Goblins%20%28World_%20set%201%29.png",
+      "files": {
+        "arc_gng_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Ghosts%27n%20Goblins%20%28World_%20set%201%29.png"
+      },
+      "note": "Named_Boxarts/Ghosts'n Goblins (World_ set 1).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Commando%20%28World%29.png",
+      "files": {
+        "arc_commando_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Commando%20%28World%29.png"
+      },
+      "note": "Named_Boxarts/Commando (World).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Rygar%20%28US%20set%201%29.png",
+      "files": {
+        "arc_rygar_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Rygar%20%28US%20set%201%29.png"
+      },
+      "note": "Named_Boxarts/Rygar (US set 1).png"
     }
   ]
 }

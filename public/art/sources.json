@@ -3513,6 +3513,186 @@
           215
         ]
       }
+    },
+    {
+      "id": "kungfum",
+      "snap": {
+        "path": "art/arc_kungfum_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Kung-Fu%20Master%20%28World%29.png",
+        "upstream": "Named_Snaps/Kung-Fu Master (World).png",
+        "size": [
+          256,
+          256
+        ]
+      },
+      "box": {
+        "path": "art/arc_kungfum_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Kung-Fu%20Master%20%28World%29.png",
+        "upstream": "Named_Boxarts/Kung-Fu Master (World).png",
+        "size": [
+          512,
+          675
+        ]
+      },
+      "logo": {
+        "path": "art/arc_kungfum_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Kung-Fu%20Master%20%28World%29.png",
+        "upstream": "Named_Logos/Kung-Fu Master (World).png",
+        "size": [
+          512,
+          222
+        ]
+      }
+    },
+    {
+      "id": "baddudes",
+      "snap": {
+        "path": "art/arc_baddudes_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Bad%20Dudes%20vs.%20Dragonninja%20%28US%29.png",
+        "upstream": "Named_Snaps/Bad Dudes vs. Dragonninja (US).png",
+        "size": [
+          256,
+          240
+        ]
+      },
+      "box": {
+        "path": "art/arc_baddudes_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Bad%20Dudes%20vs.%20Dragonninja%20%28US%29.png",
+        "upstream": "Named_Boxarts/Bad Dudes vs. Dragonninja (US).png",
+        "size": [
+          512,
+          656
+        ]
+      },
+      "logo": {
+        "path": "art/arc_baddudes_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Bad%20Dudes%20vs.%20Dragonninja%20%28US%2C%20revision%201%29.png",
+        "upstream": "Named_Logos/Bad Dudes vs. Dragonninja (US, revision 1).png",
+        "size": [
+          512,
+          296
+        ]
+      }
+    },
+    {
+      "id": "contraarc",
+      "snap": {
+        "path": "art/arc_contraarc_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Contra%20%28US%29.png",
+        "upstream": "Named_Snaps/Contra (US).png",
+        "size": [
+          224,
+          280
+        ]
+      },
+      "box": {
+        "path": "art/arc_contraarc_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Contra%20%28US%29.png",
+        "upstream": "Named_Boxarts/Contra (US).png",
+        "size": [
+          512,
+          680
+        ]
+      },
+      "logo": {
+        "path": "art/arc_contraarc_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Contra%20%28US%20_%20Asia%2C%20set%201%29.png",
+        "upstream": "Named_Logos/Contra (US _ Asia, set 1).png",
+        "size": [
+          400,
+          184
+        ]
+      }
+    },
+    {
+      "id": "gng",
+      "snap": {
+        "path": "art/arc_gng_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Ghosts%27n%20Goblins%20%28World_%20set%201%29.png",
+        "upstream": "Named_Snaps/Ghosts'n Goblins (World_ set 1).png",
+        "size": [
+          256,
+          224
+        ]
+      },
+      "box": {
+        "path": "art/arc_gng_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Ghosts%27n%20Goblins%20%28World_%20set%201%29.png",
+        "upstream": "Named_Boxarts/Ghosts'n Goblins (World_ set 1).png",
+        "size": [
+          512,
+          727
+        ]
+      },
+      "logo": {
+        "path": "art/arc_gng_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Ghosts%27n%20Goblins%20%28World_%20set%201%29.png",
+        "upstream": "Named_Logos/Ghosts'n Goblins (World_ set 1).png",
+        "size": [
+          512,
+          124
+        ]
+      }
+    },
+    {
+      "id": "commando",
+      "snap": {
+        "path": "art/arc_commando_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Commando%20%28World%29.png",
+        "upstream": "Named_Snaps/Commando (World).png",
+        "size": [
+          224,
+          256
+        ]
+      },
+      "box": {
+        "path": "art/arc_commando_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Commando%20%28World%29.png",
+        "upstream": "Named_Boxarts/Commando (World).png",
+        "size": [
+          512,
+          727
+        ]
+      },
+      "logo": {
+        "path": "art/arc_commando_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Commando%20%28World%29.png",
+        "upstream": "Named_Logos/Commando (World).png",
+        "size": [
+          512,
+          189
+        ]
+      }
+    },
+    {
+      "id": "rygar",
+      "snap": {
+        "path": "art/arc_rygar_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Rygar%20%28US%20set%201%29.png",
+        "upstream": "Named_Snaps/Rygar (US set 1).png",
+        "size": [
+          256,
+          224
+        ]
+      },
+      "box": {
+        "path": "art/arc_rygar_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Rygar%20%28US%20set%201%29.png",
+        "upstream": "Named_Boxarts/Rygar (US set 1).png",
+        "size": [
+          512,
+          662
+        ]
+      },
+      "logo": {
+        "path": "art/arc_rygar_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Rygar%20%28US%20set%201%29.png",
+        "upstream": "Named_Logos/Rygar (US set 1).png",
+        "size": [
+          512,
+          188
+        ]
+      }
     }
   ]
 }
