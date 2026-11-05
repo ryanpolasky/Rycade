@@ -343,6 +343,7 @@ function release() {
 }
 
 function openDemo() {
+  window.rycadeAttract.reset();
   if (launched || demoGame || !view[index]) return;
   release();
   demoGame = view[index];
@@ -378,6 +379,7 @@ function openDemo() {
 }
 
 function closeDemo() {
+  window.rycadeAttract.reset();
   if (!demoGame) return;
   demoGame = null;
   demoSession++;
@@ -395,6 +397,7 @@ function closeDemo() {
 }
 
 function launch() {
+  window.rycadeAttract.reset();
   if (launched || !view[index]) return;
   closeDemo();
   release();
@@ -408,6 +411,7 @@ function launch() {
 }
 
 function exitGame() {
+  window.rycadeAttract.reset();
   if (!launched) return;
   window.rycadeAudio?.play('back');
   launched = false;

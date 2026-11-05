@@ -15,6 +15,7 @@ const DEFAULT_SETTINGS = {
   theme: 'Cover Flow',
   palette: 'Classic',
   boot: 'Insert Coin',
+  attractMinutes: 2,
   controls: { skimSpeed: 'Normal', letterJump: true },
   sound: { master: 70, navigation: 50, confirm: 60, notifications: 60, muted: false },
   soundSet: 'cabinet',
@@ -34,6 +35,7 @@ function readSettings() {
     theme: THEME_IDS.has(saved.theme) ? saved.theme : DEFAULT_SETTINGS.theme,
     palette: PALETTES.some(palette => palette.label === saved.palette) ? saved.palette : DEFAULT_SETTINGS.palette,
     boot: saved.boot || DEFAULT_SETTINGS.boot,
+    attractMinutes: [0, 1, 2, 5].includes(saved.attractMinutes) ? saved.attractMinutes : DEFAULT_SETTINGS.attractMinutes,
     controls: { ...DEFAULT_SETTINGS.controls, ...(saved.controls || {}) },
     sound: soundSettingsCurrent
       ? { ...DEFAULT_SETTINGS.sound, ...(saved.sound || {}) }
@@ -108,6 +110,7 @@ function createPairingCode() {
 }
 
 function saveSettings() {
+  window.rycadeAttract.reset();
   try {
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
   } catch {}
@@ -138,6 +141,7 @@ function closeOverlays() {
 }
 
 function openSearch() {
+  window.rycadeAttract.reset();
   if (launched || demoGame) return;
   window.rycadeAudio?.play('open');
   closeSettings();
@@ -152,6 +156,7 @@ function openSearch() {
 }
 
 function closeSearch() {
+  window.rycadeAttract.reset();
   if (searchOpen) window.rycadeAudio?.play('close');
   searchOpen = false;
   searchOverlay.classList.remove('visible');
@@ -267,6 +272,7 @@ function moveSearchKey(delta) {
 }
 
 function openSettings() {
+  window.rycadeAttract.reset();
   if (launched || demoGame) return;
   window.rycadeAudio?.play('open');
   closeSearch();
@@ -279,6 +285,7 @@ function openSettings() {
 }
 
 function closeSettings() {
+  window.rycadeAttract.reset();
   if (settingsOpen) window.rycadeAudio?.play('close');
   settingsOpen = false;
   settingsOverlay.classList.remove('visible');
@@ -377,6 +384,12 @@ function settingRow(label, value, action, description = '', sound = 'toggle') {
 
 function renderDisplaySettings() {
   settingsContent.innerHTML = '<h3 class="settings-section-title">DISPLAY</h3>';
+  settingsContent.append(settingRow('Attract mode', settings.attractMinutes ? `${settings.attractMinutes} MIN` : 'OFF', () => {
+    const options = [0, 1, 2, 5];
+    settings.attractMinutes = options[(options.indexOf(settings.attractMinutes) + 1) % options.length];
+    saveSettings();
+    renderSettings();
+  }, 'Cycle game demos after no input. START selects the game on screen.'));
   [
     ['CRT filter', 'scanlines', settings.theme === 'Cover Flow'
       ? 'Scanlines and a soft glass vignette across the whole screen.'
@@ -635,6 +648,7 @@ function renderAboutSettings() {
 }
 
 function playBoot() {
+  window.rycadeAttract.reset();
   const scene = BOOT_SCENES[settings.boot];
   if (!scene) return;
   release();
@@ -657,6 +671,7 @@ function playBoot() {
 }
 
 function closeBoot() {
+  window.rycadeAttract.reset();
   if (!bootOpen) return;
   bootOpen = false;
   bootSession++;
@@ -690,6 +705,7 @@ function handleRemoteMessage(data) {
   if (message.type !== 'open') return;
   const game = GAMES.find(item => item.id === message.gameId);
   if (!game) return;
+  if (window.rycadeAttract.activity()) return;
   closeDemo();
   closeOverlays();
   tab = 0;
@@ -910,6 +926,7 @@ buildSearchKeyboard();
 updateSearchResults();
 setInterval(updateClock, 15000);
 applyRemoteSetting();
+window.rycadeAttract.init();
 window.rycadeFeatures = {
   openSearch,
   openSettings,

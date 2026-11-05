@@ -15,6 +15,8 @@ A static, playable game-library frontend for a four-player arcade cabinet. The l
 - Click or tap a flyer to select it, tap it again or the game screen to launch, and tap while launched to exit.
 - `/` or `S`: search the library; `M`: open settings. Settings persist in the browser.
 - Use the Phone Remote section in settings to scan the pairing QR code and send a game selection from your phone.
+- Attract mode starts after 2 minutes idle and shuffles full-screen game demos without repeats. Settings > Display offers Off / 1 / 2 / 5 minutes. Any input returns to browsing; START selects the game shown without launching it. Attract clips are muted; manual demos keep their existing audio controls. Settings, search, demos, launched games and boot previews suspend the idle countdown. Gamepad buttons/sticks wake it (standard gamepad START is button 9).
+- Reduced motion uses still gameplay snaps and a steady START prompt during attract mode, keeping the same clip-length rotation.
 - Settings > Boot > Play boot now previews the selected scene. Boot scenes are rendered live in `public/boot.js`, clocked to `public/boot/rycade.wav`, with the big reveal on the 4.44s synth hit. Each intro plays once, then holds its title screen with ambient motion until a key or click dismisses it; that input is consumed. Reduced motion shows the finished title screen. Boot audio follows master volume and mute.
 
 ## Demo videos
