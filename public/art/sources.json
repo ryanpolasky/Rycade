@@ -2913,6 +2913,36 @@
           260
         ]
       }
+    },
+    {
+      "id": "dkongjr",
+      "snap": {
+        "path": "art/arc_dkongjr_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Donkey%20Kong%20Junior%20%28US%20set%20F-2%29.png",
+        "upstream": "Named_Snaps/Donkey Kong Junior (US set F-2).png",
+        "size": [
+          224,
+          256
+        ]
+      },
+      "box": {
+        "path": "art/arc_dkongjr_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Donkey%20Kong%20Junior%20%28US%20set%20F-2%29.png",
+        "upstream": "Named_Boxarts/Donkey Kong Junior (US set F-2).png",
+        "size": [
+          512,
+          685
+        ]
+      },
+      "logo": {
+        "path": "art/arc_dkongjr_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Donkey%20Kong%20Junior%20%28US%20set%20F-2%29.png",
+        "upstream": "Named_Logos/Donkey Kong Junior (US set F-2).png",
+        "size": [
+          512,
+          299
+        ]
+      }
     }
   ]
 }
