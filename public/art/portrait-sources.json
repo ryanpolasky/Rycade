@@ -1,0 +1,23 @@
+{
+  "region": "Japan",
+  "artwork": "Original Super Famicom front covers",
+  "sources": [
+    {
+      "url": "https://github.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/tree/master/Named_Boxarts",
+      "files": {
+        "con_smw_Portrait.png": "Super Mario World - Super Mario Bros. 4 (Japan).png",
+        "con_dkc_Portrait.png": "Super Donkey Kong (Japan).png",
+        "con_alttp_Portrait.png": "Zelda no Densetsu - Kamigami no Triforce (Japan).png",
+        "con_sbomber_Portrait.png": "Super Bomberman (Japan).png",
+        "con_contra3_Portrait.png": "Contra Spirits (Japan).png",
+        "con_tmnt4_Portrait.png": "Teenage Mutant Ninja Turtles - Turtles in Time (Japan).png"
+      }
+    },
+    {
+      "url": "https://babysoftmurderhands.com/2012/11/cover-art-super-metroid-super-famicom/",
+      "files": {
+        "con_smetroid_Portrait.png": "https://babysoftmurderhands.com/wp-content/uploads/2012/11/Super-Metroid-SNES-Super-Famicom-Box-Art.jpeg"
+      }
+    }
+  ]
+}

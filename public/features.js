@@ -12,7 +12,8 @@ const SEARCH_KEYS = [
 const SETTINGS_TABS = ['Display', 'Themes', 'Boot', 'Controls', 'Sound', 'Remote', 'About'];
 const DEFAULT_SETTINGS = {
   display: { scanlines: true, backgroundArt: true, controls: true, clock: false },
-  theme: 'Lightbox',
+  theme: 'Cover Flow',
+  palette: 'Classic',
   boot: 'Insert Coin',
   controls: { skimSpeed: 'Normal', letterJump: true },
   sound: { master: 70, navigation: 50, confirm: 60, notifications: 60, muted: false },
@@ -30,7 +31,8 @@ function readSettings() {
   const next = {
     ...saved,
     display: { ...DEFAULT_SETTINGS.display, ...(saved.display || {}) },
-    theme: saved.theme || DEFAULT_SETTINGS.theme,
+    theme: THEME_IDS.has(saved.theme) ? saved.theme : DEFAULT_SETTINGS.theme,
+    palette: PALETTES.some(palette => palette.label === saved.palette) ? saved.palette : DEFAULT_SETTINGS.palette,
     boot: saved.boot || DEFAULT_SETTINGS.boot,
     controls: { ...DEFAULT_SETTINGS.controls, ...(saved.controls || {}) },
     sound: soundSettingsCurrent
@@ -72,7 +74,11 @@ let remoteSocketGeneration = 0;
 let reconnectTimer = 0;
 let reconnectDelay = 1000;
 let toastTimer = 0;
-let bootTimer = 0;
+let bootOpen = false;
+let bootDismissKey = null;
+let bootReturnFocus = null;
+let bootSession = 0;
+const BOOT_SCENES = { 'Insert Coin': 'coin', 'Lights On': 'lights', 'CRT Power-on': 'crt' };
 
 function getPairingCode() {
   let code = '';
@@ -132,7 +138,7 @@ function closeOverlays() {
 }
 
 function openSearch() {
-  if (launched) return;
+  if (launched || demoGame) return;
   window.rycadeAudio?.play('open');
   closeSettings();
   searchOpen = true;
@@ -205,6 +211,7 @@ function selectGame(gameId) {
     return;
   }
   window.rycadeAudio?.play('confirm');
+  closeDemo();
   closeOverlays();
   tab = 0;
   build(game.id);
@@ -260,7 +267,7 @@ function moveSearchKey(delta) {
 }
 
 function openSettings() {
-  if (launched) return;
+  if (launched || demoGame) return;
   window.rycadeAudio?.play('open');
   closeSearch();
   settingsOpen = true;
@@ -371,7 +378,9 @@ function settingRow(label, value, action, description = '', sound = 'toggle') {
 function renderDisplaySettings() {
   settingsContent.innerHTML = '<h3 class="settings-section-title">DISPLAY</h3>';
   [
-    ['Scanlines on CRT', 'scanlines', 'Adds a soft raster to the snap monitor.'],
+    ['CRT filter', 'scanlines', settings.theme === 'Cover Flow'
+      ? 'Scanlines and a soft glass vignette across the whole screen.'
+      : 'Adds a soft raster to the snap monitor.'],
     ['Background art', 'backgroundArt', 'Use the selected game flyer behind the cabinet.'],
     ['Show controls row', 'controls', 'Show controls available for the selected game.'],
     ['Clock in header', 'clock', 'Display the local time beside the wordmark.']
@@ -389,10 +398,9 @@ function renderDisplaySettings() {
 function renderThemeSettings() {
   settingsContent.innerHTML = '<h3 class="settings-section-title">THEMES</h3>';
   const themes = [
-    { label: 'Lightbox', id: 'lightbox', colors: ['#e5dbea', '#17131d'] },
-    { label: 'Rycade TV', id: 'rycade-tv', colors: ['#70ef95', '#151d7a'] },
-    { label: 'Neo Gold', id: 'neo-gold', colors: ['#ffc43d', '#9d1622'] },
-    { label: 'Vector Phosphor', id: 'vector-phosphor', colors: ['#9fffd4', '#09160f'] }
+    { label: 'Cover Flow', id: 'cover-flow', colors: ['#ffd400', '#e4202a'] },
+    { label: 'Shelf', id: 'shelf', colors: ['#ff6b6b', '#2d0711'] },
+    { label: 'Studio', id: 'studio', colors: ['#161618', '#0a84ff'] }
   ];
   themes.forEach(theme => {
     const button = document.createElement('button');
@@ -409,10 +417,9 @@ function renderThemeSettings() {
     name.textContent = theme.label;
     const description = document.createElement('small');
     description.textContent = ({
-      lightbox: 'Flyer lightbox and marquee',
-      'rycade-tv': 'Channel guide and green OSD',
-      'neo-gold': 'MVS roster and arcade BIOS',
-      'vector-phosphor': 'Starfield and phosphor vectors'
+      'cover-flow': 'Flyer carousel with colors drawn from the selected artwork',
+      shelf: 'Row of game spines with the selected one face-out',
+      studio: 'Dark gallery with unframed artwork'
     })[theme.id];
     label.append(name, description);
     const state = document.createElement('b');
@@ -427,14 +434,50 @@ function renderThemeSettings() {
     });
     settingsContent.append(button);
   });
-}
 
-function bootAsset(name) {
-  return ({
-    'Insert Coin': '/boot/boot_coin.gif',
-    'Lights On': '/boot/boot_lights.gif',
-    'CRT Power-on': '/boot/boot_crt.gif'
-  })[name];
+  if (settings.theme === 'Cover Flow') {
+    const note = document.createElement('p');
+    note.className = 'settings-note';
+    note.textContent = 'Palette automatically follows the selected game artwork.';
+    settingsContent.append(note);
+    return;
+  }
+
+  const paletteTitle = document.createElement('h3');
+  paletteTitle.className = 'settings-section-title';
+  paletteTitle.textContent = 'PALETTE';
+  settingsContent.append(paletteTitle);
+  PALETTES.forEach(palette => {
+    const active = settings.palette === palette.label;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = `setting-action theme-choice${active ? ' selected' : ''}`;
+    button.setAttribute('aria-pressed', String(active));
+    const swatch = document.createElement('span');
+    swatch.className = 'palette-swatch';
+    const colors = settings.theme === 'Shelf' && palette.id === 'classic'
+      ? ['#ff6b6b', '#620f20', '#2d0711']
+      : palette.colors;
+    colors.forEach(color => {
+      const stripe = document.createElement('i');
+      stripe.style.background = color;
+      swatch.append(stripe);
+    });
+    const name = document.createElement('strong');
+    name.className = 'theme-copy';
+    name.textContent = palette.label;
+    const state = document.createElement('b');
+    state.textContent = active ? 'ACTIVE' : 'SELECT';
+    button.append(swatch, name, state);
+    button.addEventListener('click', () => {
+      window.rycadeAudio?.play('confirm');
+      settings.palette = palette.label;
+      saveSettings();
+      applyRycadePalette(palette.label);
+      renderSettings();
+    });
+    settingsContent.append(button);
+  });
 }
 
 function renderBootSettings() {
@@ -446,8 +489,9 @@ function renderBootSettings() {
     button.type = 'button';
     button.className = `boot-choice${settings.boot === label ? ' selected' : ''}`;
     button.setAttribute('aria-pressed', String(settings.boot === label));
-    const asset = bootAsset(label);
-    button.innerHTML = `${asset ? `<img src="${asset}" alt="">` : '<span class="no-preview">—</span>'}<span>${label}</span>`;
+    const scene = BOOT_SCENES[label];
+    button.innerHTML = `${scene ? '<canvas width="320" height="240"></canvas>' : '<span class="no-preview">OFF</span>'}<span>${label}</span>`;
+    if (scene) window.rycadeBoot?.thumb(button.querySelector('canvas'), scene);
     button.addEventListener('click', () => {
       window.rycadeAudio?.play('toggle');
       settings.boot = label;
@@ -457,7 +501,7 @@ function renderBootSettings() {
     choices.append(button);
   });
   settingsContent.append(choices);
-  const play = settingRow('Play boot now', '▶', playBoot, 'Preview the selected animation for five seconds.', 'confirm');
+  const play = settingRow('Play boot now', '▶', playBoot, 'Preview with boot audio; press any button to close.', 'confirm');
   play.disabled = settings.boot === 'None';
   if (play.disabled) play.classList.add('disabled');
   settingsContent.append(play);
@@ -482,13 +526,15 @@ function renderControlsSettings() {
 function renderSoundSettings() {
   settingsContent.innerHTML = '<h3 class="settings-section-title">SOUND</h3><p class="settings-intro">Levels apply when you release the control.</p>';
   const soundSets = ['cabinet', 'chip', 'neo'];
-  settingsContent.append(settingRow('Sound set', settings.soundSet[0].toUpperCase() + settings.soundSet.slice(1), () => {
+  const soundSetNames = { cabinet: 'Cabinet', chip: 'Chip', neo: 'Neo' };
+  const soundSetInfo = { cabinet: 'soft console UI', chip: '8-bit NES', neo: 'FM arcade' };
+  settingsContent.append(settingRow('Sound set', soundSetNames[settings.soundSet], () => {
     const nextIndex = (soundSets.indexOf(settings.soundSet) + 1) % soundSets.length;
     settings.soundSet = soundSets[nextIndex];
     saveSettings();
     renderSettings();
     window.rycadeAudio?.play('confirm');
-  }, 'Choose the cabinet’s sound character.', null));
+  }, `${soundSetNames[settings.soundSet]}: ${soundSetInfo[settings.soundSet]}`, null));
   [
     ['Master', 'master', 'Overall cabinet output.'],
     ['Navigation', 'navigation', 'List movement, letters and tabs.'],
@@ -585,21 +631,41 @@ function renderRemoteSettings() {
 }
 
 function renderAboutSettings() {
-  settingsContent.innerHTML = '<h3 class="settings-section-title">ABOUT</h3><p class="about-version">VERSION 1.1.0</p><p class="settings-note">Rycade web prototype</p>';
+  settingsContent.innerHTML = '<h3 class="settings-section-title">ABOUT</h3><p class="about-version">VERSION 1.2.0</p><p class="settings-note">Rycade web prototype</p>';
 }
 
 function playBoot() {
-  const asset = bootAsset(settings.boot);
-  if (!asset) return;
-  clearTimeout(bootTimer);
-  const image = bootScreen.querySelector('img');
-  image.src = `${asset}?play=${Date.now()}`;
+  const scene = BOOT_SCENES[settings.boot];
+  if (!scene) return;
+  release();
+  if (!bootOpen) bootReturnFocus = document.activeElement;
+  bootOpen = true;
+  const session = ++bootSession;
   bootScreen.classList.add('visible');
   bootScreen.setAttribute('aria-hidden', 'false');
-  bootTimer = setTimeout(() => {
-    bootScreen.classList.remove('visible');
-    bootScreen.setAttribute('aria-hidden', 'true');
-  }, 5000);
+  bootScreen.focus();
+  let origin = null;
+  window.rycadeBoot.play(bootScreen.querySelector('.boot-canvas'), scene, {
+    clock: () => origin === null ? null : performance.now() / 1000 - origin,
+    still: matchMedia('(prefers-reduced-motion: reduce)').matches,
+    scanlines: !(settings.theme === 'Cover Flow' && settings.display.scanlines)
+  });
+  const startClock = delay => {
+    if (session === bootSession) origin = performance.now() / 1000 + (delay || 0);
+  };
+  Promise.resolve(window.rycadeAudio?.playBootAudio()).then(startClock, () => startClock(0));
+}
+
+function closeBoot() {
+  if (!bootOpen) return;
+  bootOpen = false;
+  bootSession++;
+  window.rycadeBoot.stop();
+  window.rycadeAudio?.stopBootAudio();
+  bootScreen.classList.remove('visible');
+  bootScreen.setAttribute('aria-hidden', 'true');
+  if (bootReturnFocus?.isConnected) bootReturnFocus.focus({ preventScroll: true });
+  bootReturnFocus = null;
 }
 
 function activateSetting() {
@@ -608,7 +674,7 @@ function activateSetting() {
 
 function setToast(game) {
   clearTimeout(toastTimer);
-  toast.textContent = `FROM YOUR PHONE · ${game.title} · SHOOT TO PLAY`;
+  toast.textContent = `FROM YOUR PHONE · ${game.title} · START TO PLAY`;
   toast.classList.add('visible');
   window.rycadeAudio?.play('notification');
   toastTimer = setTimeout(() => toast.classList.remove('visible'), 5000);
@@ -624,6 +690,7 @@ function handleRemoteMessage(data) {
   if (message.type !== 'open') return;
   const game = GAMES.find(item => item.id === message.gameId);
   if (!game) return;
+  closeDemo();
   closeOverlays();
   tab = 0;
   build(game.id);
@@ -692,11 +759,11 @@ function handleSearchKey(event) {
     } else {
       moveSearchResult(key === 'ArrowDown' ? 1 : -1);
     }
-  } else if (key === 'Enter') {
+  } else if (key === CABINET_KEYS.start) {
     event.preventDefault();
     if (searchArea === 'keyboard') pressSearchKey(SEARCH_KEYS[searchKeyIndex]);
     else if (searchGames[searchResultIndex]) selectGame(searchGames[searchResultIndex].id);
-  } else if ((key === 'x' || key === 'X') && !inputFocused) {
+  } else if (key === CABINET_KEYS.shoot && !inputFocused) {
     event.preventDefault();
     if (searchArea === 'keyboard') pressSearchKey(SEARCH_KEYS[searchKeyIndex]);
     else if (searchGames[searchResultIndex]) selectGame(searchGames[searchResultIndex].id);
@@ -745,13 +812,16 @@ function handleSettingsKey(event) {
     settingsActionIndex = 0;
     refreshSettingsFocus();
     settingsActions()[0]?.focus();
+  } else if (key === 'ArrowLeft' && settingsArea === 'tabs') {
+    event.preventDefault();
+    closeSettings();
   } else if (key === 'ArrowLeft' && settingsArea === 'options') {
     event.preventDefault();
     window.rycadeAudio?.play('tab');
     settingsArea = 'tabs';
     refreshSettingsFocus();
     settingsNav.children[settingsTabIndex]?.focus();
-  } else if (key === 'Enter' || key.toLowerCase() === 'x') {
+  } else if (key === CABINET_KEYS.start || key === CABINET_KEYS.shoot) {
     event.preventDefault();
     if (settingsArea === 'tabs') {
       settingsArea = 'options';
@@ -771,8 +841,19 @@ window.addEventListener('keyup', event => {
 });
 
 applyRycadeTheme(settings.theme);
+applyRycadePalette(settings.palette);
 
 window.addEventListener('keydown', event => {
+  const code = event.code || event.key;
+  if (code === bootDismissKey || bootOpen) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if (bootOpen && !event.repeat) {
+      bootDismissKey = code;
+      closeBoot();
+    }
+    return;
+  }
   if (searchOpen) {
     handleSearchKey(event);
     return;
@@ -781,7 +862,7 @@ window.addEventListener('keydown', event => {
     handleSettingsKey(event);
     return;
   }
-  if (event.repeat || launched) return;
+  if (event.repeat || launched || demoGame) return;
   const key = event.key.toLowerCase();
   if (event.key === '/' || key === 's') {
     event.preventDefault();
@@ -794,10 +875,22 @@ window.addEventListener('keydown', event => {
   }
 }, true);
 
+window.addEventListener('keyup', event => {
+  if ((event.code || event.key) !== bootDismissKey) return;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  bootDismissKey = null;
+}, true);
+window.addEventListener('blur', () => { bootDismissKey = null; });
+bootScreen.addEventListener('click', event => {
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  closeBoot();
+});
+
 document.querySelector('#search-open').addEventListener('click', openSearch);
 document.querySelector('#settings-open').addEventListener('click', openSettings);
 document.querySelector('#search-close').addEventListener('click', closeSearch);
-document.querySelector('#settings-close').addEventListener('click', closeSettings);
 searchInput.addEventListener('input', () => {
   searchResultIndex = 0;
   updateSearchResults();

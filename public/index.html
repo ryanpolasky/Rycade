@@ -8,15 +8,14 @@
     <title>RYCADE · Game Library</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="features.css">
-    <link rel="stylesheet" href="themes/lightbox.css">
-    <link rel="stylesheet" href="themes/rycade-tv.css">
-    <link rel="stylesheet" href="themes/neo-gold.css">
-    <link rel="stylesheet" href="themes/vector-phosphor.css">
+    <link rel="stylesheet" href="themes/cover-flow.css">
+    <link rel="stylesheet" href="themes/shelf.css">
+    <link rel="stylesheet" href="themes/studio.css">
   </head>
-  <body data-theme="lightbox">
+  <body data-theme="cover-flow">
     <main id="stage">
       <div class="bg" aria-hidden="true">
         <div class="pair" id="backdrop">
@@ -80,7 +79,7 @@
           <div class="search-workspace">
             <div class="keyboard-column">
               <div id="search-keyboard" class="search-keyboard" aria-label="On-screen keyboard"></div>
-              <div class="feature-help">ARROWS MOVE · X / ENTER SELECT</div>
+              <div class="feature-help">STICK MOVES · SHOOT SELECTS · DONE CLOSES</div>
             </div>
             <div class="results-column">
               <div id="search-results" class="search-results" aria-live="polite"></div>
@@ -92,23 +91,30 @@
         <div class="feature-panel settings-panel">
           <header class="feature-heading">
             <div><small>RYCADE · CONFIGURATION</small><h2>SETTINGS</h2></div>
-            <button id="settings-close" class="panel-close" type="button" aria-label="Close settings">×</button>
           </header>
           <div class="settings-workspace">
             <nav id="settings-nav" class="settings-nav" aria-label="Settings sections"></nav>
             <div id="settings-content" class="settings-content"></div>
           </div>
-          <footer class="settings-footer">▲▼ move · ◀▶ change · SHOOT select · ESC close</footer>
+          <footer class="settings-footer">▲▼ move · ▶ open · SHOOT select · ◀ back / close</footer>
         </div>
       </section>
       <div id="remote-toast" class="remote-toast" role="status" aria-live="polite"></div>
-      <div id="boot-screen" class="boot-screen" aria-hidden="true"><img alt="Boot animation"></div>
+      <section id="demo-overlay" class="demo-overlay" role="dialog" aria-modal="true" aria-label="Game demo" aria-hidden="true" tabindex="-1" hidden>
+        <video id="demo-video" playsinline loop preload="none" disablepictureinpicture></video>
+        <div class="demo-hud"><span class="demo-title"></span><span>SHOOT back <b>START play</b></span></div>
+      </section>
+      <div id="boot-screen" class="boot-screen" role="dialog" aria-modal="true" aria-label="Cabinet boot screen" aria-hidden="true" tabindex="-1">
+        <canvas class="boot-canvas" width="1280" height="960"></canvas>
+      </div>
+      <div class="crt" aria-hidden="true"><i class="crt-roll"></i></div>
     </main>
     <script src="games.js"></script>
     <script src="themes.js"></script>
     <script src="audio.js"></script>
     <script src="app.js"></script>
     <script src="vendor/qrcode-generator.js"></script>
+    <script src="boot.js"></script>
     <script src="features.js"></script>
   </body>
 </html>

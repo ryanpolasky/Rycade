@@ -374,7 +374,7 @@
   cursor: pointer;
 }
 
-.boot-choice img {
+.boot-choice :is(img, canvas) {
   width: 108px;
   height: 72px;
   object-fit: cover;
@@ -466,6 +466,7 @@
   display: none;
   align-items: center;
   justify-content: center;
+  outline: 0;
   background: #000;
 }
 
@@ -473,10 +474,9 @@
   display: flex;
 }
 
-.boot-screen img {
+.boot-canvas {
   width: 100%;
   height: 100%;
-  object-fit: cover;
 }
 
 #stage.no-bg-art .bg,
@@ -614,6 +614,7 @@
   height: 40px;
   flex: 0 0 auto;
   border: 1px solid rgba(255, 255, 255, .65);
+  background: linear-gradient(135deg, var(--swatch-a) 0 50%, var(--swatch-b) 50%);
 }
 
 .theme-choice .theme-copy {
@@ -720,7 +721,7 @@
   min-height: 120px;
 }
 
-.boot-choice img {
+.boot-choice :is(img, canvas) {
   width: 112px;
   height: 72px;
   object-fit: cover;

@@ -1,0 +1,960 @@
+body[data-theme="cover-flow"] {
+  --pa: var(--art-primary, #c4c4cc);
+  --pb: var(--art-secondary, #414149);
+  --pc: var(--art-dark, #17171c);
+  --ink: #f4f1ea;
+  --dim: #a9a39a;
+  --px: "Press Start 2P", monospace;
+  --ease: cubic-bezier(.2, .85, .25, 1);
+  color: var(--ink);
+  background: #000;
+}
+
+body[data-theme="cover-flow"] #stage {
+  background: #050407;
+  font-family: "Barlow Condensed", sans-serif;
+}
+
+body[data-theme="cover-flow"] .bg {
+  inset: -100px;
+  opacity: 0;
+  transition: opacity 600ms ease;
+}
+
+body[data-theme="cover-flow"] #stage.cf-settled .bg {
+  opacity: 1;
+}
+
+body[data-theme="cover-flow"] .bg img {
+  filter: blur(50px) brightness(.3) saturate(1.4);
+  transform: scale(1.18);
+}
+
+body[data-theme="cover-flow"] .dim,
+body[data-theme="cover-flow"] .spill,
+body[data-theme="cover-flow"] .lb,
+body[data-theme="cover-flow"] #roster,
+body[data-theme="cover-flow"] .hint {
+  display: none;
+}
+
+body[data-theme="cover-flow"] #theme-layout {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+}
+
+body[data-theme="cover-flow"] .cf-carousel {
+  position: absolute;
+  inset: 0;
+}
+
+body[data-theme="cover-flow"] .topbar {
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 25;
+  height: 84px;
+  padding: 0 96px 0 36px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 3px solid var(--pa);
+  background: #000;
+}
+
+body[data-theme="cover-flow"] .wm {
+  position: static;
+  gap: 18px;
+  padding-bottom: 6px;
+  color: var(--pa);
+  font-family: var(--px);
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: 3px;
+  text-shadow: 3px 3px 0 var(--pb), 6px 6px 0 var(--pc);
+}
+
+body[data-theme="cover-flow"] #clock {
+  color: var(--ink);
+  font-family: var(--px);
+  font-size: 11px;
+  letter-spacing: 0;
+  text-shadow: none;
+}
+
+body[data-theme="cover-flow"] .topbar-tabs {
+  margin: 0 0 6px;
+  gap: 8px;
+}
+
+body[data-theme="cover-flow"] #tabs {
+  display: flex;
+  gap: 8px;
+}
+
+body[data-theme="cover-flow"] .tabs button,
+body[data-theme="cover-flow"] #settings-open,
+body[data-theme="cover-flow"] #search-open {
+  height: 34px;
+  border: 3px solid #3a383f;
+  border-radius: 0;
+  background: #000;
+  color: #c9c4ba;
+  box-shadow: none;
+}
+
+body[data-theme="cover-flow"] .tabs button {
+  padding: 0 10px;
+  font-family: var(--px);
+  font-size: 10px;
+  letter-spacing: 0;
+}
+
+body[data-theme="cover-flow"] .tabs sup {
+  margin-left: 6px;
+  color: var(--pa);
+  font-size: 8px;
+  vertical-align: 1px;
+  opacity: 1;
+}
+
+body[data-theme="cover-flow"] .tabs button.fav-tab {
+  color: var(--pa);
+}
+
+body[data-theme="cover-flow"] .tabs button.on {
+  border-color: var(--pa);
+  background: var(--pa);
+  color: #000;
+}
+
+body[data-theme="cover-flow"] .tabs button.on sup {
+  color: var(--pb);
+}
+
+body[data-theme="cover-flow"] #search-open,
+body[data-theme="cover-flow"] #settings-open {
+  width: 34px;
+  color: var(--pa);
+}
+
+body[data-theme="cover-flow"] #settings-open {
+  position: absolute;
+  top: 50%;
+  right: 36px;
+  transform: translateY(calc(-50% - 3px));
+}
+
+body[data-theme="cover-flow"] #settings-open svg,
+body[data-theme="cover-flow"] #search-open svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+}
+
+body[data-theme="cover-flow"] .cf-screen {
+  position: absolute;
+  left: 0;
+  top: 84px;
+  width: 1280px;
+  height: 876px;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 42%, rgba(30, 26, 36, .7), transparent 72%);
+}
+
+body[data-theme="cover-flow"] .cf-screen::after {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 518px;
+  bottom: 0;
+  border-top: 2px solid #2c2933;
+  background: linear-gradient(180deg, rgba(14, 13, 18, .9), rgba(3, 3, 5, .95));
+  content: "";
+  transition: opacity 500ms ease;
+}
+
+body[data-theme="cover-flow"] #stage.cf-settled .cf-screen::after {
+  opacity: 0;
+}
+
+body[data-theme="cover-flow"] .cf-track,
+body[data-theme="cover-flow"] .cf-browse-meta {
+  z-index: 1;
+}
+
+body[data-theme="cover-flow"] .cf-screen::before {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 66% 50%, color-mix(in srgb, var(--pa) 40%, transparent), transparent 70%);
+  content: "";
+  opacity: 0;
+  transition: opacity 500ms ease;
+}
+
+body[data-theme="cover-flow"] #stage.cf-settled .cf-screen::before {
+  opacity: .8;
+}
+
+body[data-theme="cover-flow"] .cf-track {
+  position: absolute;
+  left: 50%;
+  top: 328px;
+  width: 0;
+  height: 0;
+  perspective: 1100px;
+  transform-style: preserve-3d;
+}
+
+body[data-theme="cover-flow"] .cf-card {
+  position: absolute;
+  left: -140px;
+  top: -186px;
+  width: 280px;
+  height: 372px;
+  cursor: pointer;
+  pointer-events: auto;
+  transform-style: preserve-3d;
+  transition: transform 480ms var(--ease), opacity 380ms ease, filter 380ms ease;
+}
+
+body[data-theme="cover-flow"] .cf-card[data-side="left"] {
+  transform: translateX(calc(var(--off) * 92px - 140px)) translateZ(-140px) rotateY(58deg);
+  filter: brightness(.55);
+}
+
+body[data-theme="cover-flow"] .cf-card[data-side="right"] {
+  transform: translateX(calc(var(--off) * 92px + 140px)) translateZ(-140px) rotateY(-58deg);
+  filter: brightness(.55);
+}
+
+body[data-theme="cover-flow"] .cf-card.active {
+  transform: translate3d(0, -8px, 100px);
+}
+
+body[data-theme="cover-flow"] .cf-card.far {
+  opacity: 0;
+  pointer-events: none;
+}
+
+body[data-theme="cover-flow"] #stage.cf-settled .cf-card.active {
+  transform: translate3d(-380px, 6px, 40px) rotateY(16deg) scale(.92);
+}
+
+body[data-theme="cover-flow"] #stage.cf-settled .cf-card[data-side="left"] {
+  transform: translateX(calc(var(--off) * 92px - 640px)) translateZ(-320px) rotateY(64deg);
+  opacity: 0;
+}
+
+body[data-theme="cover-flow"] #stage.cf-settled .cf-card[data-side="right"] {
+  transform: translateX(calc(var(--off) * 92px + 760px)) translateZ(-320px) rotateY(-64deg);
+  opacity: 0;
+}
+
+body[data-theme="cover-flow"] #stage.cf-collapsing .cf-card {
+  transition-delay: 160ms;
+}
+
+body[data-theme="cover-flow"] .cf-sleeve {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 8px;
+  overflow: hidden;
+  border: 4px solid #000;
+  background: #111014;
+  box-shadow: 0 0 0 3px #3a383f, 0 24px 50px rgba(0, 0, 0, .8);
+  transition: box-shadow 300ms ease;
+}
+
+body[data-theme="cover-flow"] .cf-card.active .cf-sleeve {
+  box-shadow: 0 0 0 4px var(--pa), 0 0 0 8px #000, 0 0 40px color-mix(in srgb, var(--glow) 70%, transparent), 0 28px 60px rgba(0, 0, 0, .85);
+}
+
+body[data-theme="cover-flow"] .cf-art-blur {
+  position: absolute;
+  inset: -24px;
+  width: calc(100% + 48px);
+  height: calc(100% + 48px);
+  object-fit: cover;
+  filter: blur(20px) brightness(.45) saturate(1.4);
+}
+
+body[data-theme="cover-flow"] .cf-art {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, .6));
+}
+
+body[data-theme="cover-flow"] .cf-sys-pill,
+body[data-theme="cover-flow"] .cf-year,
+body[data-theme="cover-flow"] .cf-fav {
+  position: absolute;
+  z-index: 2;
+  padding: 6px 7px 5px;
+  border: 3px solid #000;
+  font-family: var(--px);
+  font-size: 9px;
+  line-height: 1;
+}
+
+body[data-theme="cover-flow"] .cf-sys-pill {
+  left: 12px;
+  bottom: 12px;
+  background: var(--pb);
+  color: #fff;
+}
+
+body[data-theme="cover-flow"] .cf-year {
+  right: 12px;
+  bottom: 12px;
+  background: var(--pa);
+  color: #000;
+}
+
+body[data-theme="cover-flow"] .cf-fav {
+  top: 12px;
+  right: 12px;
+  display: none;
+  padding: 5px 6px 4px;
+  background: var(--pa);
+  color: var(--pb);
+  font-size: 14px;
+}
+
+body[data-theme="cover-flow"] .cf-card.fav .cf-fav {
+  display: block;
+}
+
+body[data-theme="cover-flow"] .cf-reflect {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 8px);
+  height: 110px;
+  overflow: hidden;
+  opacity: .16;
+  transform: scaleY(-1);
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(180deg, transparent 30%, #000);
+  mask-image: linear-gradient(180deg, transparent 30%, #000);
+  transition: opacity 380ms ease;
+}
+
+body[data-theme="cover-flow"] .cf-reflect img {
+  width: 100%;
+  height: 372px;
+  object-fit: cover;
+  filter: blur(2px);
+}
+
+body[data-theme="cover-flow"] #stage.cf-settled .cf-reflect {
+  opacity: 0;
+}
+
+body[data-theme="cover-flow"] .cf-browse-meta {
+  position: absolute;
+  left: 50%;
+  top: 586px;
+  width: 1000px;
+  transform: translateX(-50%);
+  text-align: center;
+  transition: opacity 300ms ease, transform 360ms var(--ease);
+}
+
+body[data-theme="cover-flow"] #stage.is-empty .cf-browse-meta {
+  top: 330px;
+}
+
+body[data-theme="cover-flow"] #stage.cf-collapsing .cf-browse-meta {
+  transition-delay: 300ms;
+}
+
+body[data-theme="cover-flow"] #stage.cf-settled .cf-browse-meta {
+  opacity: 0;
+  transform: translate(-50%, 24px);
+}
+
+body[data-theme="cover-flow"] .cf-stage-title,
+body[data-theme="cover-flow"] .cap h1,
+body[data-theme="cover-flow"] #mtext {
+  overflow: hidden;
+  color: var(--pa);
+  font-family: var(--px);
+  font-weight: 400;
+  line-height: 1.5;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-shadow: 3px 3px 0 var(--pb), 5px 5px 0 #000;
+}
+
+body[data-theme="cover-flow"] .cf-stage-title {
+  padding-bottom: 6px;
+  font-size: 28px;
+}
+
+body[data-theme="cover-flow"] .cf-stage-title.fav .mq-txt::before {
+  margin-right: 14px;
+  content: "★";
+}
+
+body[data-theme="cover-flow"] .cf-browse-meta p {
+  margin-top: 6px;
+  color: var(--ink);
+  font-family: var(--px);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+body[data-theme="cover-flow"] .cf-scrollbar {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 30px;
+  width: 900px;
+  height: 48px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transform: translateX(-50%);
+  border: 3px solid #3a383f;
+  background: #000;
+  font-family: var(--px);
+  font-size: 11px;
+}
+
+body[data-theme="cover-flow"] .cf-count {
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+body[data-theme="cover-flow"] .cf-rail {
+  display: flex;
+  flex: 1 1 auto;
+  gap: 3px;
+  height: 14px;
+}
+
+body[data-theme="cover-flow"] .cf-rail i {
+  flex: 1 1 0;
+  background: #26232b;
+  transition: background 120ms ease;
+}
+
+body[data-theme="cover-flow"] .cf-rail i.lit {
+  background: color-mix(in srgb, var(--pa) 38%, #000);
+}
+
+body[data-theme="cover-flow"] .cf-rail i.on {
+  background: var(--pa);
+}
+
+body[data-theme="cover-flow"] .cf-coin {
+  color: var(--pa);
+  white-space: nowrap;
+}
+
+body[data-theme="cover-flow"] .cf-demo-hint {
+  color: var(--dim);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  body[data-theme="cover-flow"] .cf-coin {
+    animation: cf-blink 1.1s steps(2, start) infinite;
+  }
+}
+
+@keyframes cf-blink {
+  to { visibility: hidden; }
+}
+
+body[data-theme="cover-flow"] .mq,
+body[data-theme="cover-flow"] .cap,
+body[data-theme="cover-flow"] .ctl,
+body[data-theme="cover-flow"] #monitor {
+  z-index: 4;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 280ms ease, transform 400ms var(--ease);
+}
+
+body[data-theme="cover-flow"] .mq {
+  transform: translateY(-30px);
+  transition-delay: 90ms;
+}
+
+body[data-theme="cover-flow"] .cap {
+  transform: translateX(50px);
+  transition-delay: 60ms;
+}
+
+body[data-theme="cover-flow"] #monitor {
+  transform: translateX(70px) scale(.9);
+  transition-delay: 30ms;
+}
+
+body[data-theme="cover-flow"] .ctl {
+  transform: translateX(90px);
+  transition-delay: 0ms;
+}
+
+body[data-theme="cover-flow"] #stage.cf-settled .mq,
+body[data-theme="cover-flow"] #stage.cf-settled .cap,
+body[data-theme="cover-flow"] #stage.cf-settled .ctl,
+body[data-theme="cover-flow"] #stage.cf-settled #monitor {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+
+body[data-theme="cover-flow"] #stage.cf-settled .mq { transition-delay: 140ms; }
+body[data-theme="cover-flow"] #stage.cf-settled .cap { transition-delay: 190ms; }
+body[data-theme="cover-flow"] #stage.cf-settled #monitor { transition-delay: 240ms; }
+body[data-theme="cover-flow"] #stage.cf-settled .ctl { transition-delay: 290ms; }
+
+body[data-theme="cover-flow"] .mq {
+  left: 460px;
+  top: 116px;
+  width: 776px;
+  height: 92px;
+  display: grid;
+  place-items: center;
+  padding: 0 20px;
+  border: 0;
+  background: radial-gradient(ellipse at center, color-mix(in srgb, var(--pa) 45%, #0c0a10), #050407 80%);
+  box-shadow: 0 0 0 4px #000, 0 0 0 8px var(--pa), 0 0 0 12px #000;
+}
+
+body[data-theme="cover-flow"] #stage.is-fav .mq::after {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 7px 4px;
+  border: 3px solid #000;
+  background: var(--pb);
+  color: var(--pa);
+  content: "★ FAVORITE";
+  font-family: var(--px);
+  font-size: 10px;
+}
+
+body[data-theme="cover-flow"] .mq img {
+  max-width: 640px;
+  max-height: 76px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+body[data-theme="cover-flow"] #mtext {
+  max-width: 100%;
+  padding: 0 0 6px;
+  font-size: 24px;
+}
+
+body[data-theme="cover-flow"] .cap {
+  left: 460px;
+  top: 232px;
+  width: 776px;
+}
+
+body[data-theme="cover-flow"] .cap h1 {
+  padding-bottom: 4px;
+  font-size: 22px;
+}
+
+body[data-theme="cover-flow"] #stage[data-has-logo="false"] .cap h1 {
+  display: none;
+}
+
+body[data-theme="cover-flow"] .cap p {
+  display: flex;
+  margin-top: 8px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+body[data-theme="cover-flow"] .cap .mi {
+  padding: 6px 8px 5px;
+  border: 3px solid #000;
+  background: #2a292e;
+  color: var(--ink);
+  font-family: var(--px);
+  font-size: 10px;
+  line-height: 1;
+}
+
+body[data-theme="cover-flow"] .cap .mi:first-child {
+  background: var(--pb);
+  color: #fff;
+}
+
+body[data-theme="cover-flow"] .cap .mi:nth-child(2) {
+  background: var(--pa);
+  color: #000;
+}
+
+body[data-theme="cover-flow"] .cap .mi + .mi::before {
+  content: none;
+}
+
+body[data-theme="cover-flow"] .cap .mi-seats {
+  display: inline-flex;
+  margin-left: auto;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+body[data-theme="cover-flow"] .mi-seats b {
+  padding: 6px 7px 5px;
+  border: 3px solid #000;
+  background: #1b1a1f;
+  color: #4a4750;
+  font-weight: 400;
+}
+
+body[data-theme="cover-flow"] .mi-seats b.on {
+  background: #1db954;
+  color: #000;
+}
+
+body[data-theme="cover-flow"] #monitor {
+  left: 460px;
+  top: 318px;
+  width: 560px;
+  height: 424px;
+  padding: 8px;
+  border: 0;
+  border-radius: 0;
+  background: #000;
+  box-shadow: 0 0 0 4px #3a383f, 0 0 0 8px #000, 0 20px 50px rgba(0, 0, 0, .7);
+}
+
+body[data-theme="cover-flow"] #stage[data-has-logo="false"] #monitor,
+body[data-theme="cover-flow"] #stage[data-has-logo="false"] .ctl {
+  top: 284px;
+}
+
+body[data-theme="cover-flow"] #monitor .s {
+  border-radius: 0;
+  background: #000;
+}
+
+body[data-theme="cover-flow"] #monitor img {
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+body[data-theme="cover-flow"] #monitor.live {
+  z-index: 30;
+  left: 0;
+  top: 0;
+  width: 1280px;
+  height: 960px;
+  padding: 0;
+  box-shadow: none;
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+  transition: left 420ms var(--ease), top 420ms var(--ease), width 420ms var(--ease), height 420ms var(--ease), padding 420ms var(--ease);
+}
+
+body[data-theme="cover-flow"] #now-playing {
+  border: 4px solid #000;
+  background: var(--pa);
+  color: #000;
+  font-family: var(--px);
+  font-size: 16px;
+  box-shadow: 0 0 0 4px var(--pb);
+}
+
+body[data-theme="cover-flow"] .ctl {
+  left: 1044px;
+  top: 318px;
+  bottom: auto;
+  width: 192px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+body[data-theme="cover-flow"] .ctl > span {
+  display: grid;
+  padding: 12px;
+  align-items: center;
+  column-gap: 12px;
+  border: 3px solid #3a383f;
+  background: #000;
+  grid-template-columns: 22px 1fr;
+}
+
+body[data-theme="cover-flow"] .ctl i {
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  border: 3px solid #000;
+  border-radius: 0;
+  grid-row: span 2;
+  box-shadow: 0 0 0 2px #3a383f;
+}
+
+body[data-theme="cover-flow"] .ctl span > span {
+  color: var(--pa);
+  font-family: var(--px);
+  font-size: 10px;
+}
+
+body[data-theme="cover-flow"] .ctl em {
+  margin-top: 6px;
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 19px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+body[data-theme="cover-flow"] .letter {
+  z-index: 36;
+  border: 0;
+  border-radius: 0;
+  background: #000;
+  box-shadow: 0 0 0 6px var(--pa), 0 0 0 10px #000;
+}
+
+body[data-theme="cover-flow"] .letter b {
+  color: var(--pa);
+  font-family: var(--px);
+  font-size: 84px;
+  font-weight: 400;
+  text-shadow: 6px 6px 0 var(--pb);
+}
+
+body[data-theme="cover-flow"] .letter small {
+  color: var(--ink);
+  font-family: var(--px);
+  font-size: 10px;
+}
+
+body[data-theme="cover-flow"] .feature-overlay {
+  background: rgba(0, 0, 0, .82);
+  backdrop-filter: none;
+}
+
+body[data-theme="cover-flow"] .feature-panel {
+  border: 0;
+  border-radius: 0;
+  background: #0c0b0e;
+  box-shadow: 0 0 0 6px var(--pa), 0 0 0 10px #000;
+}
+
+body[data-theme="cover-flow"] .feature-heading h2,
+body[data-theme="cover-flow"] .settings-section-title {
+  color: var(--pa);
+  font-family: var(--px);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-shadow: 3px 3px 0 var(--pb);
+}
+
+body[data-theme="cover-flow"] .feature-heading h2 {
+  margin-top: 12px;
+  font-size: 30px;
+}
+
+body[data-theme="cover-flow"] .settings-section-title {
+  font-size: 13px;
+}
+
+body[data-theme="cover-flow"] .feature-heading small,
+body[data-theme="cover-flow"] .feature-help,
+body[data-theme="cover-flow"] .settings-footer,
+body[data-theme="cover-flow"] .settings-note,
+body[data-theme="cover-flow"] .setting-copy small,
+body[data-theme="cover-flow"] .theme-copy small {
+  color: var(--dim);
+}
+
+body[data-theme="cover-flow"] .panel-close,
+body[data-theme="cover-flow"] #search-query,
+body[data-theme="cover-flow"] .search-key,
+body[data-theme="cover-flow"] .search-result,
+body[data-theme="cover-flow"] .setting-action,
+body[data-theme="cover-flow"] .settings-nav button,
+body[data-theme="cover-flow"] .boot-choice,
+body[data-theme="cover-flow"] .sound-row,
+body[data-theme="cover-flow"] .remote-settings {
+  border: 3px solid #3a383f;
+  border-radius: 0;
+  color: var(--ink);
+  background: #000;
+  box-shadow: none;
+}
+
+body[data-theme="cover-flow"] .search-key.focus,
+body[data-theme="cover-flow"] .search-result.selected,
+body[data-theme="cover-flow"] .setting-action.focus,
+body[data-theme="cover-flow"] .settings-nav button.active,
+body[data-theme="cover-flow"] .settings-nav button.focus,
+body[data-theme="cover-flow"] .boot-choice.selected,
+body[data-theme="cover-flow"] .boot-choice.focus {
+  border-color: var(--pa);
+  background: #1b1a1f;
+}
+
+body[data-theme="cover-flow"] .search-result img {
+  object-fit: contain;
+  background: #000;
+}
+
+body[data-theme="cover-flow"] .setting-action > b,
+body[data-theme="cover-flow"] .mixer-value,
+body[data-theme="cover-flow"] .pairing-label,
+body[data-theme="cover-flow"] .setting-toggle.on b {
+  border-color: #3a383f;
+  border-radius: 0;
+  color: var(--pa);
+}
+
+body[data-theme="cover-flow"] .theme-choice.selected > b,
+body[data-theme="cover-flow"] .setting-toggle.on i::after,
+body[data-theme="cover-flow"] .setting-segments i.selected {
+  border-color: #000;
+  color: #000;
+  background: var(--pa);
+}
+
+body[data-theme="cover-flow"] .setting-toggle i,
+body[data-theme="cover-flow"] .setting-segments {
+  border-color: var(--pa);
+  border-radius: 0;
+}
+
+body[data-theme="cover-flow"] .mixer-slider {
+  accent-color: var(--pa);
+}
+
+body[data-theme="cover-flow"] .theme-swatch {
+  border: 3px solid #000;
+  border-radius: 0;
+}
+
+body[data-theme="cover-flow"] #pairing-qr {
+  border: 4px solid var(--pa);
+  border-radius: 0;
+  background: #fff;
+}
+
+body[data-theme="cover-flow"] .remote-toast {
+  border: 0;
+  border-radius: 0;
+  color: #000;
+  background: var(--pa);
+  box-shadow: 0 0 0 4px #000;
+  font-family: var(--px);
+  font-size: 12px;
+  line-height: 1.6;
+  top: auto;
+  bottom: 104px;
+}
+
+body[data-theme="cover-flow"] .bar-focus {
+  outline: 3px solid var(--pa);
+  outline-offset: 4px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  body[data-theme="cover-flow"] .bar-focus {
+    animation: cf-bar-pulse 900ms steps(2, start) infinite;
+  }
+}
+
+@keyframes cf-bar-pulse {
+  to { outline-color: var(--pb); }
+}
+
+body[data-theme="cover-flow"] .palette-swatch {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  border: 3px solid #000;
+}
+
+body[data-theme="cover-flow"] .palette-swatch i {
+  flex: 1 1 0;
+}
+
+body[data-theme="cover-flow"] #stage:not(.no-scanlines) .crt {
+  position: absolute;
+  z-index: 150;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+body[data-theme="cover-flow"] .crt::before {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(180deg, rgba(0, 0, 0, .19) 0 1px, rgba(0, 0, 0, .03) 1px 2px, transparent 2px 3px);
+  content: "";
+  mix-blend-mode: multiply;
+}
+
+body[data-theme="cover-flow"] .crt-roll {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -24%;
+  height: 24%;
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, .014) 55%, rgba(255, 255, 255, .026) 80%, transparent);
+  mix-blend-mode: screen;
+  opacity: 0;
+}
+
+body[data-theme="cover-flow"] .crt::after {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 130% 140% at 50% 50%, transparent 55%, rgba(0, 0, 0, .22) 78%, rgba(0, 0, 0, .62) 100%),
+    radial-gradient(ellipse 34% 22% at 16% 8%, rgba(255, 255, 255, .03), transparent 70%);
+  box-shadow: inset 0 0 120px 26px rgba(0, 0, 0, .5);
+  content: "";
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  body[data-theme="cover-flow"] .crt-roll {
+    opacity: 1;
+    animation: crt-roll 9s linear infinite;
+  }
+
+  body[data-theme="cover-flow"] .crt::before {
+    animation: crt-breathe 7s ease-in-out infinite;
+  }
+}
+
+body[data-theme="cover-flow"] #stage:has(.boot-screen.visible, .feature-overlay.visible .boot-options) .crt-roll {
+  display: none;
+}
+
+@keyframes crt-roll {
+  to { transform: translateY(520%); }
+}
+
+@keyframes crt-breathe {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .86; }
+}

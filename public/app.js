@@ -1,5 +1,7 @@
-const SYSTEMS = ['ALL', 'ARCADE', 'GENESIS', 'SNES', 'NES'];
+const SYSTEMS = ['ALL', 'FAVORITES', '2P+', '4P', 'ARCADE', 'GENESIS', 'SNES', 'NES'];
+const FAVORITES_KEY = 'rycade.favorites';
 const CONTROL_COLORS = ['#ffd21f', '#ff2a2a', '#2a7bff'];
+const CABINET_KEYS = { start: 'Enter', shoot: '1', pass: '2', turbo: '3' };
 const keyFor = title => title.replace(/^the /i, '').toUpperCase();
 const letterOf = game => {
   const character = keyFor(game.title)[0];
@@ -11,15 +13,73 @@ const list = document.querySelector('#list');
 const tabs = document.querySelector('#tabs');
 const monitor = document.querySelector('#monitor');
 const letterOverlay = document.querySelector('#letter');
+const demoOverlay = document.querySelector('#demo-overlay');
+const demoVideo = document.querySelector('#demo-video');
 let tab = 0;
 let view = [];
 let index = 0;
 let holding = null;
 let launched = false;
+let demoGame = null;
+let demoSession = 0;
+let demoFrameCallback = 0;
 let statusTimer = 0;
 let swipe = null;
 let ignoreClick = false;
-let tvStaticTimer = 0;
+let settleTimer = 0;
+let collapseTimer = 0;
+let barFocus = false;
+let barIndex = 0;
+const favorites = new Set(readFavorites());
+
+function readFavorites() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
+    return Array.isArray(saved) ? saved.filter(id => GAMES.some(game => game.id === id)) : [];
+  } catch {
+    return [];
+  }
+}
+
+function isFavorite(id) {
+  return favorites.has(id);
+}
+
+function inSystem(game, system) {
+  if (system === 'ALL') return true;
+  if (system === 'FAVORITES') return favorites.has(game.id);
+  if (system === '2P+') return game.players >= 2;
+  if (system === '4P') return game.players >= 4;
+  return game.sys === system;
+}
+
+function flashToast(text) {
+  const toast = document.querySelector('#remote-toast');
+  toast.textContent = text;
+  toast.classList.add('visible');
+  clearTimeout(flashToast.timer);
+  flashToast.timer = setTimeout(() => toast.classList.remove('visible'), 1800);
+}
+
+function toggleFavorite() {
+  const game = view[index];
+  if (!game || launched || demoGame) return;
+  if (favorites.has(game.id)) favorites.delete(game.id);
+  else favorites.add(game.id);
+  try {
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify([...favorites]));
+  } catch {}
+  window.rycadeAudio?.play('toggle');
+  flashToast(`${favorites.has(game.id) ? '★ ADDED TO' : 'REMOVED FROM'} FAVORITES · ${game.title.toUpperCase()}`);
+  if (stage.dataset.detailId === game.id) stage.classList.toggle('is-fav', favorites.has(game.id));
+  if (SYSTEMS[tab] === 'FAVORITES') {
+    const neighbour = view[index + 1] || view[index - 1];
+    build(favorites.has(game.id) ? game.id : neighbour?.id);
+  } else {
+    renderTabs();
+    layout(index, game, view);
+  }
+}
 
 function fit() {
   const scale = Math.min(innerWidth / 1280, innerHeight / 960);
@@ -28,20 +88,22 @@ function fit() {
 
 function renderTabs() {
   tabs.replaceChildren(...SYSTEMS.map((system, systemIndex) => {
-    const count = systemIndex === 0 ? GAMES.length : GAMES.filter(game => game.sys === system).length;
+    const count = GAMES.filter(game => inSystem(game, system)).length;
     const button = document.createElement('button');
     button.type = 'button';
-    button.className = systemIndex === tab ? 'on' : '';
-    button.innerHTML = `${system}<sup>${count}</sup>`;
+    button.className = `${systemIndex === tab ? 'on' : ''}${system === 'FAVORITES' ? ' fav-tab' : ''}`;
+    button.innerHTML = `${system === 'FAVORITES' ? '★ FAVORITES' : system}<sup>${count}</sup>`;
+    button.setAttribute('aria-label', `${system} ${count}`);
     button.addEventListener('click', () => changeTab(systemIndex));
     return button;
   }));
+  paintBar();
 }
 
 function build(keepId) {
   const system = SYSTEMS[tab];
   view = GAMES
-    .filter(game => system === 'ALL' || game.sys === system)
+    .filter(game => inSystem(game, system))
     .sort((a, b) => keyFor(a.title) < keyFor(b.title) ? -1 : 1);
   const retainedIndex = keepId ? view.findIndex(game => game.id === keepId) : -1;
   index = retainedIndex >= 0 ? retainedIndex : 0;
@@ -57,34 +119,27 @@ function build(keepId) {
 }
 
 function changeTab(nextTab) {
-  if (launched || nextTab === tab) return;
+  if (launched || demoGame || nextTab === tab) return;
   window.rycadeAudio?.play('tab');
   const selectedId = view[index] && view[index].id;
-  const selectedGame = GAMES.find(game => game.id === selectedId);
-  if (document.body.dataset.theme === 'rycade-tv' && selectedGame &&
-      (nextTab === 0 || selectedGame.sys === SYSTEMS[nextTab])) flashTvStatic();
   tab = nextTab;
   build(selectedId);
-}
-
-function flashTvStatic() {
-  stage.classList.remove('channel-static');
-  void stage.offsetWidth;
-  stage.classList.add('channel-static');
-  clearTimeout(tvStaticTimer);
-  tvStaticTimer = setTimeout(() => stage.classList.remove('channel-static'), 120);
 }
 
 function updatePair(id, source) {
   const pair = document.querySelector(`#${id}`);
   if (!source) return;
   const active = pair.querySelector('img.active');
-  if (active.getAttribute('src') === source) return;
+  if (active.getAttribute('src') === source && active.complete && active.naturalWidth) {
+    tagAspect(pair, active);
+    return;
+  }
   const next = [...pair.querySelectorAll('img')].find(image => image !== active);
   const token = (Number(pair.dataset.token) || 0) + 1;
   pair.dataset.token = token;
   next.onload = () => {
     if (Number(pair.dataset.token) !== token) return;
+    tagAspect(pair, next);
     next.classList.add('active');
     active.classList.remove('active');
   };
@@ -93,6 +148,13 @@ function updatePair(id, source) {
   };
   next.src = source;
   if (next.complete && next.naturalWidth) next.onload();
+}
+
+function tagAspect(pair, img) {
+  const ratio = img.naturalWidth / (img.naturalHeight || 1);
+  const kind = ratio < 0.88 ? 'portrait' : ratio > 1.38 ? 'wide' : 'standard';
+  pair.dataset.aspect = kind;
+  img.dataset.aspect = kind;
 }
 
 function renderControls(game) {
@@ -115,13 +177,20 @@ function renderControls(game) {
 
 function place(instant = false) {
   const game = view[index];
-  if (!game) return;
+  if (!game) {
+    clearTimeout(settleTimer);
+    stage.classList.remove('cf-settled');
+    stage.classList.add('is-empty');
+    layout(-1, null, view);
+    return;
+  }
+  stage.classList.remove('is-empty');
   layout(index, game, view);
   const rows = [...list.children];
   rows.forEach((row, rowIndex) => {
     const distance = Math.min(Math.abs(rowIndex - index), 5);
     row.classList.toggle('on', rowIndex === index);
-    row.style.opacity = [1, .62, .42, .3, .2, .13][distance];
+    row.style.setProperty('--row-op', [1, .72, .54, .4, .3, .22][distance]);
   });
   const totalHeight = rows.reduce((height, row) => height + row.offsetHeight, 0);
   const selectedCenter = rows.slice(0, index).reduce((height, row) => height + row.offsetHeight, 0) + rows[index].offsetHeight / 2;
@@ -130,27 +199,45 @@ function place(instant = false) {
   list.style.transition = instant ? 'none' : '';
   list.style.transform = `translateY(${-offset}px)`;
 
-  const previousId = stage.dataset.gameId;
-  if (previousId && previousId !== game.id && document.body.dataset.theme === 'rycade-tv') {
-    flashTvStatic();
-  }
   stage.dataset.gameId = game.id;
+  if (!THEME_DEFERS_DETAIL.has(document.body.dataset.theme)) renderDetail(game);
+  scheduleSettle();
+  requestAnimationFrame(syncMarquees);
+}
+
+function renderDetail(game) {
+  if (!game || stage.dataset.detailId === game.id) return;
+  stage.dataset.detailId = game.id;
+  stage.classList.toggle('is-fav', favorites.has(game.id));
+  stage.dataset.hasLogo = game.logo ? 'true' : 'false';
   stage.style.setProperty('--acc', game.color);
   stage.style.setProperty('--sp', `rgb(${game.spill.join(',')})`);
   stage.style.setProperty('--spa', `rgba(${game.spill.join(',')},.28)`);
-  document.querySelector('#title').textContent = game.title.toUpperCase();
-  document.querySelector('#sub').innerHTML = `${game.pub.toUpperCase()} · ${game.year} · 1–${game.players} PLAYERS`;
+  const titleEl = document.querySelector('#title');
+  titleEl.innerHTML = `<span class="mq-txt">${game.title.toUpperCase()}</span>`;
+  const seats = [1, 2, 3, 4].map(seat => `<b class="${seat <= game.players ? 'on' : ''}">P${seat}</b>`).join('');
+  document.querySelector('#sub').innerHTML = [
+    game.sys,
+    game.year,
+    game.pub.toUpperCase()
+  ].map(part => `<span class="mi">${part}</span>`).join('') + `<span class="mi mi-seats">${seats}</span>`;
 
   const logo = document.querySelector('#mlogo');
   const fallback = document.querySelector('#mtext');
   if (game.logo) {
+    logo.onload = () => {
+      const r = logo.naturalWidth / (logo.naturalHeight || 1);
+      logo.dataset.shape = r < 1.35 ? 'badge' : r > 3.2 ? 'banner' : 'standard';
+    };
     logo.src = game.logo;
+    if (logo.complete && logo.naturalWidth) logo.onload();
     logo.style.display = '';
     fallback.style.display = 'none';
   } else {
     logo.removeAttribute('src');
+    logo.removeAttribute('data-shape');
     logo.style.display = 'none';
-    fallback.textContent = game.title.toUpperCase();
+    fallback.innerHTML = `<span class="mq-txt">${game.title.toUpperCase()}</span>`;
     fallback.style.display = '';
   }
 
@@ -158,10 +245,44 @@ function place(instant = false) {
   updatePair('flyer', game.box);
   updatePair('screen', game.snap);
   renderControls(game);
-  layout(index, game, view);
+  requestAnimationFrame(syncMarquees);
+}
+
+function scheduleSettle() {
+  clearTimeout(settleTimer);
+  if (stage.classList.contains('cf-settled')) {
+    stage.classList.add('cf-collapsing');
+    clearTimeout(collapseTimer);
+    collapseTimer = setTimeout(() => stage.classList.remove('cf-collapsing'), 420);
+  }
+  stage.classList.remove('cf-settled');
+  settleTimer = setTimeout(() => {
+    if (holding) return;
+    renderDetail(view[index]);
+    stage.classList.add('cf-settled');
+  }, 650);
+}
+
+function syncMarquees() {
+  stage.querySelectorAll('.mq-txt').forEach(inner => {
+    const host = inner.parentElement;
+    if (!host) return;
+    host.classList.remove('is-marquee');
+    host.style.removeProperty('--mq-dist');
+    host.style.removeProperty('--mq-dur');
+    const overflow = inner.scrollWidth - host.clientWidth;
+    if (overflow > 3) {
+      const dist = overflow + 18;
+      const dur = Math.max(4.2, Math.min(12, dist / 34));
+      host.style.setProperty('--mq-dist', `${-dist}px`);
+      host.style.setProperty('--mq-dur', `${dur.toFixed(2)}s`);
+      host.classList.add('is-marquee');
+    }
+  });
 }
 
 function step(direction, pitchMultiplier = 1) {
+  if (launched || demoGame) return;
   const nextIndex = Math.max(0, Math.min(view.length - 1, index + direction));
   if (nextIndex !== index) {
     if (window.__rycadeAudioDebug) window.__rycadeAudioDebug.stepsTaken++;
@@ -172,6 +293,7 @@ function step(direction, pitchMultiplier = 1) {
 }
 
 function letterJump(direction) {
+  if (!view.length) return;
   const currentLetter = letterOf(view[index]);
   let nextIndex = index;
   if (direction > 0) {
@@ -220,8 +342,64 @@ function release() {
   place();
 }
 
+function openDemo() {
+  if (launched || demoGame || !view[index]) return;
+  release();
+  demoGame = view[index];
+  const session = ++demoSession;
+  const game = demoGame;
+  const unavailable = () => {
+    if (session !== demoSession) return;
+    closeDemo();
+    window.rycadeAudio?.play('error');
+    flashToast(`DEMO VIDEO UNAVAILABLE: ${game.title.toUpperCase()}`);
+  };
+  demoOverlay.querySelector('.demo-title').textContent = game.title;
+  demoOverlay.classList.remove('ready');
+  demoOverlay.hidden = false;
+  const reveal = () => {
+    if (session !== demoSession) return;
+    demoFrameCallback = 0;
+    demoOverlay.classList.add('ready');
+    demoOverlay.setAttribute('aria-hidden', 'false');
+    demoOverlay.focus();
+  };
+  demoVideo.onplaying = () => {
+    if (session !== demoSession || demoOverlay.classList.contains('ready')) return;
+    if (demoVideo.requestVideoFrameCallback) demoFrameCallback = demoVideo.requestVideoFrameCallback(reveal);
+    else requestAnimationFrame(reveal);
+  };
+  demoVideo.onerror = unavailable;
+  const sound = window.rycadeFeatures?.settings.sound;
+  demoVideo.muted = Boolean(sound?.muted);
+  demoVideo.volume = (sound?.master ?? 70) / 100;
+  demoVideo.src = game.video || `/videos/${game.id}.mp4`;
+  demoVideo.play().catch(unavailable);
+}
+
+function closeDemo() {
+  if (!demoGame) return;
+  demoGame = null;
+  demoSession++;
+  demoVideo.onplaying = null;
+  demoVideo.onerror = null;
+  if (demoFrameCallback) demoVideo.cancelVideoFrameCallback(demoFrameCallback);
+  demoFrameCallback = 0;
+  demoVideo.pause();
+  demoVideo.removeAttribute('src');
+  demoVideo.load();
+  demoOverlay.hidden = true;
+  demoOverlay.classList.remove('ready');
+  demoOverlay.setAttribute('aria-hidden', 'true');
+  demoOverlay.blur();
+}
+
 function launch() {
-  if (launched) return;
+  if (launched || !view[index]) return;
+  closeDemo();
+  release();
+  if (barFocus) setBarFocus(false);
+  renderDetail(view[index]);
   window.rycadeAudio?.play('launch');
   launched = true;
   monitor.classList.add('live', 'show-status');
@@ -237,6 +415,48 @@ function exitGame() {
   clearTimeout(statusTimer);
 }
 
+function barItems() {
+  return [document.querySelector('#search-open'), ...tabs.children, document.querySelector('#settings-open')];
+}
+
+function paintBar() {
+  barItems().forEach((item, itemIndex) => item.classList.toggle('bar-focus', barFocus && itemIndex === barIndex));
+}
+
+function setBarFocus(on) {
+  barFocus = on;
+  if (on) barIndex = tab + 1;
+  stage.classList.toggle('bar-active', on);
+  window.rycadeAudio?.play(on ? 'open' : 'close');
+  paintBar();
+}
+
+function moveBar(direction) {
+  const items = barItems();
+  const next = barIndex + direction;
+  if (next < 0 || next >= items.length) return;
+  barIndex = next;
+  window.rycadeAudio?.play('move');
+  paintBar();
+}
+
+function pressBar() {
+  const tabIndex = barIndex - 1;
+  if (tabIndex < 0 || tabIndex >= SYSTEMS.length) {
+    barItems()[barIndex]?.click();
+    return;
+  }
+  changeTab(tabIndex);
+  setBarFocus(false);
+}
+
+function settleNow() {
+  if (!view[index]) return;
+  clearTimeout(settleTimer);
+  renderDetail(view[index]);
+  stage.classList.add('cf-settled');
+}
+
 function moveByGesture(delta) {
   const count = Math.max(1, Math.floor(Math.abs(delta) / 50));
   const direction = delta < 0 ? 1 : -1;
@@ -248,30 +468,71 @@ document.addEventListener('rycade-theme-change', () => place(true));
 window.addEventListener('keydown', event => {
   if (event.repeat) return;
   const pressed = event.key.toLowerCase();
+  const start = event.key === CABINET_KEYS.start;
+  const shoot = event.key === CABINET_KEYS.shoot;
   if (launched) {
-    if (event.key === 'Escape' || event.key === 'Enter') exitGame();
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      exitGame();
+    }
     return;
   }
-  if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+  if (demoGame) {
+    event.preventDefault();
+    if (start) launch();
+    else if (shoot || event.key === 'Escape') {
+      closeDemo();
+      window.rycadeAudio?.play('back');
+    }
+    return;
+  }
+  const sideways = THEME_SIDEWAYS.has(document.body.dataset.theme);
+  if (start) {
+    event.preventDefault();
+    launch();
+    return;
+  }
+  if (pressed === 'f') {
+    event.preventDefault();
+    toggleFavorite();
+    return;
+  }
+  if (barFocus) {
+    event.preventDefault();
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') moveBar(event.key === 'ArrowRight' ? 1 : -1);
+    else if (event.key === 'ArrowDown' || event.key === 'Escape') setBarFocus(false);
+    else if (shoot) pressBar();
+    return;
+  }
+  if (sideways && event.key === 'ArrowUp') {
+    event.preventDefault();
+    setBarFocus(true);
+  } else if (sideways && event.key === 'ArrowDown') {
+    event.preventDefault();
+    settleNow();
+  } else if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
     event.preventDefault();
     if (!holding) hold(event.key === 'ArrowDown' ? 1 : -1);
+  } else if (sideways && (event.key === 'ArrowRight' || event.key === 'ArrowLeft')) {
+    event.preventDefault();
+    if (!holding) hold(event.key === 'ArrowRight' ? 1 : -1);
   } else if (event.key === 'ArrowRight' || pressed === 'c') {
     changeTab((tab + 1) % SYSTEMS.length);
   } else if (event.key === 'ArrowLeft' || pressed === 'z') {
     changeTab((tab + SYSTEMS.length - 1) % SYSTEMS.length);
-  } else if (pressed === 'x' || event.key === 'Enter' || event.key === ' ') {
+  } else if (shoot) {
     event.preventDefault();
-    launch();
+    openDemo();
   }
 });
 window.addEventListener('keyup', event => {
-  if (event.key === 'ArrowDown' || event.key === 'ArrowUp') release();
+  if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'].includes(event.key)) release();
 });
 window.addEventListener('blur', release);
 
 roster.addEventListener('click', event => {
   const row = event.target.closest('.lr');
-  if (!row || ignoreClick || launched) {
+  if (!row || ignoreClick || launched || demoGame) {
     ignoreClick = false;
     return;
   }
