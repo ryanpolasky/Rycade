@@ -2883,6 +2883,36 @@
           293
         ]
       }
+    },
+    {
+      "id": "dkong3",
+      "snap": {
+        "path": "art/arc_dkong3_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Donkey%20Kong%203%20%28US%29.png",
+        "upstream": "Named_Snaps/Donkey Kong 3 (US).png",
+        "size": [
+          224,
+          256
+        ]
+      },
+      "box": {
+        "path": "art/arc_dkong3_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Donkey%20Kong%203%20%28US%29.png",
+        "upstream": "Named_Boxarts/Donkey Kong 3 (US).png",
+        "size": [
+          512,
+          730
+        ]
+      },
+      "logo": {
+        "path": "art/arc_dkong3_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Donkey%20Kong%203%20%28US%29.png",
+        "upstream": "Named_Logos/Donkey Kong 3 (US).png",
+        "size": [
+          512,
+          260
+        ]
+      }
     }
   ]
 }

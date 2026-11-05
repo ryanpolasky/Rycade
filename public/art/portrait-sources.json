@@ -620,6 +620,13 @@
         "arc_smashtv_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Smash%20T.V.%20%28rev%208.00%29.png"
       },
       "note": "Named_Boxarts/Smash T.V. (rev 8.00).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Donkey%20Kong%203%20%28US%29.png",
+      "files": {
+        "arc_dkong3_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Donkey%20Kong%203%20%28US%29.png"
+      },
+      "note": "Named_Boxarts/Donkey Kong 3 (US).png"
     }
   ]
 }
