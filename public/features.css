@@ -479,6 +479,123 @@
   height: 100%;
 }
 
+#attract-overlay {
+  position: absolute;
+  z-index: 80;
+  inset: 0;
+  overflow: hidden;
+  color: var(--ink, #f3eee6);
+  background: #000;
+  --attract-accent: var(--pa, var(--st-accent, #ffd400));
+}
+
+#attract-overlay[hidden] {
+  display: none;
+}
+
+#attract-overlay video,
+.attract-still {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.attract-still {
+  display: none;
+}
+
+#stage:not(.no-scanlines) #attract-overlay::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(transparent 0 3px, rgba(0, 0, 0, .16) 3px 4px);
+  content: "";
+}
+
+body[data-theme="cover-flow"] #attract-overlay::after {
+  display: none;
+}
+
+.attract-card {
+  position: absolute;
+  right: 32px;
+  bottom: 32px;
+  left: 32px;
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr) 250px;
+  align-items: center;
+  gap: 28px;
+  padding: 20px 28px;
+  border: 3px solid var(--attract-accent);
+  background: #0c0b10;
+}
+
+.attract-cover {
+  width: 112px;
+  height: 150px;
+  object-fit: contain;
+}
+
+.attract-copy small,
+.attract-prompt {
+  font-family: "Press Start 2P", monospace;
+}
+
+.attract-copy small {
+  font-size: 10px;
+  color: var(--attract-accent);
+}
+
+.attract-title {
+  margin: 12px 0 6px;
+  font-size: 38px;
+  line-height: 1.05;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.attract-players {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.attract-prompt {
+  text-align: center;
+  color: var(--attract-accent);
+}
+
+.attract-prompt b {
+  font-size: 18px;
+  animation: attract-blink 1.1s steps(1) infinite;
+}
+
+.attract-prompt small {
+  display: block;
+  margin-top: 20px;
+  font-size: 9px;
+  color: var(--ink, #f3eee6);
+}
+
+@keyframes attract-blink {
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #attract-overlay video {
+    display: none;
+  }
+
+  .attract-still {
+    display: block;
+  }
+
+  .attract-prompt b {
+    animation: none;
+  }
+}
+
 #stage.no-bg-art .bg,
 #stage.no-bg-art .dim {
   opacity: 0;

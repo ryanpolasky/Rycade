@@ -100,6 +100,19 @@
         </div>
       </section>
       <div id="remote-toast" class="remote-toast" role="status" aria-live="polite"></div>
+      <section id="attract-overlay" aria-label="Attract mode" hidden>
+        <video playsinline muted preload="none" disablepictureinpicture></video>
+        <img class="attract-still" alt="Gameplay preview">
+        <div class="attract-card">
+          <img class="attract-cover" alt="Game cover">
+          <div class="attract-copy">
+            <small>RYCADE · ON THE CABINET</small>
+            <h1 class="attract-title"></h1>
+            <span class="attract-players"></span>
+          </div>
+          <div class="attract-prompt"><b>PRESS START</b><small>ANY INPUT TO BROWSE</small></div>
+        </div>
+      </section>
       <section id="demo-overlay" class="demo-overlay" role="dialog" aria-modal="true" aria-label="Game demo" aria-hidden="true" tabindex="-1" hidden>
         <video id="demo-video" playsinline loop preload="none" disablepictureinpicture></video>
         <div class="demo-hud"><span class="demo-title"></span><span>SHOOT back <b>START play</b></span></div>
@@ -112,6 +125,7 @@
     <script src="games.js"></script>
     <script src="themes.js"></script>
     <script src="audio.js"></script>
+    <script src="attract.js"></script>
     <script src="app.js"></script>
     <script src="vendor/qrcode-generator.js"></script>
     <script src="boot.js"></script>
