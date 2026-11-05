@@ -851,6 +851,34 @@
         "arc_jjack_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Jumping%20Jack.png"
       },
       "note": "Named_Boxarts/Jumping Jack.png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Super%20Puzzle%20Fighter%20II%20Turbo%20%28USA%20960620%29.png",
+      "files": {
+        "arc_spf2t_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Super%20Puzzle%20Fighter%20II%20Turbo%20%28USA%20960620%29.png"
+      },
+      "note": "Named_Boxarts/Super Puzzle Fighter II Turbo (USA 960620).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Van-Van%20Car.png",
+      "files": {
+        "arc_vanvan_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Van-Van%20Car.png"
+      },
+      "note": "Named_Boxarts/Van-Van Car.png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Congo%20Bongo%20%28Rev%20C%2C%202%20board%20stack%29.png",
+      "files": {
+        "arc_congo_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Congo%20Bongo%20%28Rev%20C%2C%202%20board%20stack%29.png"
+      },
+      "note": "Named_Boxarts/Congo Bongo (Rev C, 2 board stack).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/19XX_%20The%20War%20Against%20Destiny%20%28USA%20951207%29.png",
+      "files": {
+        "arc_19xx_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/19XX_%20The%20War%20Against%20Destiny%20%28USA%20951207%29.png"
+      },
+      "note": "Named_Boxarts/19XX_ The War Against Destiny (USA 951207).png"
     }
   ]
 }

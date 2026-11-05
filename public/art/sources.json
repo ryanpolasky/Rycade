@@ -3873,6 +3873,126 @@
           175
         ]
       }
+    },
+    {
+      "id": "spf2t",
+      "snap": {
+        "path": "art/arc_spf2t_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Super%20Puzzle%20Fighter%20II%20Turbo%20%28USA%20960620%29.png",
+        "upstream": "Named_Snaps/Super Puzzle Fighter II Turbo (USA 960620).png",
+        "size": [
+          384,
+          224
+        ]
+      },
+      "box": {
+        "path": "art/arc_spf2t_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Super%20Puzzle%20Fighter%20II%20Turbo%20%28USA%20960620%29.png",
+        "upstream": "Named_Boxarts/Super Puzzle Fighter II Turbo (USA 960620).png",
+        "size": [
+          222,
+          287
+        ]
+      },
+      "logo": {
+        "path": "art/arc_spf2t_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Super%20Puzzle%20Fighter%20II%20Turbo%20%28Europe%20960529%29.png",
+        "upstream": "Named_Logos/Super Puzzle Fighter II Turbo (Europe 960529).png",
+        "size": [
+          400,
+          261
+        ]
+      }
+    },
+    {
+      "id": "vanvan",
+      "snap": {
+        "path": "art/arc_vanvan_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Van-Van%20Car.png",
+        "upstream": "Named_Snaps/Van-Van Car.png",
+        "size": [
+          224,
+          256
+        ]
+      },
+      "box": {
+        "path": "art/arc_vanvan_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Van-Van%20Car.png",
+        "upstream": "Named_Boxarts/Van-Van Car.png",
+        "size": [
+          512,
+          723
+        ]
+      },
+      "logo": {
+        "path": "art/arc_vanvan_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Van-Van%20Car.png",
+        "upstream": "Named_Logos/Van-Van Car.png",
+        "size": [
+          400,
+          88
+        ]
+      }
+    },
+    {
+      "id": "congo",
+      "snap": {
+        "path": "art/arc_congo_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Congo%20Bongo%20%28Rev%20C%2C%202%20board%20stack%29.png",
+        "upstream": "Named_Snaps/Congo Bongo (Rev C, 2 board stack).png",
+        "size": [
+          224,
+          256
+        ]
+      },
+      "box": {
+        "path": "art/arc_congo_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Congo%20Bongo%20%28Rev%20C%2C%202%20board%20stack%29.png",
+        "upstream": "Named_Boxarts/Congo Bongo (Rev C, 2 board stack).png",
+        "size": [
+          512,
+          672
+        ]
+      },
+      "logo": {
+        "path": "art/arc_congo_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Congo%20Bongo%20%28Rev%20C%2C%202%20board%20stack%29.png",
+        "upstream": "Named_Logos/Congo Bongo (Rev C, 2 board stack).png",
+        "size": [
+          480,
+          280
+        ]
+      }
+    },
+    {
+      "id": "19xx",
+      "snap": {
+        "path": "art/arc_19xx_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/19XX_%20The%20War%20Against%20Destiny%20%28USA%20951207%29.png",
+        "upstream": "Named_Snaps/19XX_ The War Against Destiny (USA 951207).png",
+        "size": [
+          224,
+          384
+        ]
+      },
+      "box": {
+        "path": "art/arc_19xx_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/19XX_%20The%20War%20Against%20Destiny%20%28USA%20951207%29.png",
+        "upstream": "Named_Boxarts/19XX_ The War Against Destiny (USA 951207).png",
+        "size": [
+          512,
+          714
+        ]
+      },
+      "logo": {
+        "path": "art/arc_19xx_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/19XX_%20The%20War%20Against%20Destiny%20%28Europe%20960104%29.png",
+        "upstream": "Named_Logos/19XX_ The War Against Destiny (Europe 960104).png",
+        "size": [
+          400,
+          161
+        ]
+      }
     }
   ]
 }
