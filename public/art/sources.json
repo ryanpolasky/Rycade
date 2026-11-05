@@ -2793,6 +2793,36 @@
           228
         ]
       }
+    },
+    {
+      "id": "qix",
+      "snap": {
+        "path": "art/arc_qix_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Qix%20%28Rev%202%29.png",
+        "upstream": "Named_Snaps/Qix (Rev 2).png",
+        "size": [
+          256,
+          256
+        ]
+      },
+      "box": {
+        "path": "art/arc_qix_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Qix%20%28Rev%202%29.png",
+        "upstream": "Named_Boxarts/Qix (Rev 2).png",
+        "size": [
+          512,
+          665
+        ]
+      },
+      "logo": {
+        "path": "art/arc_qix_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Qix%20%28Rev%202%29.png",
+        "upstream": "Named_Logos/Qix (Rev 2).png",
+        "size": [
+          512,
+          140
+        ]
+      }
     }
   ]
 }

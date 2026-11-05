@@ -18,6 +18,7 @@ All rows use digital controls; 1–3 independent gameplay actions except retaine
 
 | Title | Players | Exact set | Parent / clone; controls and caveats |
 | --- | ---: | --- | --- |
+| Qix | 2 | [`qix`](https://github.com/mamedev/mame/blob/master/src/mame/taito/qix.cpp) | parent (Rev 2), Taito 1981; TURBO: unused; SHOOT: Fast Draw; PASS: Slow Draw. Two players alternate, not simultaneous; no multitap. Four-way digital movement: restrict/filter diagonals on the eight-way stick. Use the matching MAME core release's DAT; FBNeo requires its own matching set, not an interchangeable MAME ZIP. Not the `qix2` Qix II (Tournament) clone. |
 | BurgerTime | 2 | [`btime`](https://github.com/mamedev/mame/blob/master/src/mame/dataeast/btime.cpp) | parent (Data East set 1), 1982; TURBO: unused; SHOOT: Pepper; PASS: unused. Two players alternate, not simultaneous; no multitap. Four-way digital movement: restrict/filter diagonals on the eight-way stick. Use the matching MAME core release's DAT; FBNeo requires its own matching set, not an interchangeable MAME ZIP. Not the `btimem` Midway clone or DECO Cassette version. |
 | NBA Jam T.E. | 4 | [`nbajamte`](https://github.com/mamedev/mame/blob/master/src/mame/williams/midtunit.cpp) | parent; TURBO: Turbo; SHOOT: Shoot / Block; PASS: Pass / Steal.  |
 | Michael Jackson's Moonwalker | 3 | [`mwalk`](https://github.com/mamedev/mame/blob/master/src/mame/sega/segas18.cpp) | parent; TURBO: unused; SHOOT: Attack; PASS: Magic.  |
