@@ -3693,6 +3693,186 @@
           188
         ]
       }
+    },
+    {
+      "id": "crimfghtu",
+      "snap": {
+        "path": "art/arc_crimfghtu_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Crime%20Fighters%20%28US%204%20players%29.png",
+        "upstream": "Named_Snaps/Crime Fighters (US 4 players).png",
+        "size": [
+          320,
+          224
+        ]
+      },
+      "box": {
+        "path": "art/arc_crimfghtu_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Crime%20Fighters%20%28US%204%20players%29.png",
+        "upstream": "Named_Boxarts/Crime Fighters (US 4 players).png",
+        "size": [
+          512,
+          681
+        ]
+      },
+      "logo": {
+        "path": "art/arc_crimfghtu_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Crime%20Fighters%20%28World%202%20players%29.png",
+        "upstream": "Named_Logos/Crime Fighters (World 2 players).png",
+        "size": [
+          512,
+          310
+        ]
+      }
+    },
+    {
+      "id": "klax",
+      "snap": {
+        "path": "art/arc_klax_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Klax%20%28version%206%29.png",
+        "upstream": "Named_Snaps/Klax (version 6).png",
+        "size": [
+          336,
+          240
+        ]
+      },
+      "box": {
+        "path": "art/arc_klax_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Klax%20%28version%206%29.png",
+        "upstream": "Named_Boxarts/Klax (version 6).png",
+        "size": [
+          512,
+          722
+        ]
+      },
+      "logo": {
+        "path": "art/arc_klax_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Klax%20%28version%206%29.png",
+        "upstream": "Named_Logos/Klax (version 6).png",
+        "size": [
+          400,
+          150
+        ]
+      }
+    },
+    {
+      "id": "pitfight",
+      "snap": {
+        "path": "art/arc_pitfight_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Pit%20Fighter%20%28rev%209%29.png",
+        "upstream": "Named_Snaps/Pit Fighter (rev 9).png",
+        "size": [
+          336,
+          240
+        ]
+      },
+      "box": {
+        "path": "art/arc_pitfight_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Pit%20Fighter%20%28rev%209%29.png",
+        "upstream": "Named_Boxarts/Pit Fighter (rev 9).png",
+        "size": [
+          512,
+          659
+        ]
+      },
+      "logo": {
+        "path": "art/arc_pitfight_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Pit%20Fighter%20%28rev%209%29.png",
+        "upstream": "Named_Logos/Pit Fighter (rev 9).png",
+        "size": [
+          512,
+          90
+        ]
+      }
+    },
+    {
+      "id": "xybots",
+      "snap": {
+        "path": "art/arc_xybots_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Xybots%20%28rev%202%29.png",
+        "upstream": "Named_Snaps/Xybots (rev 2).png",
+        "size": [
+          336,
+          240
+        ]
+      },
+      "box": {
+        "path": "art/arc_xybots_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Xybots%20%28rev%202%29.png",
+        "upstream": "Named_Boxarts/Xybots (rev 2).png",
+        "size": [
+          512,
+          661
+        ]
+      },
+      "logo": {
+        "path": "art/arc_xybots_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Xybots%20%28rev%202%29.png",
+        "upstream": "Named_Logos/Xybots (rev 2).png",
+        "size": [
+          512,
+          145
+        ]
+      }
+    },
+    {
+      "id": "robotron",
+      "snap": {
+        "path": "art/arc_robotron_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Robotron_%202084%20%28Solid%20Blue%20label%29.png",
+        "upstream": "Named_Snaps/Robotron_ 2084 (Solid Blue label).png",
+        "size": [
+          292,
+          240
+        ]
+      },
+      "box": {
+        "path": "art/arc_robotron_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Robotron_%202084%20%28Solid%20Blue%20label%29.png",
+        "upstream": "Named_Boxarts/Robotron_ 2084 (Solid Blue label).png",
+        "size": [
+          512,
+          748
+        ]
+      },
+      "logo": {
+        "path": "art/arc_robotron_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Robotron_%202084%20%28Solid%20Blue%20label%29.png",
+        "upstream": "Named_Logos/Robotron_ 2084 (Solid Blue label).png",
+        "size": [
+          512,
+          89
+        ]
+      }
+    },
+    {
+      "id": "jjack",
+      "snap": {
+        "path": "art/arc_jjack_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Jumping%20Jack.png",
+        "upstream": "Named_Snaps/Jumping Jack.png",
+        "size": [
+          192,
+          240
+        ]
+      },
+      "box": {
+        "path": "art/arc_jjack_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Jumping%20Jack.png",
+        "upstream": "Named_Boxarts/Jumping Jack.png",
+        "size": [
+          512,
+          670
+        ]
+      },
+      "logo": {
+        "path": "art/arc_jjack_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Jumping%20Jack.png",
+        "upstream": "Named_Logos/Jumping Jack.png",
+        "size": [
+          400,
+          175
+        ]
+      }
     }
   ]
 }

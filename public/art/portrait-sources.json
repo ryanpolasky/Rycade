@@ -809,6 +809,48 @@
         "arc_rygar_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Rygar%20%28US%20set%201%29.png"
       },
       "note": "Named_Boxarts/Rygar (US set 1).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Crime%20Fighters%20%28US%204%20players%29.png",
+      "files": {
+        "arc_crimfghtu_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Crime%20Fighters%20%28US%204%20players%29.png"
+      },
+      "note": "Named_Boxarts/Crime Fighters (US 4 players).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Klax%20%28version%206%29.png",
+      "files": {
+        "arc_klax_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Klax%20%28version%206%29.png"
+      },
+      "note": "Named_Boxarts/Klax (version 6).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Pit%20Fighter%20%28rev%209%29.png",
+      "files": {
+        "arc_pitfight_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Pit%20Fighter%20%28rev%209%29.png"
+      },
+      "note": "Named_Boxarts/Pit Fighter (rev 9).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Xybots%20%28rev%202%29.png",
+      "files": {
+        "arc_xybots_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Xybots%20%28rev%202%29.png"
+      },
+      "note": "Named_Boxarts/Xybots (rev 2).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Robotron_%202084%20%28Solid%20Blue%20label%29.png",
+      "files": {
+        "arc_robotron_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Robotron_%202084%20%28Solid%20Blue%20label%29.png"
+      },
+      "note": "Named_Boxarts/Robotron_ 2084 (Solid Blue label).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Jumping%20Jack.png",
+      "files": {
+        "arc_jjack_Box.png": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Jumping%20Jack.png"
+      },
+      "note": "Named_Boxarts/Jumping Jack.png"
     }
   ]
 }
