@@ -1,0 +1,1094 @@
+{
+  "note": "Real emulator video snaps mirrored by Internet Archive; original gameplay, artwork and audio remain the property of their respective rights holders. No ROMs included. Collection descriptions credit EmuMovies/Circo where applicable.",
+  "videos": [
+    {
+      "id": "jamte",
+      "url": "https://archive.org/download/mamearcade-video-snaps/nbajamte.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "nbajamte.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "mjmw",
+      "url": "https://archive.org/download/mamearcade-video-snaps/mwalk.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "mwalk.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "tmnt",
+      "url": "https://archive.org/download/mamearcade-video-snaps/tmnt2.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "tmnt2.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "tmnt89",
+      "url": "https://archive.org/download/mamearcade-video-snaps/tmnt.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "tmnt.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "simpsons",
+      "url": "https://archive.org/download/mamearcade-video-snaps/simpsons.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "simpsons.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "xmen",
+      "url": "https://archive.org/download/mamearcade-video-snaps/xmen.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "xmen.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "sunset",
+      "url": "https://archive.org/download/mamearcade-video-snaps/ssriders.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "ssriders.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "cadillacs",
+      "url": "https://archive.org/download/mamearcade-video-snaps/dino.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "dino.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "ffight",
+      "url": "https://archive.org/download/mamearcade-video-snaps/ffight.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "ffight.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "mslug",
+      "url": "https://archive.org/download/mamearcade-video-snaps/mslug.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "mslug.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "gauntlet",
+      "url": "https://archive.org/download/mamearcade-video-snaps/gauntlet.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "gauntlet.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "bublbobl",
+      "url": "https://archive.org/download/mamearcade-video-snaps/bublbobl.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "bublbobl.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "galaga",
+      "url": "https://archive.org/download/mamearcade-video-snaps/galaga.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "galaga.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "dkong",
+      "url": "https://archive.org/download/mamearcade-video-snaps/dkong.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "dkong.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "goldnaxe",
+      "url": "https://archive.org/download/mamearcade-video-snaps/goldnaxe.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "goldnaxe.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "digdug",
+      "url": "https://archive.org/download/mamearcade-video-snaps/digdug.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "digdug.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "asteroid",
+      "url": "https://archive.org/download/mamearcade-video-snaps/asteroid.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "asteroid.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "aliens",
+      "url": "https://archive.org/download/mamearcade-video-snaps/aliens.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "aliens.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "ddragon",
+      "url": "https://archive.org/download/mamearcade-video-snaps/ddragon.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "ddragon.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "sonic2",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Sonic%20the%20Hedgehog%202%20%28World%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Sonic the Hedgehog 2 (World).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "sor2",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Streets%20of%20Rage%202%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Streets of Rage 2 (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "gunstar",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Gunstar%20Heroes%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Gunstar Heroes (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "gaxe",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Golden%20Axe%20%28World%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Golden Axe (World).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "nbajamgen",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/NBA%20Jam%20%28USA%2C%20Europe%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "NBA Jam (USA, Europe).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "contrahc",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Contra%20-%20Hard%20Corps%20%28USA%2C%20Korea%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Contra - Hard Corps (USA, Korea).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "mwgen",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Michael%20Jackson%27s%20Moonwalker%20%28World%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Michael Jackson's Moonwalker (World).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "ecco",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Ecco%20the%20Dolphin%20%28USA%2C%20Europe%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Ecco the Dolphin (USA, Europe).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "smw",
+      "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/Super%20Mario%20World%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
+      "source_file": "Super Mario World (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "dkc",
+      "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/Donkey%20Kong%20Country%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
+      "source_file": "Donkey Kong Country (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "smetroid",
+      "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/Super%20Metroid%20%28Japan%2C%20USA%29.mp4",
+      "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
+      "source_file": "Super Metroid (Japan, USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "alttp",
+      "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/Legend%20of%20Zelda%2C%20The%20-%20A%20Link%20to%20the%20Past%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
+      "source_file": "Legend of Zelda, The - A Link to the Past (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "sbomber",
+      "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/Super%20Bomberman%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
+      "source_file": "Super Bomberman (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "contra3",
+      "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/Contra%20III%20-%20The%20Alien%20Wars%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
+      "source_file": "Contra III - The Alien Wars (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "tmnt4",
+      "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/Teenage%20Mutant%20Ninja%20Turtles%20IV%20-%20Turtles%20in%20Time%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
+      "source_file": "Teenage Mutant Ninja Turtles IV - Turtles in Time (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "smb3",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Super%20Mario%20Bros.%203%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Super Mario Bros. 3 (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "contra",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Contra%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Contra (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "mm2",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Mega%20Man%202%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Mega Man 2 (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "tmnt2nes",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Teenage%20Mutant%20Ninja%20Turtles%20II%20-%20The%20Arcade%20Game%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Teenage Mutant Ninja Turtles II - The Arcade Game (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "zelda1",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Legend%20of%20Zelda%2C%20The%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Legend of Zelda, The (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "punchout",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Punch-Out%21%21%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Punch-Out!! (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "nbajam",
+      "url": "https://archive.org/download/mamearcade-video-snaps/nbajam.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "nbajam.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "nbahangt",
+      "url": "https://archive.org/download/mamearcade-video-snaps/nbahangt.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "nbahangt.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "blitz",
+      "url": "https://archive.org/download/mamearcade-video-snaps/blitz.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "blitz.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "gaunt2",
+      "url": "https://archive.org/download/mamearcade-video-snaps/gaunt2.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "gaunt2.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "captaven",
+      "url": "https://archive.org/download/mamearcade-video-snaps/captaven.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "captaven.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "bucky",
+      "url": "https://archive.org/download/mamearcade-video-snaps/bucky.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "bucky.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "moomesa",
+      "url": "https://archive.org/download/mamearcade-video-snaps/moomesa.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "moomesa.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "mystwarr",
+      "url": "https://archive.org/download/mamearcade-video-snaps/mystwarr.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "mystwarr.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "metamrph",
+      "url": "https://archive.org/download/mamearcade-video-snaps/metamrph.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "metamrph.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "vendetta",
+      "url": "https://archive.org/download/mamearcade-video-snaps/vendetta.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "vendetta.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "gijoe",
+      "url": "https://archive.org/download/mamearcade-video-snaps/gijoe.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "gijoe.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "spidman",
+      "url": "https://archive.org/download/mamearcade-video-snaps/spidman.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "spidman.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "captcomm",
+      "url": "https://archive.org/download/mamearcade-video-snaps/captcomm.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "captcomm.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 22.167,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "slammast",
+      "url": "https://archive.org/download/mamearcade-video-snaps/slammast.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "slammast.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "nbbatman",
+      "url": "https://archive.org/download/mamearcade-video-snaps/nbbatman.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "nbbatman.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "wwfwfest",
+      "url": "https://archive.org/download/mamearcade-video-snaps/wwfwfest.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "wwfwfest.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "trackfld",
+      "url": "https://archive.org/download/mamearcade-video-snaps/trackfld.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "trackfld.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "ga2",
+      "url": "https://archive.org/download/mamearcade-video-snaps/ga2.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "ga2.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "avsp",
+      "url": "https://archive.org/download/mamearcade-video-snaps/avsp.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "avsp.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "knights",
+      "url": "https://archive.org/download/mamearcade-video-snaps/knights.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "knights.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "wof",
+      "url": "https://archive.org/download/mamearcade-video-snaps/wof.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "wof.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "rampage",
+      "url": "https://archive.org/download/mamearcade-video-snaps/rampage.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "rampage.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "btoads",
+      "url": "https://archive.org/download/mamearcade-video-snaps/btoads.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "btoads.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "pacman",
+      "url": "https://archive.org/download/mamearcade-video-snaps/pacman.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "pacman.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "mspacman",
+      "url": "https://archive.org/download/mamearcade-video-snaps/mspacman.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "mspacman.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "joust",
+      "url": "https://archive.org/download/mamearcade-video-snaps/joust.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "joust.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "frogger",
+      "url": "https://archive.org/download/mamearcade-video-snaps/frogger.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "frogger.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "1943",
+      "url": "https://archive.org/download/mamearcade-video-snaps/1943.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "1943.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "snowbros",
+      "url": "https://archive.org/download/mamearcade-video-snaps/snowbros.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "snowbros.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "rainbow",
+      "url": "https://archive.org/download/mamearcade-video-snaps/rainbow.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "rainbow.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "pbobblen",
+      "url": "https://archive.org/download/mamearcade-video-snaps/pbobblen.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "pbobblen.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "mslugx",
+      "url": "https://archive.org/download/mamearcade-video-snaps/mslugx.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "mslugx.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "mslug3",
+      "url": "https://archive.org/download/mamearcade-video-snaps/mslug3.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "mslug3.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "atetris",
+      "url": "https://archive.org/download/mamearcade-video-snaps/atetris.mp4",
+      "collection": "https://archive.org/details/mamearcade-video-snaps",
+      "source_file": "atetris.mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "gaunt4gen",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Gauntlet%20IV%20%28USA%2C%20Europe%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Gauntlet IV (USA, Europe).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "megabomb",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Mega%20Bomberman%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Mega Bomberman (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "jamtegen",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/NBA%20Jam%20Tournament%20Edition%20%28World%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "NBA Jam Tournament Edition (World).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "mm2gen",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Micro%20Machines%202%20-%20Turbo%20Tournament%20%28Europe%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Micro Machines 2 - Turbo Tournament (Europe).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "genchaos",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/General%20Chaos%20%28USA%2C%20Europe%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "General Chaos (USA, Europe).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "sonic1",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Sonic%20the%20Hedgehog%20%28USA%2C%20Europe%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Sonic the Hedgehog (USA, Europe).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "sonic3k",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Sonic%20%26%20Knuckles%20%2B%20Sonic%20the%20Hedgehog%203%20%28World%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Sonic & Knuckles + Sonic the Hedgehog 3 (World).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "sor1",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Streets%20of%20Rage%20%28World%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Streets of Rage (World).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "sor3",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Streets%20of%20Rage%203%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Streets of Rage 3 (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "shinobi3",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Shinobi%20III%20-%20Return%20of%20the%20Ninja%20Master%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Shinobi III - Return of the Ninja Master (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "comix",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Comix%20Zone%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Comix Zone (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "aladdin",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Aladdin%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Aladdin (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "castleill",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Castle%20of%20Illusion%20Starring%20Mickey%20Mouse%20%28USA%2C%20Europe%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Castle of Illusion Starring Mickey Mouse (USA, Europe).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "rocket",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Rocket%20Knight%20Adventures%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Rocket Knight Adventures (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "toejam",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/ToeJam%20%26%20Earl%20%28World%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "ToeJam & Earl (World).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "vectorman",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Vectorman%20%28USA%2C%20Europe%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Vectorman (USA, Europe).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "earthjim",
+      "url": "https://archive.org/download/sega-genesis-video-snaps/Earthworm%20Jim%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/sega-genesis-video-snaps",
+      "source_file": "Earthworm Jim (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "sbomber2",
+      "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/Super%20Bomberman%202%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
+      "source_file": "Super Bomberman 2 (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "sbomber3",
+      "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/Super%20Bomberman%203%20%28Europe%29.mp4",
+      "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
+      "source_file": "Super Bomberman 3 (Europe).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "jamtesnes",
+      "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/NBA%20Jam%20-%20Tournament%20Edition%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
+      "source_file": "NBA Jam - Tournament Edition (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "slamsnes",
+      "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/Saturday%20Night%20Slam%20Masters%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
+      "source_file": "Saturday Night Slam Masters (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "allstars",
+      "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/Super%20Mario%20All-Stars%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
+      "source_file": "Super Mario All-Stars (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "yoshi",
+      "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/Super%20Mario%20World%202%20-%20Yoshi%27s%20Island%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
+      "source_file": "Super Mario World 2 - Yoshi's Island (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "scv4",
+      "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/Super%20Castlevania%20IV%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
+      "source_file": "Super Castlevania IV (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "mmx",
+      "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/Mega%20Man%20X%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
+      "source_file": "Mega Man X (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "ffight3",
+      "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/Final%20Fight%203%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
+      "source_file": "Final Fight 3 (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "sunsetsnes",
+      "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/Sunset%20Riders%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
+      "source_file": "Sunset Riders (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "sghouls",
+      "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/Super%20Ghouls%27n%20Ghosts%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
+      "source_file": "Super Ghouls'n Ghosts (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "gaunt2nes",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Gauntlet%20II%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Gauntlet II (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "vball",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Super%20Spike%20V%27Ball%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Super Spike V'Ball (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "worldcup",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Nintendo%20World%20Cup%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Nintendo World Cup (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "offroadnes",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Ivan%20%27Ironman%27%20Stewart%27s%20Super%20Off%20Road%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Ivan 'Ironman' Stewart's Super Off Road (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "rcproam2",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/R.C.%20Pro-Am%20II%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "R.C. Pro-Am II (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "smb1",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Super%20Mario%20Bros.%20%28World%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Super Mario Bros. (World).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "smb2",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Super%20Mario%20Bros.%202%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Super Mario Bros. 2 (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "mm3",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Mega%20Man%203%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Mega Man 3 (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "castlevania",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Castlevania%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Castlevania (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "btoadsnes",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Battletoads%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Battletoads (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "ddragon2",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Double%20Dragon%20II%20-%20The%20Revenge%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Double Dragon II - The Revenge (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "rivercity",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/River%20City%20Ransom%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "River City Ransom (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "kirby",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Kirby%27s%20Adventure%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Kirby's Adventure (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "ducktales",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/DuckTales%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "DuckTales (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "ninjagaiden",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Ninja%20Gaiden%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Ninja Gaiden (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "metroid",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Metroid%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Metroid (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "tecmobowl",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Tecmo%20Bowl%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Tecmo Bowl (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "drmario",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Dr.%20Mario%20%28Japan%2C%20USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Dr. Mario (Japan, USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "bubblenes",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Bubble%20Bobble%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Bubble Bobble (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
+    }
+  ]
+}
