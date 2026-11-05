@@ -26,5 +26,25 @@
       "pattern": "arcade.ryanpolasky.com",
       "custom_domain": true
     }
-  ]
+  ],
+  "env": {
+    "preview": {
+      "workers_dev": true,
+      "routes": [],
+      "durable_objects": {
+        "bindings": [
+          {
+            "name": "ROOMS",
+            "class_name": "Room"
+          }
+        ]
+      },
+      "migrations": [
+        {
+          "tag": "v1",
+          "new_sqlite_classes": ["Room"]
+        }
+      ]
+    }
+  }
 }
