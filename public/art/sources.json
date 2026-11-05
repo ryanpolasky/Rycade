@@ -2853,6 +2853,36 @@
           135
         ]
       }
+    },
+    {
+      "id": "smashtv",
+      "snap": {
+        "path": "art/arc_smashtv_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Snaps/Smash%20T.V.%20%28rev%208.00%29.png",
+        "upstream": "Named_Snaps/Smash T.V. (rev 8.00).png",
+        "size": [
+          410,
+          256
+        ]
+      },
+      "box": {
+        "path": "art/arc_smashtv_Box.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Smash%20T.V.%20%28rev%208.00%29.png",
+        "upstream": "Named_Boxarts/Smash T.V. (rev 8.00).png",
+        "size": [
+          512,
+          676
+        ]
+      },
+      "logo": {
+        "path": "art/arc_smashtv_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Logos/Smash%20T.V.%20%28rev%208.00%29.png",
+        "upstream": "Named_Logos/Smash T.V. (rev 8.00).png",
+        "size": [
+          512,
+          293
+        ]
+      }
     }
   ]
 }
