@@ -4053,6 +4053,126 @@
           256
         ]
       }
+    },
+    {
+      "id": "tetrisnes",
+      "snap": {
+        "path": "art/con_tetrisnes_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Snaps/Tetris%20%28USA%29.png",
+        "upstream": "Named_Snaps/Tetris (USA).png",
+        "size": [
+          256,
+          240
+        ]
+      },
+      "box": {
+        "path": "art/con_tetrisnes_Boxarts.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Tetris%20%28USA%29.png",
+        "upstream": "Named_Boxarts/Tetris (USA).png",
+        "size": [
+          512,
+          731
+        ]
+      },
+      "logo": {
+        "path": "art/con_tetrisnes_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Logos/Tetris%20%28Europe%29.png",
+        "upstream": "Named_Logos/Tetris (USA).png",
+        "size": [
+          512,
+          171
+        ]
+      }
+    },
+    {
+      "id": "excitebike",
+      "snap": {
+        "path": "art/con_excitebike_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Snaps/Excitebike%20%28Japan%2C%20USA%29.png",
+        "upstream": "Named_Snaps/Excitebike (Japan, USA).png",
+        "size": [
+          256,
+          240
+        ]
+      },
+      "box": {
+        "path": "art/con_excitebike_Boxarts.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Excitebike%20%28Japan%2C%20USA%29.png",
+        "upstream": "Named_Boxarts/Excitebike (Japan, USA).png",
+        "size": [
+          512,
+          731
+        ]
+      },
+      "logo": {
+        "path": "art/con_excitebike_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Logos/Excitebike%20%28World%29%20%28Switch%20Online%29.png",
+        "upstream": "Named_Logos/Excitebike (Japan, USA) (En).png",
+        "size": [
+          512,
+          179
+        ]
+      }
+    },
+    {
+      "id": "iceclimber",
+      "snap": {
+        "path": "art/con_iceclimber_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Snaps/Ice%20Climber%20%28USA%2C%20Europe%29.png",
+        "upstream": "Named_Snaps/Ice Climber (USA, Europe).png",
+        "size": [
+          256,
+          240
+        ]
+      },
+      "box": {
+        "path": "art/con_iceclimber_Boxarts.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Ice%20Climber%20%28USA%2C%20Europe%2C%20Korea%29%20%28En%29.png",
+        "upstream": "Named_Boxarts/Ice Climber (USA, Europe, Korea) (En).png",
+        "size": [
+          512,
+          731
+        ]
+      },
+      "logo": {
+        "path": "art/con_iceclimber_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Logos/Ice%20Climber%20%28USA%29%20%28e-Reader%20Edition%29.png",
+        "upstream": "Named_Logos/Ice Climber (USA, Europe, Korea) (En).png",
+        "size": [
+          512,
+          175
+        ]
+      }
+    },
+    {
+      "id": "balloonfight",
+      "snap": {
+        "path": "art/con_balloonfight_Snaps.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Snaps/Balloon%20Fight%20%28USA%29.png",
+        "upstream": "Named_Snaps/Balloon Fight (USA).png",
+        "size": [
+          256,
+          240
+        ]
+      },
+      "box": {
+        "path": "art/con_balloonfight_Boxarts.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Balloon%20Fight%20%28USA%29.png",
+        "upstream": "Named_Boxarts/Balloon Fight (USA).png",
+        "size": [
+          359,
+          512
+        ]
+      },
+      "logo": {
+        "path": "art/con_balloonfight_Logos.png",
+        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Logos/Balloon%20Fight%20%28USA%29.png",
+        "upstream": "Named_Logos/Balloon Fight (USA).png",
+        "size": [
+          512,
+          196
+        ]
+      }
     }
   ]
 }

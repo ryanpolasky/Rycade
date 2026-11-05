@@ -172,6 +172,10 @@ All rows use digital controls; 0–3 independent action buttons except retained-
 
 | Title | Players | Exact No-Intro filename | Controls / multiplayer notes |
 | --- | ---: | --- | --- |
+| Tetris | 1 | `Tetris (USA).nes` | B: Rotate left; A: Rotate right; SEL: Menu select. single player; Nintendo licensed version, not the Tengen release. B rotates left, A rotates right; down soft-drops. Third face button maps virtual Select for menus; dedicated START pauses. No multitap required. |
+| Excitebike | 1 | `Excitebike (Japan, USA) (En).nes` | B: Turbo; A: Accelerate; SEL: Menu select. single player, including Selection B computer opponents. B turbo overheats the engine; A accelerates; left/right controls bike pitch and up/down changes lanes. Third face button maps virtual Select for menus; START pauses. No multitap required. |
+| Ice Climber | 2 | `Ice Climber (USA, Europe, Asia) (En).nes` | B: Hammer; A: Jump; SEL: Menu select. simultaneous; B hammer, A jump. Third face button maps virtual Select for title menu; dedicated START pauses. No multitap required. |
+| Balloon Fight | 2 | `Balloon Fight (USA).nes` | B: Auto flap; A: Flap; SEL: Menu select. simultaneous in 2-player mode; B repeats flaps while held, A gives one flap per press. Third face button maps virtual Select for title menu; START pauses. No multitap required. |
 | Super Mario Bros. 3 | 2 | `Super Mario Bros. 3 (USA).nes` | B: Run; A: Jump; SEL: unused. Two-player adventure alternates; battle mode simultaneous. |
 | Contra | 2 | `Contra (USA).nes` | B: Fire; A: Jump; SEL: unused. Digital D-pad and the listed face actions; no multitap needed. |
 | Mega Man 2 | 1 | `Mega Man 2 (USA).nes` | B: Fire; A: Jump; SEL: unused. Digital D-pad and the listed face actions; no multitap needed. |

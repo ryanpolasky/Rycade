@@ -893,6 +893,34 @@
         "con_mk3gen_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Mortal%20Kombat%203%20%28USA%29.png"
       },
       "note": "Named_Boxarts/Mortal Kombat 3 (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Tetris%20%28USA%29.png",
+      "files": {
+        "con_tetrisnes_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Tetris%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Tetris (USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Excitebike%20%28Japan%2C%20USA%29.png",
+      "files": {
+        "con_excitebike_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Excitebike%20%28Japan%2C%20USA%29.png"
+      },
+      "note": "Named_Boxarts/Excitebike (Japan, USA).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Ice%20Climber%20%28USA%2C%20Europe%2C%20Korea%29%20%28En%29.png",
+      "files": {
+        "con_iceclimber_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Ice%20Climber%20%28USA%2C%20Europe%2C%20Korea%29%20%28En%29.png"
+      },
+      "note": "Named_Boxarts/Ice Climber (USA, Europe, Korea) (En).png"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Balloon%20Fight%20%28USA%29.png",
+      "files": {
+        "con_balloonfight_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Balloon%20Fight%20%28USA%29.png"
+      },
+      "note": "Named_Boxarts/Balloon Fight (USA).png"
     }
   ]
 }

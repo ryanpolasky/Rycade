@@ -1476,6 +1476,42 @@
       "start_seconds": 0.5,
       "duration_seconds": 25,
       "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "tetrisnes",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Tetris%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Tetris (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "excitebike",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Excitebike%20%28Japan%2C%20USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Excitebike (Japan, USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "iceclimber",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Ice%20Climber%20%28USA%2C%20Europe%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Ice Climber (USA, Europe).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "balloonfight",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Balloon%20Fight%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Balloon Fight (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
     }
   ]
 }
