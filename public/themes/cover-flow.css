@@ -438,13 +438,15 @@ body[data-theme="cover-flow"] .cf-count {
 
 body[data-theme="cover-flow"] .cf-rail {
   display: flex;
-  flex: 1 1 auto;
-  gap: 3px;
+  flex: 1 1 0;
+  min-width: 0;
+  gap: 2px;
   height: 14px;
 }
 
 body[data-theme="cover-flow"] .cf-rail i {
   flex: 1 1 0;
+  min-width: 0;
   background: #26232b;
   transition: background 120ms ease;
 }
@@ -946,8 +948,12 @@ body[data-theme="cover-flow"] .crt::after {
   }
 }
 
-body[data-theme="cover-flow"] #stage:has(.boot-screen.visible, .feature-overlay.visible .boot-options) .crt-roll {
+body[data-theme="cover-flow"] #stage:has(.boot-screen.visible, .feature-overlay.visible .boot-options, .mon.live, .demo-overlay:not([hidden])) .crt-roll {
   display: none;
+}
+
+body[data-theme="cover-flow"] #stage:has(.mon.live, .demo-overlay:not([hidden])) .crt::after {
+  background: radial-gradient(ellipse 130% 140% at 50% 50%, transparent 55%, rgba(0, 0, 0, .22) 78%, rgba(0, 0, 0, .62) 100%);
 }
 
 @keyframes crt-roll {
