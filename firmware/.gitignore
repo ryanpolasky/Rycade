@@ -1,0 +1,3 @@
+build*/
+test/test_encoder
+test/dump_descriptors
