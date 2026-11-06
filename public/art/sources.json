@@ -107,11 +107,11 @@
       },
       "box": {
         "path": "art/arc_digdug2_Box.png",
-        "url": "https://raw.githubusercontent.com/libretro-thumbnails/MAME/master/Named_Boxarts/Dig%20Dug%20II%20%28New%20Ver.%29.png",
-        "upstream": "Named_Boxarts/Dig Dug II (New Ver.).png",
+        "url": "https://flyers.arcade-museum.com/videogame-flyers/3/dig-dug-ii-03670-01.jpg",
+        "upstream": "The Arcade Flyer Archive, Dig Dug II (Namco, 1985) flyer 03670-01, centre crop 269-922 x 0-850 of 1192x850",
         "size": [
           512,
-          365
+          665
         ]
       },
       "logo": {
