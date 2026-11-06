@@ -921,6 +921,13 @@
         "con_balloonfight_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Balloon%20Fight%20%28USA%29.png"
       },
       "note": "Named_Boxarts/Balloon Fight (USA).png"
+    },
+    {
+      "url": "https://flyers.arcade-museum.com/videogame-flyers/3/dig-dug-ii-03670-01.jpg",
+      "files": {
+        "arc_digdug2_Box.png": "https://flyers.arcade-museum.com/videogame-flyers/3/dig-dug-ii-03670-01.jpg"
+      },
+      "note": "Japan-only landscape Namco flyer; centre crop x 269-922 of 1192x850 (1.30 h/w) keeps the full Dig Dug II logo, resized to 512x665."
     }
   ],
   "crops": "Super Famicom covers (1.81 h/w) are cropped to 1.42 h/w to match the other systems' boxes and flyers: full width, vertical cut placed 60% of the way down the excess. scv4 and sunsetsnes are uncropped."

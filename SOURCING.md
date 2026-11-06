@@ -75,6 +75,7 @@ All rows use digital controls; 0–3 independent action buttons except retained-
 | Donkey Kong | 2 | [`dkong`](https://github.com/mamedev/mame/blob/master/src/mame/nintendo/dkong.cpp) | parent; TURBO: unused; SHOOT: Jump; PASS: unused.  |
 | Golden Axe | 3 | [`goldnaxe`](https://github.com/mamedev/mame/blob/master/src/mame/sega/segas16b.cpp) | parent; TURBO: Magic; SHOOT: Attack; PASS: Jump.  |
 | Dig Dug | 2 | [`digdug`](https://github.com/mamedev/mame/blob/master/src/mame/namco/digdug.cpp) | parent; TURBO: unused; SHOOT: Pump; PASS: unused.  |
+| Dig Dug II | 2 | [`digdug2`](https://github.com/mamedev/mame/blob/master/src/mame/namco/mappy.cpp) | parent (Dig Dug II (New Ver.)); TURBO: unused; SHOOT: Pump; PASS: Drill. alternating; four-way movement, restrict/filter diagonals. Japan-only release; the flyer is a centre crop of the original landscape Namco sheet. Use the exact MAME release's matching DAT; FBNeo requires its own matching set. |
 | Asteroids | 2 | [`asteroid`](https://github.com/mamedev/mame/blob/master/src/mame/atari/asteroid.cpp) | parent; TURBO: Thrust; SHOOT: Fire; PASS: Hyperspace. Retained original: physical stick left/right must be mapped to digital rotate buttons; map thrust, fire, hyperspace to the three face buttons. |
 | Aliens | 2 | [`aliens`](https://github.com/mamedev/mame/blob/master/src/mame/konami/aliens.cpp) | parent; TURBO: unused; SHOOT: Shoot; PASS: Jump.  |
 | Double Dragon | 2 | [`ddragon`](https://github.com/mamedev/mame/blob/master/src/mame/technos/ddragon.cpp) | parent; TURBO: Punch; SHOOT: Kick; PASS: Jump.  |
@@ -207,7 +208,6 @@ All rows use digital controls; 0–3 independent action buttons except retained-
 - **Donkey Kong Country 2 (SNES)**: A team-up/split, B jump, Y run/attack/pick-up, X dismount, plus Select switching. Too many independent actions to preserve its full normal controls with this cabinet. The original Donkey Kong Country entry remains, as requested.
 - **Pocky & Rocky (SNES)**: projectile, melee, slide and bomb are four distinct actions (A/B/X plus L/R; Y also supplies rapid fire). It cannot fit all normal actions on three buttons without combos/macros, so it is omitted.
 - **Arch Rivals (arcade)**: the original `archrivl` uses 49-way sticks represented by analog X/Y inputs in [MAME's driver](https://github.com/mamedev/mame/blob/master/src/mame/bally/mcr68.cpp). This cabinet only has eight-way digital sticks. The eight-way bootleg is not substituted for the requested original.
-- **Dig Dug II (arcade)**: the real libretro flyer and Arcade Database flyer are landscape; no suitable real portrait alternative was found. Omitted rather than stretching/padding the flyer or using the NES box for the arcade game.
 - All retained games have a real portrait and video. Super Bomberman 2/3 remain playable with an explicit **optional kick-stop limitation**, not advertised as having all SNES shortcuts. See their rows. No new analog, wheel, gun or trackball title was added.
 
 ## Reference material (no ROM links)
