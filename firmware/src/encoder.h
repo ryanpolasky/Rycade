@@ -1,0 +1,31 @@
+/* firmware/src/encoder.h */
+#ifndef RYCADE_ENCODER_H
+#define RYCADE_ENCODER_H
+
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+
+#define RYCADE_PLAYER_COUNT 4u
+
+#define RYCADE_DIR_RIGHT (1u << 0)
+#define RYCADE_DIR_DOWN (1u << 1)
+#define RYCADE_DIR_LEFT (1u << 2)
+#define RYCADE_DIR_UP (1u << 3)
+#define RYCADE_DIR_START (1u << 5)
+
+#define RYCADE_BUTTON_Y (1u << 0)
+#define RYCADE_BUTTON_B (1u << 1)
+#define RYCADE_BUTTON_C (1u << 2)
+#define RYCADE_BUTTON_X (1u << 3)
+#define RYCADE_BUTTON_A (1u << 4)
+#define RYCADE_BUTTON_Z (1u << 5)
+
+struct player_state {
+    uint8_t dirs;
+    uint8_t buttons;
+};
+
+bool encoder_parse(const uint8_t *buf, size_t len, struct player_state out[RYCADE_PLAYER_COUNT]);
+
+#endif

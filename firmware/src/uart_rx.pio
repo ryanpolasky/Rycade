@@ -1,0 +1,14 @@
+; firmware/src/uart_rx.pio
+.program uart_rx
+start:
+    wait 0 pin 0
+    set x, 7 [10]
+bitloop:
+    in pins, 1
+    jmp x-- bitloop [6]
+    jmp pin good_stop
+    irq 4 rel
+    wait 1 pin 0
+    jmp start
+good_stop:
+    push
