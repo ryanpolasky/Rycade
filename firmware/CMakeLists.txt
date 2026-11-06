@@ -6,21 +6,30 @@ project(rycade_pico C CXX ASM)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
-set(RYCADE_MODE "demo" CACHE STRING "Firmware mode: demo or encoder")
-set_property(CACHE RYCADE_MODE PROPERTY STRINGS demo encoder)
+set(RYCADE_MODE "demo" CACHE STRING "Firmware mode: demo, encoder or sniff")
+set_property(CACHE RYCADE_MODE PROPERTY STRINGS demo encoder sniff)
 
-if(NOT RYCADE_MODE STREQUAL "demo" AND NOT RYCADE_MODE STREQUAL "encoder")
-    message(FATAL_ERROR "RYCADE_MODE must be demo or encoder")
+if(NOT RYCADE_MODE STREQUAL "demo" AND NOT RYCADE_MODE STREQUAL "encoder" AND
+   NOT RYCADE_MODE STREQUAL "sniff")
+    message(FATAL_ERROR "RYCADE_MODE must be demo, encoder or sniff")
 endif()
 
 pico_sdk_init()
 
-add_executable(rycade_pico
-    src/main.c
-    src/encoder.c
-    src/gamepad.c
-    src/usb_descriptors.c
-)
+if(RYCADE_MODE STREQUAL "sniff")
+    add_executable(rycade_pico
+        src/sniff_main.c
+        src/sniff_logic.c
+        src/sniff_usb_descriptors.c
+    )
+else()
+    add_executable(rycade_pico
+        src/main.c
+        src/encoder.c
+        src/gamepad.c
+        src/usb_descriptors.c
+    )
+endif()
 
 target_include_directories(rycade_pico PRIVATE src)
 target_compile_options(rycade_pico PRIVATE -Wall -Wextra -Werror)
@@ -31,8 +40,12 @@ set_property(TARGET rycade_pico PROPERTY LINKER_LANGUAGE C)
 if(RYCADE_MODE STREQUAL "encoder")
     target_compile_definitions(rycade_pico PRIVATE RYCADE_MODE_ENCODER=1)
     target_link_libraries(rycade_pico PRIVATE hardware_uart)
+elseif(RYCADE_MODE STREQUAL "sniff")
+    target_compile_definitions(rycade_pico PRIVATE RYCADE_MODE_ENCODER=0 RYCADE_MODE_SNIFF=1)
+    target_link_libraries(rycade_pico PRIVATE hardware_pio pico_multicore)
+    pico_generate_pio_header(rycade_pico ${CMAKE_CURRENT_LIST_DIR}/src/uart_rx.pio)
 else()
-    target_compile_definitions(rycade_pico PRIVATE RYCADE_MODE_ENCODER=0)
+    target_compile_definitions(rycade_pico PRIVATE RYCADE_MODE_ENCODER=0 RYCADE_MODE_SNIFF=0)
 endif()
 
 pico_enable_stdio_uart(rycade_pico 0)

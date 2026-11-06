@@ -1,3 +1,4 @@
 build*/
 test/test_encoder
+test/test_sniff_logic
 test/dump_descriptors
