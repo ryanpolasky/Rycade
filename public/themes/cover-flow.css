@@ -952,7 +952,7 @@ body[data-theme="cover-flow"] #stage:has(.boot-screen.visible, .feature-overlay.
   display: none;
 }
 
-body[data-theme="cover-flow"] #stage:has(.mon.live, .demo-overlay:not([hidden])) .crt::after {
+body[data-theme="cover-flow"] #stage:has(.boot-screen.visible, .feature-overlay.visible .boot-options, .mon.live, .demo-overlay:not([hidden])) .crt::after {
   background: radial-gradient(ellipse 130% 140% at 50% 50%, transparent 55%, rgba(0, 0, 0, .22) 78%, rgba(0, 0, 0, .62) 100%);
 }
 
