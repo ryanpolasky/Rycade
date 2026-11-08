@@ -17,7 +17,14 @@
 #define CFG_TUD_VENDOR 0
 #else
 #define CFG_TUD_HID 4
+#if defined(RYCADE_ENCODER_DEBUG) && RYCADE_ENCODER_DEBUG
+#define CFG_TUD_CDC 1
+#define CFG_TUD_CDC_RX_BUFSIZE 256
+#define CFG_TUD_CDC_TX_BUFSIZE 512
+#define CFG_TUD_CDC_EP_BUFSIZE 64
+#else
 #define CFG_TUD_CDC 0
+#endif
 #define CFG_TUD_MSC 0
 #define CFG_TUD_MIDI 0
 #define CFG_TUD_VENDOR 0

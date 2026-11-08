@@ -177,6 +177,73 @@ static struct encoder_framer encoder_framers[RYCADE_LINK_COUNT];
 static uint encoder_rx_sms[RYCADE_LINK_COUNT];
 static uint encoder_tx_sms[RYCADE_LINK_COUNT];
 
+#if defined(RYCADE_ENCODER_DEBUG) && RYCADE_ENCODER_DEBUG
+#define ENCODER_RAW_LINE_LENGTH \
+    (3u + 2u * RYCADE_ENCODER_FRAME_LENGTH + (RYCADE_ENCODER_FRAME_LENGTH - 1u) + 1u)
+
+static uint8_t encoder_debug_latest_frames[RYCADE_LINK_COUNT][RYCADE_ENCODER_FRAME_LENGTH];
+static bool encoder_debug_latest_valid[RYCADE_LINK_COUNT];
+static uint8_t encoder_debug_printed_frames[RYCADE_LINK_COUNT][RYCADE_ENCODER_FRAME_LENGTH];
+static bool encoder_debug_printed_valid[RYCADE_LINK_COUNT];
+static bool encoder_debug_was_connected;
+
+static void encoder_debug_try_print(uint8_t link, const uint8_t *frame)
+{
+    static const char hex_digits[] = "0123456789ABCDEF";
+    char line[ENCODER_RAW_LINE_LENGTH];
+    size_t length = 0u;
+
+    if (!tud_cdc_connected() ||
+        (encoder_debug_printed_valid[link] &&
+         memcmp(encoder_debug_printed_frames[link], frame, RYCADE_ENCODER_FRAME_LENGTH) == 0)) {
+        return;
+    }
+
+    line[length++] = 'L';
+    line[length++] = (char)('0' + link);
+    line[length++] = ' ';
+    for (size_t i = 0u; i < RYCADE_ENCODER_FRAME_LENGTH; ++i) {
+        if (i != 0u) {
+            line[length++] = ' ';
+        }
+        line[length++] = hex_digits[frame[i] >> 4u];
+        line[length++] = hex_digits[frame[i] & 0x0Fu];
+    }
+    line[length++] = '\n';
+
+    if (tud_cdc_write_available() < (uint32_t)length ||
+        tud_cdc_write(line, (uint32_t)length) != (uint32_t)length) {
+        return;
+    }
+    tud_cdc_write_flush();
+    memcpy(encoder_debug_printed_frames[link], frame, RYCADE_ENCODER_FRAME_LENGTH);
+    encoder_debug_printed_valid[link] = true;
+}
+
+static void encoder_debug_frame_received(uint8_t link, const uint8_t *frame)
+{
+    memcpy(encoder_debug_latest_frames[link], frame, RYCADE_ENCODER_FRAME_LENGTH);
+    encoder_debug_latest_valid[link] = true;
+    encoder_debug_try_print(link, frame);
+}
+
+static void encoder_debug_update_connection(void)
+{
+    const bool connected = tud_cdc_connected();
+
+    if (connected && !encoder_debug_was_connected) {
+        memset(encoder_debug_printed_frames, 0, sizeof(encoder_debug_printed_frames));
+        memset(encoder_debug_printed_valid, 0, sizeof(encoder_debug_printed_valid));
+        for (uint8_t link = 0u; link < RYCADE_LINK_COUNT; ++link) {
+            if (encoder_debug_latest_valid[link]) {
+                encoder_debug_try_print(link, encoder_debug_latest_frames[link]);
+            }
+        }
+    }
+    encoder_debug_was_connected = connected;
+}
+#endif
+
 static bool encoder_ring_has_space(const struct encoder_rx_ring *ring)
 {
     return (uint32_t)(ring->head - ring->tail) < ENCODER_RX_RING_SIZE;
@@ -301,11 +368,15 @@ static void drain_encoder_rings(uint32_t now_ms)
         uint8_t byte;
 
         while (encoder_ring_pop(ring, &byte)) {
-            if (encoder_framer_push(&encoder_framers[link], byte) &&
-                encoder_parse(encoder_framers[link].frame,
-                              RYCADE_ENCODER_FRAME_LENGTH, link, player_states)) {
-                last_valid_ms[link] = now_ms;
-                link_has_valid_frame[link] = true;
+            if (encoder_framer_push(&encoder_framers[link], byte)) {
+#if defined(RYCADE_ENCODER_DEBUG) && RYCADE_ENCODER_DEBUG
+                encoder_debug_frame_received(link, encoder_framers[link].frame);
+#endif
+                if (encoder_parse(encoder_framers[link].frame,
+                                  RYCADE_ENCODER_FRAME_LENGTH, link, player_states)) {
+                    last_valid_ms[link] = now_ms;
+                    link_has_valid_frame[link] = true;
+                }
             }
         }
 
@@ -347,6 +418,9 @@ static void send_encoder_requests(uint32_t now_us)
 
 static void update_encoder(uint32_t now_us, uint32_t now_ms)
 {
+#if defined(RYCADE_ENCODER_DEBUG) && RYCADE_ENCODER_DEBUG
+    encoder_debug_update_connection();
+#endif
     drain_encoder_rings(now_ms);
     send_encoder_requests(now_us);
 }
