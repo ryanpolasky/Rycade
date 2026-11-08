@@ -325,6 +325,8 @@ runtime() {
 	root * $APP/public
 	@media path /art/* /videos/* /boot/* /vendor/fonts/*
 	header @media Cache-Control "public, max-age=31536000, immutable"
+	@fresh not path /art/* /videos/* /boot/* /vendor/fonts/*
+	header @fresh Cache-Control "no-cache"
 	header -Server
 	handle_path /roms/* {
 		root * $HOME_DIR/roms

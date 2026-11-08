@@ -14,11 +14,16 @@
   const CORE_OPTIONS = {
     qbert: { 'mame2003-plus_four_way_emulation': 'enabled' }
   };
+  const BOOT_FRAMES = {};
   const MAME_OPTIONS = {
     'mame2003-plus_autosave_hiscore': 'recursively',
     'mame2003-plus_skip_disclaimer': 'enabled',
     'mame2003-plus_skip_warnings': 'enabled'
   };
+
+  function bootSkipFrames(core, game) {
+    return BOOT_FRAMES[game] ?? (core === 'mame2003_plus' ? 600 : 0);
+  }
 
   function findHiscore(fs, name, dir = '/data/saves', depth = 4) {
     let names;
@@ -171,7 +176,7 @@
     };
   }
 
-  const api = { SYSTEM_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, MAME_OPTIONS, RETRO_REMAPS, findHiscore, orderPads, createInputMapper, createProfileSaves };
+  const api = { SYSTEM_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, BOOT_FRAMES, bootSkipFrames, MAME_OPTIONS, RETRO_REMAPS, findHiscore, orderPads, createInputMapper, createProfileSaves };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof window === 'undefined') return;
 
@@ -334,8 +339,8 @@
   window.EJS_onGameStart = function () {
     started = true;
     clearTimeout(timeout);
-    post('started');
-    manager = window.EJS_emulator && window.EJS_emulator.gameManager;
+    const emulator = window.EJS_emulator;
+    manager = emulator && emulator.gameManager;
     if (profileId && manager) {
       try {
         const paths = Profiles.read(localStorage, Profiles.SAVE_PATHS_KEY, {});
@@ -343,18 +348,63 @@
         localStorage.setItem(Profiles.SAVE_PATHS_KEY, JSON.stringify(paths));
       } catch {}
     }
-    if (!manager || typeof manager.simulateInput !== 'function') return;
-    mapper = createInputMapper((player, id, value) => manager.simulateInput(player, id, value), {
-      players: Number(params.get('players')),
-      seat: Number(params.get('seat')),
-      layout: INPUT_LAYOUTS[game]
-    });
-    const poll = now => {
-      if (!manager) return;
-      mapper.poll(pads(), system, now);
+    const startInput = () => {
+      post('started');
+      if (!manager || typeof manager.simulateInput !== 'function') return;
+      mapper = createInputMapper((player, id, value) => manager.simulateInput(player, id, value), {
+        players: Number(params.get('players')),
+        seat: Number(params.get('seat')),
+        layout: INPUT_LAYOUTS[game]
+      });
+      const poll = now => {
+        if (!manager) return;
+        mapper.poll(pads(), system, now);
+        requestAnimationFrame(poll);
+      };
       requestAnimationFrame(poll);
     };
-    requestAnimationFrame(poll);
+    const frames = bootSkipFrames(core, game);
+    if (frames <= 0 || !manager || typeof manager.toggleFastForward !== 'function' ||
+        typeof manager.setFastForwardRatio !== 'function' ||
+        typeof manager.getFrameNum !== 'function' || !emulator ||
+        typeof emulator.setVolume !== 'function') {
+      startInput();
+      return;
+    }
+
+    let interval;
+    let finished = false;
+    let skipStartedAt;
+    const restoreSkip = () => {
+      if (interval !== undefined) {
+        clearInterval(interval);
+        interval = undefined;
+      }
+      try { manager.toggleFastForward(0); } catch {}
+      try { emulator.setVolume(emulator.muted ? 0 : emulator.volume); } catch {}
+    };
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      restoreSkip();
+      startInput();
+    };
+    try {
+      skipStartedAt = Date.now();
+      emulator.setVolume(0);
+      manager.setFastForwardRatio(0);
+      manager.toggleFastForward(1);
+      interval = setInterval(() => {
+        try {
+          if (manager.getFrameNum() >= frames || Date.now() - skipStartedAt >= 8000) finish();
+        } catch {
+          finish();
+        }
+      }, 50);
+    } catch {
+      restoreSkip();
+      startInput();
+    }
   };
   const script = document.createElement('script');
   script.src = window.EJS_pathtodata + 'loader.js';
