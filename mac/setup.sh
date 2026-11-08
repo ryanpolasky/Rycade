@@ -431,6 +431,7 @@ refresh() {
   step "Reinstall rycade-net, rebuild helpers, reload kiosk"
   srun install -m 755 "$APP/mac/rycade-net" /usr/local/bin/rycade-net
   srun ln -sf "$APP/mac/setup.sh" /usr/local/bin/rycade
+  git_creds
   daemon com.rycade.net 30 /usr/local/bin/rycade-net enforce
   srun rycade-net enforce >/dev/null
   command -v caddy >/dev/null || for b in /usr/local/bin/brew /opt/homebrew/bin/brew; do [[ -x $b ]] && eval "$($b shellenv)"; done
