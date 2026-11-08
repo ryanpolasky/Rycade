@@ -4,6 +4,8 @@ const {
   SYSTEM_BUTTONS,
   INPUT_LAYOUTS,
   CORE_OPTIONS,
+  BOOT_FRAMES,
+  bootSkipFrames,
   RETRO_REMAPS,
   orderPads,
   createInputMapper
@@ -258,6 +260,20 @@ test('twin layout release sends zero for every held input', () => {
 test('twin input layouts and Q*bert core option are exported', () => {
   assert.deepEqual(INPUT_LAYOUTS, { smashtv: 'twin', robotron: 'twin' });
   assert.equal(CORE_OPTIONS.qbert['mame2003-plus_four_way_emulation'], 'enabled');
+});
+
+test('MAME games skip boot frames with per-game overrides', () => {
+  assert.equal(bootSkipFrames('mame2003_plus', 'galaga'), 900);
+  assert.equal(bootSkipFrames('mame2003_plus', 'sf2'), 900);
+  assert.equal(bootSkipFrames('snes9x', 'smw'), 0);
+  assert.equal(bootSkipFrames('fceumm', 'blitz'), 0);
+
+  BOOT_FRAMES.galaga = 42;
+  try {
+    assert.equal(bootSkipFrames('mame2003_plus', 'galaga'), 42);
+  } finally {
+    delete BOOT_FRAMES.galaga;
+  }
 });
 
 test('Marralhinha Blitz configures Four Score gamepads in the FCEUmm core remap', () => {
