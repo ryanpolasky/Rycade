@@ -122,7 +122,7 @@ base() {
   export HOMEBREW_NO_ANALYTICS=1 HOMEBREW_NO_AUTO_UPDATE=1
   run brew analytics off
   local f
-  for f in cloudflared caddy displayplacer gh git; do
+  for f in cloudflared caddy displayplacer gh; do
     brew list --formula "$f" >/dev/null 2>&1 || run brew install "$f"
   done
   brew list --cask google-chrome >/dev/null 2>&1 || run brew install --cask google-chrome
