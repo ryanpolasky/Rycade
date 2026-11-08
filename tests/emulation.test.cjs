@@ -22,18 +22,19 @@ async function resolve(id, title, listing, overrides) {
   return resolveRom({ id, title }, { fetch: fakeFetch(listing, overrides) });
 }
 
-test('catalog maps every sourced title and reports only the deliberate missing row', () => {
+test('catalog maps every sourced title, including Marralhinha Blitz', () => {
   assert.equal(Object.keys(ROM_CATALOG).length, 170);
   assert.equal(ROM_CATALOG.yoshi.expected, "Super Mario World 2 - Yoshi's Island (USA).sfc");
   assert.equal(ROM_CATALOG.sonic2.expected, 'Sonic The Hedgehog 2 (World).md');
   assert.equal(ROM_CATALOG.crimfghtu.parent, 'crimfght.zip');
-  assert.equal(ROM_CATALOG.mblitz.expected, null);
+  assert.equal(ROM_CATALOG.mblitz.expected, 'Marralhinha Blitz.nes');
 });
 
 test('exact and case-insensitive filename matching', async () => {
   assert.equal((await resolve('19xx', '19XX: The War Against Destiny', [{ name: '19xx.zip' }])).filename, '19xx.zip');
   assert.equal((await resolve('smb1', 'Super Mario Bros.', [{ name: 'SUPER MARIO BROS. (WORLD).NES' }])).filename,
     'SUPER MARIO BROS. (WORLD).NES');
+  assert.equal(findRom(ROM_CATALOG.mblitz, 'Marralhinha Blitz', ['Marralhinha Blitz.nes']), 'Marralhinha Blitz.nes');
 });
 
 test('console ZIP fallback and normalized No-Intro region/revision matching', async () => {
@@ -55,7 +56,7 @@ test('arcade clones fall back to the parent archive and local overrides change t
   assert.equal(nineteen.core, 'fbalpha2012_cps2');
 });
 
-test('missing ROMs stay unresolved and unmatched catalog rows do not guess filenames', async () => {
+test('missing ROMs stay unresolved instead of guessing filenames', async () => {
   assert.equal((await resolve('19xx', '19XX: The War Against Destiny', [])).filename, null);
   assert.equal((await resolve('mblitz', 'Marralhinha Blitz', [{ name: 'mblitz.zip' }])).filename, null);
 });

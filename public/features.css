@@ -487,6 +487,7 @@
   color: var(--ink, #f3eee6);
   background: #000;
   --attract-accent: var(--pa, var(--st-accent, #ffd400));
+  --attract-band: 104px;
 }
 
 #attract-overlay[hidden] {
@@ -496,7 +497,7 @@
 #attract-overlay video,
 .attract-still {
   width: 100%;
-  height: 100%;
+  height: calc(100% - var(--attract-band));
   object-fit: contain;
   image-rendering: pixelated;
 }
@@ -519,22 +520,36 @@ body[data-theme="cover-flow"] #attract-overlay::after {
 
 .attract-card {
   position: absolute;
-  right: 32px;
-  bottom: 32px;
-  left: 32px;
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: grid;
-  grid-template-columns: 112px minmax(0, 1fr) 250px;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 28px;
-  padding: 20px 28px;
-  border: 3px solid var(--attract-accent);
+  height: var(--attract-band);
+  padding: 0 40px;
+  border-top: 2px solid var(--attract-accent);
   background: #0c0b10;
+  box-sizing: border-box;
 }
 
-.attract-cover {
-  width: 112px;
-  height: 150px;
+.attract-copy {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-width: 0;
+}
+
+.attract-logo {
+  max-width: 300px;
+  max-height: 72px;
   object-fit: contain;
+}
+
+#attract-overlay[data-logo="true"] .attract-title,
+#attract-overlay[data-logo="false"] .attract-logo {
+  display: none;
 }
 
 .attract-prompt {
@@ -542,15 +557,19 @@ body[data-theme="cover-flow"] #attract-overlay::after {
 }
 
 .attract-title {
-  margin: 0 0 6px;
-  font-size: 38px;
+  margin: 0;
+  font-size: 34px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   line-height: 1.05;
   text-transform: uppercase;
-  overflow-wrap: anywhere;
 }
 
 .attract-players {
-  font-size: 22px;
+  flex: none;
+  font-size: 18px;
+  opacity: .75;
   font-weight: 700;
   letter-spacing: 2px;
 }
@@ -561,13 +580,13 @@ body[data-theme="cover-flow"] #attract-overlay::after {
 }
 
 .attract-prompt b {
-  font-size: 18px;
+  font-size: 16px;
   animation: attract-blink 1.1s steps(1) infinite;
 }
 
 .attract-prompt small {
   display: block;
-  margin-top: 20px;
+  margin-top: 12px;
   font-size: 9px;
   color: var(--ink, #f3eee6);
 }

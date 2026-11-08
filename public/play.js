@@ -11,6 +11,9 @@
   const CORE_OPTIONS = {
     qbert: { 'mame2003-plus_four_way_emulation': 'enabled' }
   };
+  const RETRO_REMAPS = {
+    mblitz: ['input_libretro_device_p3 = "513"', 'input_libretro_device_p4 = "513"']
+  };
 
   function buttonDown(button) {
     return typeof button === 'number' ? button > 0.5 : !!button && (button.pressed || button.value > 0.5);
@@ -141,7 +144,7 @@
     };
   }
 
-  const api = { SYSTEM_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, orderPads, createInputMapper, createProfileSaves };
+  const api = { SYSTEM_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, RETRO_REMAPS, orderPads, createInputMapper, createProfileSaves };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof window === 'undefined') return;
 
@@ -228,6 +231,28 @@
     if (event.origin !== location.origin || event.data?.type !== 'rycade-save') return;
     flushSaves().then(() => post('saved'));
   });
+  const remapLines = RETRO_REMAPS[game];
+  if (remapLines) {
+    let GameManager;
+    Object.defineProperty(window, 'EJS_GameManager', {
+      configurable: true,
+      get() {
+        return GameManager;
+      },
+      set(cls) {
+        const writeConfigFile = cls.prototype.writeConfigFile;
+        cls.prototype.writeConfigFile = function (...args) {
+          const result = writeConfigFile.apply(this, args);
+          this.writeFile(
+            '/home/web_user/retroarch/userdata/config/remaps/FCEUmm/FCEUmm.rmp',
+            remapLines.join('\n') + '\n'
+          );
+          return result;
+        };
+        GameManager = cls;
+      }
+    });
+  }
   window.EJS_AdUrl = '';
   window.EJS_onGameStart = function () {
     started = true;
