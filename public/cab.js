@@ -42,6 +42,8 @@
   };
   window.rycadeCab = cab;
 
+  let booted = false, known = false;
+
   function sleep() {
     window.rycadePlay?.exit();
     cab.asleep = true;
@@ -54,13 +56,22 @@
   function wake() {
     if (!cab.asleep) return;
     cab.asleep = false;
+    booted = true;
     window.rycadeFeatures?.playBoot();
+  }
+
+  function boot() {
+    if (booted || document.readyState !== 'complete') return;
+    booted = true;
+    if (!cab.asleep) window.rycadeFeatures?.playBoot();
   }
 
   const power = new EventSource('/power/events');
   power.onmessage = event => {
+    known = true;
     if (event.data === 'sleep') sleep();
     else if (event.data === 'wake') wake();
+    boot();
   };
-  addEventListener('load', () => window.rycadeFeatures?.playBoot(), { once: true });
+  addEventListener('load', () => known ? boot() : setTimeout(boot, 3000), { once: true });
 })();

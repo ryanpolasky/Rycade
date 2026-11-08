@@ -43,6 +43,6 @@ Open modes always expire. LAN SSH/VNC (22/5900) is allowed in.
 
 The kiosk opens `http://127.0.0.1:8787/?cab=1` (Caddy). `cab.js` then decodes and pins all art and loads every demo clip into memory as a blob, uses the vendored fonts, turns off the phone remote, and listens for `rycade-power` events.
 
-`rycade-power` watches the Pico's Rycade Cabinet keyboard. Power-off (F18) mutes and sleeps the display, and the Mac stays awake. Power-on (F17) or any pad button wakes it and plays the boot scene. Volume keys are native, so macOS handles them.
+`rycade-power` watches the Pico's Rycade Cabinet keyboard. Power-off (F18) mutes and sleeps the display, and the Mac stays awake. Power-on (F17) or any pad button wakes it and plays the boot scene. Volume keys are native, so macOS handles them. Off survives restarts: it's saved as `~/Rycade/off`, so the weekly restart or a power cut boots straight back to dark and silent until you press on.
 
 Put ROMs in `~/Rycade/roms/{arcade,genesis,snes,nes}`; optional `~/Rycade/roms/overrides.json` maps a ROM filename to an EmulatorJS core. LIVE (F19) or Escape exits an in-page game back to the menu.
