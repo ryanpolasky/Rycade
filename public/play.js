@@ -22,7 +22,7 @@
   };
 
   function bootSkipFrames(core, game) {
-    return BOOT_FRAMES[game] ?? (core === 'mame2003_plus' ? 600 : 0);
+    return BOOT_FRAMES[game] ?? (core === 'mame2003_plus' ? 900 : 0);
   }
 
   function findHiscore(fs, name, dir = '/data/saves', depth = 4) {
@@ -396,7 +396,7 @@
       manager.toggleFastForward(1);
       interval = setInterval(() => {
         try {
-          if (manager.getFrameNum() >= frames || Date.now() - skipStartedAt >= 8000) finish();
+          if (manager.getFrameNum() >= frames || Date.now() - skipStartedAt >= 15000) finish();
         } catch {
           finish();
         }

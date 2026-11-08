@@ -263,8 +263,8 @@ test('twin input layouts and Q*bert core option are exported', () => {
 });
 
 test('MAME games skip boot frames with per-game overrides', () => {
-  assert.equal(bootSkipFrames('mame2003_plus', 'galaga'), 600);
-  assert.equal(bootSkipFrames('mame2003_plus', 'sf2'), 600);
+  assert.equal(bootSkipFrames('mame2003_plus', 'galaga'), 900);
+  assert.equal(bootSkipFrames('mame2003_plus', 'sf2'), 900);
   assert.equal(bootSkipFrames('snes9x', 'smw'), 0);
   assert.equal(bootSkipFrames('fceumm', 'blitz'), 0);
 
