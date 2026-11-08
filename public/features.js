@@ -9,7 +9,7 @@ const SEARCH_KEYS = [
   'DEL',
   'DONE'
 ];
-const SETTINGS_TABS = ['Display', 'Themes', 'Boot', 'Controls', 'Sound', 'Remote', 'About'];
+const SETTINGS_TABS = ['Display', 'Themes', 'Boot', 'Controls', 'Sound', 'Profiles', 'Remote', 'About'];
 const DEFAULT_SETTINGS = {
   display: { scanlines: true, backgroundArt: true, controls: true, clock: false },
   theme: 'Cover Flow',
@@ -69,6 +69,7 @@ let searchKeyIndex = 0;
 let searchGames = [];
 let settingsOpen = false;
 let settingsTabIndex = 0;
+let pendingDelete = null;
 let settingsArea = 'tabs';
 let settingsActionIndex = 0;
 let remoteSocket = null;
@@ -136,6 +137,7 @@ function updateClock() {
 }
 
 function closeOverlays() {
+  window.rycadeSavePick?.close();
   closeSearch();
   closeSettings();
 }
@@ -327,7 +329,8 @@ function renderSettings() {
   else if (settingsTabIndex === 2) renderBootSettings();
   else if (settingsTabIndex === 3) renderControlsSettings();
   else if (settingsTabIndex === 4) renderSoundSettings();
-  else if (settingsTabIndex === 5) renderRemoteSettings();
+  else if (settingsTabIndex === 5) renderProfileSettings();
+  else if (settingsTabIndex === 6) renderRemoteSettings();
   else renderAboutSettings();
   refreshSettingsFocus();
 }
@@ -643,6 +646,47 @@ function renderRemoteSettings() {
   }
 }
 
+function confirmDelete(key, change) {
+  if (pendingDelete !== key) {
+    pendingDelete = key;
+  } else {
+    pendingDelete = null;
+    window.rycadeProfiles.update(change);
+    window.rycadeAudio?.play('back');
+  }
+  renderSettings();
+}
+
+function renderProfileSettings() {
+  const profiles = window.rycadeProfiles;
+  settingsContent.innerHTML = '<h3 class="settings-section-title">SAVE PROFILES</h3>';
+  const state = profiles.load();
+  if (!state.profiles.length) {
+    const note = document.createElement('p');
+    note.className = 'settings-note';
+    note.textContent = 'No profiles yet. Pick NEW INITIALS when starting a game with saves.';
+    settingsContent.append(note);
+    return;
+  }
+  for (const profile of profiles.pickerProfiles(state, null, Infinity)) {
+    const saves = Object.entries(profile.games).sort((a, b) => (b[1].last || 0) - (a[1].last || 0));
+    const total = saves.reduce((sum, [, entry]) => sum + (entry.ms || 0), 0);
+    const key = `profile:${profile.id}`;
+    settingsContent.append(settingRow(profile.initials, pendingDelete === key ? 'SURE?' : 'DELETE', () => {
+      confirmDelete(key, next => profiles.removeProfile(next, profile.id));
+    }, `${saves.length} save${saves.length === 1 ? '' : 's'} · ${profiles.formatPlaytime(total)} played`, 'confirm'));
+    for (const [gameId, entry] of saves) {
+      const saveKey = `save:${profile.id}:${gameId}`;
+      const title = GAMES.find(game => game.id === gameId)?.title || gameId;
+      const row = settingRow(title, pendingDelete === saveKey ? 'SURE?' : 'ERASE', () => {
+        confirmDelete(saveKey, next => profiles.removeGame(next, profile.id, gameId));
+      }, `${profiles.formatPlaytime(entry.ms)} played · ${profiles.formatLast(entry.last)}`, 'confirm');
+      row.classList.add('profile-save');
+      settingsContent.append(row);
+    }
+  }
+}
+
 function renderAboutSettings() {
   settingsContent.innerHTML = '<h3 class="settings-section-title">ABOUT</h3><p class="about-version">VERSION 1.2.0</p><p class="settings-note">Rycade web prototype</p>';
 }
@@ -789,6 +833,10 @@ function handleSearchKey(event) {
 function handleSettingsKey(event) {
   event.stopPropagation();
   const key = event.key;
+  if (pendingDelete && key !== CABINET_KEYS.start && key !== CABINET_KEYS.shoot) {
+    pendingDelete = null;
+    renderSettings();
+  }
   if (event.target.matches?.('.mixer-slider') && (key === 'ArrowLeft' || key === 'ArrowRight')) {
     event.preventDefault();
     const input = event.target;
@@ -878,7 +926,7 @@ window.addEventListener('keydown', event => {
     handleSettingsKey(event);
     return;
   }
-  if (event.repeat || launched || demoGame) return;
+  if (event.repeat || launched || demoGame || window.rycadeSavePick?.active()) return;
   const key = event.key.toLowerCase();
   if (event.key === '/' || key === 's') {
     event.preventDefault();
