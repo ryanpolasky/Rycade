@@ -12,13 +12,31 @@
     return typeof button === 'number' ? button > 0.5 : !!button && (button.pressed || button.value > 0.5);
   }
 
+  function orderPads(pads) {
+    const players = Array(4).fill(null);
+    const unassigned = [];
+    for (const pad of Array.from(pads || [])) {
+      if (!pad || pad.connected === false) continue;
+      const match = typeof pad.id === 'string' && pad.id.match(/Rycade P([1-4])\b/);
+      if (match) {
+        const player = Number(match[1]) - 1;
+        if (!players[player]) players[player] = pad;
+      } else {
+        unassigned.push(pad);
+      }
+    }
+    let next = 0;
+    return players.map(pad => pad || unassigned[next++] || null);
+  }
+
   function createInputMapper(simulateInput) {
     const previous = Array.from({ length: 4 }, () => new Map());
     const starts = Array.from({ length: 4 }, () => ({ held: false, at: null }));
     function poll(pads, system, now) {
       const actions = SYSTEM_BUTTONS[system] || SYSTEM_BUTTONS.ARCADE;
+      const playerPads = orderPads(pads);
       for (let player = 0; player < 4; player++) {
-        const pad = pads && pads[player];
+        const pad = playerPads[player];
         const wanted = new Map();
         const axes = pad && pad.axes || [];
         if (axes[1] < -0.5) wanted.set(DIRECTION_IDS.up, 1);
@@ -53,7 +71,7 @@
     return { poll, release };
   }
 
-  const api = { SYSTEM_BUTTONS, PHYSICAL_BUTTONS, createInputMapper };
+  const api = { SYSTEM_BUTTONS, PHYSICAL_BUTTONS, orderPads, createInputMapper };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof window === 'undefined') return;
 
