@@ -23,6 +23,12 @@
 #define RYCADE_BUTTON_A (1u << 4)
 #define RYCADE_BUTTON_Z (1u << 5)
 
+#define RYCADE_CAB_POWER_ON (1u << 0)
+#define RYCADE_CAB_POWER_OFF (1u << 1)
+#define RYCADE_CAB_LIVE (1u << 2)
+#define RYCADE_CAB_VOL_UP (1u << 3)
+#define RYCADE_CAB_VOL_DOWN (1u << 4)
+
 struct player_state {
     uint8_t dirs;
     uint8_t buttons;
@@ -34,7 +40,7 @@ struct encoder_framer {
 };
 
 bool encoder_parse(const uint8_t *buf, size_t len, uint8_t link,
-                   struct player_state states[RYCADE_PLAYER_COUNT]);
+                   struct player_state states[RYCADE_PLAYER_COUNT], uint8_t *cabinet);
 void encoder_framer_reset(struct encoder_framer *f);
 bool encoder_framer_push(struct encoder_framer *f, uint8_t byte);
 
