@@ -9,12 +9,14 @@ const SEARCH_KEYS = [
   'DEL',
   'DONE'
 ];
-const SETTINGS_TABS = ['Display', 'Themes', 'Boot', 'Controls', 'Sound', 'Profiles', 'Remote', 'About'];
+const SETTINGS_TABS = ['Display', 'Themes', 'Boot', 'Loading', 'Controls', 'Sound', 'Profiles', 'Remote', 'About'];
+const LOADING_STYLES = ['Credit', 'Channel', 'Self Test', 'Demo'];
 const DEFAULT_SETTINGS = {
   display: { scanlines: true, backgroundArt: true, controls: true, clock: false },
   theme: 'Cover Flow',
   palette: 'Classic',
   boot: 'Insert Coin',
+  loading: 'Credit',
   attractMinutes: 2,
   controls: { skimSpeed: 'Normal', letterJump: true },
   sound: { master: 70, navigation: 50, confirm: 60, notifications: 60, muted: false },
@@ -35,6 +37,7 @@ function readSettings() {
     theme: THEME_IDS.has(saved.theme) ? saved.theme : DEFAULT_SETTINGS.theme,
     palette: PALETTES.some(palette => palette.label === saved.palette) ? saved.palette : DEFAULT_SETTINGS.palette,
     boot: saved.boot || DEFAULT_SETTINGS.boot,
+    loading: LOADING_STYLES.includes(saved.loading) ? saved.loading : DEFAULT_SETTINGS.loading,
     attractMinutes: [0, 1, 2, 5].includes(saved.attractMinutes) ? saved.attractMinutes : DEFAULT_SETTINGS.attractMinutes,
     controls: { ...DEFAULT_SETTINGS.controls, ...(saved.controls || {}) },
     sound: soundSettingsCurrent
@@ -81,6 +84,7 @@ let bootOpen = false;
 let bootDismissKey = null;
 let bootReturnFocus = null;
 let bootSession = 0;
+let loadingPreview = false;
 const BOOT_SCENES = { 'Insert Coin': 'coin', 'Lights On': 'lights', 'CRT Power-on': 'crt' };
 
 function getPairingCode() {
@@ -327,10 +331,11 @@ function renderSettings() {
   if (settingsTabIndex === 0) renderDisplaySettings();
   else if (settingsTabIndex === 1) renderThemeSettings();
   else if (settingsTabIndex === 2) renderBootSettings();
-  else if (settingsTabIndex === 3) renderControlsSettings();
-  else if (settingsTabIndex === 4) renderSoundSettings();
-  else if (settingsTabIndex === 5) renderProfileSettings();
-  else if (settingsTabIndex === 6) renderRemoteSettings();
+  else if (settingsTabIndex === 3) renderLoadingSettings();
+  else if (settingsTabIndex === 4) renderControlsSettings();
+  else if (settingsTabIndex === 5) renderSoundSettings();
+  else if (settingsTabIndex === 6) renderProfileSettings();
+  else if (settingsTabIndex === 7) renderRemoteSettings();
   else renderAboutSettings();
   refreshSettingsFocus();
 }
@@ -521,6 +526,47 @@ function renderBootSettings() {
   play.disabled = settings.boot === 'None';
   if (play.disabled) play.classList.add('disabled');
   settingsContent.append(play);
+}
+
+function renderLoadingSettings() {
+  settingsContent.innerHTML = '<h3 class="settings-section-title">LOADING SCREEN</h3><p class="settings-intro">Choose what covers the screen while a game starts.</p>';
+  const choices = document.createElement('div');
+  choices.className = 'boot-options';
+  const game = window.rycadeSelectedGame?.() || GAMES[0];
+  LOADING_STYLES.forEach(label => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = `boot-choice${settings.loading === label ? ' selected' : ''}`;
+    button.setAttribute('aria-pressed', String(settings.loading === label));
+    button.innerHTML = `<span class="ld-thumb"></span><span>${label}</span>`;
+    window.rycadeLoading?.thumb(button.querySelector('.ld-thumb'), game, label);
+    button.addEventListener('click', () => {
+      window.rycadeAudio?.play('toggle');
+      settings.loading = label;
+      saveSettings();
+      renderSettings();
+    });
+    choices.append(button);
+  });
+  settingsContent.append(choices);
+  settingsContent.append(settingRow('Preview loading screen', '▶', playLoading, 'Shows the selected game; press any button to close.', 'confirm'));
+}
+
+function playLoading() {
+  window.rycadeAttract.reset();
+  release();
+  if (!loadingPreview) bootReturnFocus = document.activeElement;
+  loadingPreview = true;
+  window.rycadeLoading?.show(window.rycadeSelectedGame?.() || GAMES[0], settings.loading, { fake: 4000 });
+}
+
+function closeLoading() {
+  window.rycadeAttract.reset();
+  if (!loadingPreview) return;
+  loadingPreview = false;
+  window.rycadeLoading?.hide();
+  if (bootReturnFocus?.isConnected) bootReturnFocus.focus({ preventScroll: true });
+  bootReturnFocus = null;
 }
 
 function renderControlsSettings() {
@@ -909,12 +955,13 @@ applyRycadePalette(settings.palette);
 
 window.addEventListener('keydown', event => {
   const code = event.code || event.key;
-  if (code === bootDismissKey || bootOpen) {
+  if (code === bootDismissKey || bootOpen || loadingPreview) {
     event.preventDefault();
     event.stopImmediatePropagation();
-    if (bootOpen && !event.repeat) {
+    if ((bootOpen || loadingPreview) && !event.repeat) {
       bootDismissKey = code;
       closeBoot();
+      closeLoading();
     }
     return;
   }
