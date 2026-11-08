@@ -23,7 +23,7 @@ Both links use 115200 8N1. The Pico sends `A6 01 00` every 4 ms; each reply is a
 
 | Link | Signal | Game Port hole | Pico GPIO | Players |
 | --- | --- | ---: | ---: | --- |
-| A | Pico TX / request | 8 | GP6 | — |
+| A | Pico TX / request | 8 | GP8 | — |
 | A | Board RX / reply | 10 | GP7 | P1 (bytes 4/5), P2 (bytes 8/9) |
 | B | Pico TX / request | 4 | GP4 | — |
 | B | Board RX / reply | 2 | GP3 | P3 (bytes 4/5), P4 (bytes 8/9) |

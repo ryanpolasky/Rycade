@@ -234,7 +234,7 @@ struct encoder_rx_ring {
 };
 
 static const struct encoder_link_pins encoder_link_pins[RYCADE_LINK_COUNT] = {
-    {6u, 7u},
+    {8u, 7u},
     {4u, 3u}
 };
 static const pio_interrupt_source_t encoder_rx_irq_sources[4] = {
