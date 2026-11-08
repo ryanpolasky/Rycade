@@ -1,14 +1,30 @@
 (function (root) {
   const SENT_KEY = 'rycade.scoresSent';
   const QUEUE_KEY = 'rycade.scoreQueue';
-  const DECODERS = {};
+  const bcd = bytes => Number(Array.from(bytes, b => b.toString(16).padStart(2, '0')).join(''));
+  const text = (bytes, map = b => String.fromCharCode(b)) => Array.from(bytes, map).join('').trim();
+
+  const DECODERS = {
+    // 0x6b00: five 34-byte rows of "1ST  012000  NAME........" + 0x7f + score as little-endian BCD.
+    dkong3: {
+      size: 241,
+      defaults: [['WIN', 12000], ['MAI', 9000], ['OGA', 8000], ['SUZ', 5400], ['YOU', 3200]],
+      decode: bytes => Array.from({ length: 5 }, (_, i) => {
+        const row = bytes.subarray(2 + i * 34, 36 + i * 34);
+        return {
+          initials: text(row.subarray(13, 25), b => b === 0x40 ? ' ' : String.fromCharCode(b)),
+          score: bcd(row.slice(27, 30).reverse())
+        };
+      })
+    }
+  };
 
   function decode(game, bytes) {
     const decoder = DECODERS[game];
     if (!decoder || !bytes || bytes.length !== decoder.size) return [];
     const defaults = new Set((decoder.defaults || []).map(([initials, score]) => `${initials}|${score}`));
     return decoder.decode(bytes).filter(entry =>
-      /^[A-Z0-9 .!?-]{1,3}$/.test(entry.initials) &&
+      /^[A-Z0-9 .!?-]{1,12}$/.test(entry.initials) &&
       Number.isSafeInteger(entry.score) && entry.score > 0 &&
       !defaults.has(`${entry.initials}|${entry.score}`));
   }

@@ -11,7 +11,11 @@
   const CORE_OPTIONS = {
     qbert: { 'mame2003-plus_four_way_emulation': 'enabled' }
   };
-  const MAME_OPTIONS = { 'mame2003-plus_autosave_hiscore': 'recursively' };
+  const MAME_OPTIONS = {
+    'mame2003-plus_autosave_hiscore': 'recursively',
+    'mame2003-plus_skip_disclaimer': 'enabled',
+    'mame2003-plus_skip_warnings': 'enabled'
+  };
 
   function findHiscore(fs, name, dir = '/data/saves', depth = 4) {
     let names;

@@ -9,7 +9,7 @@ DECODERS.testgame = {
   decode: bytes => [
     { initials: 'AAA', score: bytes[0] * 100 },
     { initials: 'RYP', score: bytes[1] * 100 },
-    { initials: 'BAD!!', score: 5 },
+    { initials: 'BAD<', score: 5 },
     { initials: 'ZER', score: 0 }
   ]
 };
@@ -53,4 +53,19 @@ test('findHiscore walks the save tree for the set file', () => {
   };
   assert.deepEqual(findHiscore(fs, 'dkong3.hi'), new Uint8Array([7]));
   assert.equal(findHiscore(fs, 'galaga.hi'), null);
+});
+
+const DK3_FACTORY = 'f376e8e2e54040303132303030404057494e4040404040404040407f000020015376f576324e44404030303930303040404d41494040404040404040407f000090005576f776335244404030303830303040404f47414040404040404040407f000080005776f9763454484040303035343030404053555a4040404040404040407f000054005976fb7635544840403030333230304040594f554040404040404040407f000032005b76' + '00'.repeat(68) + '012000';
+
+test('dkong3 factory table decodes to nothing new', () => {
+  const bytes = Uint8Array.from(Buffer.from(DK3_FACTORY, 'hex'));
+  assert.deepEqual(DECODERS.dkong3.decode(bytes).map(e => [e.initials, e.score]), DECODERS.dkong3.defaults);
+  assert.deepEqual(decode('dkong3', bytes), []);
+});
+
+test('dkong3 picks up a player row', () => {
+  const bytes = Uint8Array.from(Buffer.from(DK3_FACTORY, 'hex'));
+  bytes.set(Buffer.from('RYAN@@@@@@@@', 'latin1'), 2 + 13);
+  bytes.set([0x50, 0x34, 0x12], 2 + 27);
+  assert.deepEqual(decode('dkong3', bytes), [{ initials: 'RYAN', score: 123450 }]);
 });
