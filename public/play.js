@@ -381,7 +381,7 @@
         interval = undefined;
       }
       try { manager.toggleFastForward(0); } catch {}
-      try { emulator.setVolume(emulator.muted ? 0 : emulator.volume); } catch {}
+      try { emulator.setVolume(emulator.volume); } catch {}
     };
     const finish = () => {
       if (finished) return;
