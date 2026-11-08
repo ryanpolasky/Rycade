@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "cabinet.h"
 #include "encoder.h"
 #include "gamepad.h"
 #include "hardware/gpio.h"
@@ -29,17 +30,30 @@ static struct player_state player_states[RYCADE_PLAYER_COUNT];
 static struct player_state sent_states[RYCADE_PLAYER_COUNT];
 static bool reports_sent[RYCADE_PLAYER_COUNT];
 static bool usb_mounted;
+static uint8_t cabinet_bits;
+static uint8_t cabinet_keys_report[3];
+static uint8_t cabinet_volume_report_bits;
+static uint8_t sent_cabinet_keys[3];
+static uint8_t sent_cabinet_volume_report_bits;
+static bool cabinet_keys_report_sent;
+static bool cabinet_volume_report_sent;
+static struct cabinet_volume cabinet_volume_state;
+static bool power_on_was_pressed;
 
 void tud_mount_cb(void)
 {
     usb_mounted = true;
     memset(reports_sent, 0, sizeof(reports_sent));
+    cabinet_keys_report_sent = false;
+    cabinet_volume_report_sent = false;
 }
 
 void tud_umount_cb(void)
 {
     usb_mounted = false;
     memset(reports_sent, 0, sizeof(reports_sent));
+    cabinet_keys_report_sent = false;
+    cabinet_volume_report_sent = false;
 }
 
 uint16_t tud_hid_get_report_cb(uint8_t instance, uint8_t report_id, hid_report_type_t report_type,
@@ -48,7 +62,27 @@ uint16_t tud_hid_get_report_cb(uint8_t instance, uint8_t report_id, hid_report_t
     struct gamepad_report report;
     uint16_t copy_length;
 
-    (void)report_id;
+    if (instance == RYCADE_PLAYER_COUNT) {
+        const uint8_t *cabinet_report;
+        uint16_t report_length;
+
+        if (report_type != HID_REPORT_TYPE_INPUT || buffer == NULL) {
+            return 0u;
+        }
+        if (report_id == 1u) {
+            cabinet_report = cabinet_keys_report;
+            report_length = (uint16_t)sizeof(cabinet_keys_report);
+        } else if (report_id == 2u) {
+            cabinet_report = &cabinet_volume_report_bits;
+            report_length = (uint16_t)sizeof(cabinet_volume_report_bits);
+        } else {
+            return 0u;
+        }
+        copy_length = reqlen < report_length ? reqlen : report_length;
+        memcpy(buffer, cabinet_report, copy_length);
+        return copy_length;
+    }
+
     if (instance >= RYCADE_PLAYER_COUNT || report_type != HID_REPORT_TYPE_INPUT || buffer == NULL) {
         return 0u;
     }
@@ -95,6 +129,43 @@ static void send_changed_reports(void)
             sent_states[player] = player_states[player];
             reports_sent[player] = true;
         }
+    }
+}
+
+static void send_cabinet_reports(uint32_t now_ms)
+{
+    const bool power_on_pressed = (cabinet_bits & RYCADE_CAB_POWER_ON) != 0u;
+
+    if (tud_suspended() && power_on_pressed && !power_on_was_pressed) {
+        (void)tud_remote_wakeup();
+    }
+    power_on_was_pressed = power_on_pressed;
+
+    cabinet_keys(cabinet_bits, cabinet_keys_report);
+    cabinet_volume_report_bits =
+        cabinet_volume_update(&cabinet_volume_state, cabinet_bits, now_ms);
+    if (!usb_mounted) {
+        return;
+    }
+
+    if ((!cabinet_keys_report_sent ||
+         memcmp(cabinet_keys_report, sent_cabinet_keys, sizeof(cabinet_keys_report)) != 0) &&
+        tud_hid_n_ready(RYCADE_PLAYER_COUNT)) {
+        if (tud_hid_n_report(RYCADE_PLAYER_COUNT, 1u, cabinet_keys_report,
+                             (uint16_t)sizeof(cabinet_keys_report))) {
+            memcpy(sent_cabinet_keys, cabinet_keys_report, sizeof(cabinet_keys_report));
+            cabinet_keys_report_sent = true;
+        }
+        return;
+    }
+
+    if ((!cabinet_volume_report_sent ||
+         cabinet_volume_report_bits != sent_cabinet_volume_report_bits) &&
+        tud_hid_n_ready(RYCADE_PLAYER_COUNT) &&
+        tud_hid_n_report(RYCADE_PLAYER_COUNT, 2u, &cabinet_volume_report_bits,
+                         (uint16_t)sizeof(cabinet_volume_report_bits))) {
+        sent_cabinet_volume_report_bits = cabinet_volume_report_bits;
+        cabinet_volume_report_sent = true;
     }
 }
 
@@ -373,7 +444,8 @@ static void drain_encoder_rings(uint32_t now_ms)
                 encoder_debug_frame_received(link, encoder_framers[link].frame);
 #endif
                 if (encoder_parse(encoder_framers[link].frame,
-                                  RYCADE_ENCODER_FRAME_LENGTH, link, player_states)) {
+                                  RYCADE_ENCODER_FRAME_LENGTH, link, player_states,
+                                  &cabinet_bits)) {
                     last_valid_ms[link] = now_ms;
                     link_has_valid_frame[link] = true;
                 }
@@ -390,6 +462,9 @@ static void drain_encoder_rings(uint32_t now_ms)
             (uint32_t)(now_ms - last_valid_ms[link]) >= 100u) {
             memset(&player_states[(size_t)link * 2u], 0,
                    2u * sizeof(player_states[0]));
+            if (link == 0u) {
+                cabinet_bits = 0u;
+            }
             link_has_valid_frame[link] = false;
         }
     }
@@ -448,6 +523,7 @@ int main(void)
 #endif
 
         send_changed_reports();
+        send_cabinet_reports(now_ms);
         gpio_put(PICO_DEFAULT_LED_PIN, usb_mounted || ((now_ms / 100u) & 1u) != 0u);
         sleep_ms(1u);
     }

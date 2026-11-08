@@ -58,51 +58,87 @@ static void test_parser(void)
         {0xFFu, 0xFFu}, {0xFEu, 0xFEu}, {0xFDu, 0xFDu}, {0xFCu, 0xFCu}
     };
     uint8_t bad_header[RYCADE_ENCODER_FRAME_LENGTH];
+    uint8_t cabinet = 0xA5u;
+    uint8_t panel_frame[RYCADE_ENCODER_FRAME_LENGTH];
 
-    assert(encoder_parse(idle_frame, sizeof(idle_frame), 0u, states));
+    assert(encoder_parse(idle_frame, sizeof(idle_frame), 0u, states, &cabinet));
+    assert(cabinet == 0u);
     assert(states[0].dirs == 0u && states[0].buttons == 0u);
     assert(states[1].dirs == 0u && states[1].buttons == 0u);
     assert(states[2].dirs == untouched[2].dirs && states[2].buttons == untouched[2].buttons);
     assert(states[3].dirs == untouched[3].dirs && states[3].buttons == untouched[3].buttons);
 
-    assert(encoder_parse(idle_frame, sizeof(idle_frame), 1u, states));
+    cabinet = 0x5Au;
+    assert(encoder_parse(idle_frame, sizeof(idle_frame), 1u, states, &cabinet));
+    assert(cabinet == 0x5Au);
     assert(states[2].dirs == 0u && states[2].buttons == 0u);
     assert(states[3].dirs == 0u && states[3].buttons == 0u);
 
-    assert(encoder_parse(p1_up_frame, sizeof(p1_up_frame), 0u, states));
+    assert(encoder_parse(p1_up_frame, sizeof(p1_up_frame), 0u, states, &cabinet));
     assert(states[0].dirs == RYCADE_DIR_UP && states[0].buttons == 0u);
     assert(states[1].dirs == 0u && states[1].buttons == 0u);
-    assert(encoder_parse(p1_btn1_frame, sizeof(p1_btn1_frame), 0u, states));
+    assert(encoder_parse(p1_btn1_frame, sizeof(p1_btn1_frame), 0u, states, &cabinet));
     assert(states[0].dirs == 0u && states[0].buttons == RYCADE_BUTTON_A);
-    assert(encoder_parse(p2_up_frame, sizeof(p2_up_frame), 0u, states));
+    assert(encoder_parse(p2_up_frame, sizeof(p2_up_frame), 0u, states, &cabinet));
     assert(states[1].dirs == RYCADE_DIR_UP && states[1].buttons == 0u);
-    assert(encoder_parse(p2_btn1_frame, sizeof(p2_btn1_frame), 0u, states));
+    assert(encoder_parse(p2_btn1_frame, sizeof(p2_btn1_frame), 0u, states, &cabinet));
     assert(states[1].dirs == 0u && states[1].buttons == RYCADE_BUTTON_A);
-    assert(encoder_parse(p2_start_frame, sizeof(p2_start_frame), 0u, states));
+    assert(encoder_parse(p2_start_frame, sizeof(p2_start_frame), 0u, states, &cabinet));
     assert(states[1].dirs == RYCADE_DIR_START && states[1].buttons == 0u);
 
+    memcpy(panel_frame, idle_frame, sizeof(panel_frame));
+    panel_frame[0x02u] = 0x02u;
+    panel_frame[0x05u] = RYCADE_BUTTON_A | RYCADE_BUTTON_C |
+                         RYCADE_BUTTON_Y | RYCADE_BUTTON_Z;
+    assert(encoder_parse(panel_frame, sizeof(panel_frame), 0u, states, &cabinet));
+    assert(states[0].buttons == RYCADE_BUTTON_A);
+    assert(cabinet == (RYCADE_CAB_POWER_ON | RYCADE_CAB_POWER_OFF |
+                       RYCADE_CAB_LIVE | RYCADE_CAB_VOL_UP));
+
+    panel_frame[0x02u] = 0x00u;
+    assert(encoder_parse(panel_frame, sizeof(panel_frame), 0u, states, &cabinet));
+    assert(cabinet == (RYCADE_CAB_POWER_ON | RYCADE_CAB_POWER_OFF |
+                       RYCADE_CAB_LIVE | RYCADE_CAB_VOL_DOWN));
+    panel_frame[0x02u] = 0x01u;
+    assert(encoder_parse(panel_frame, sizeof(panel_frame), 0u, states, &cabinet));
+    assert(cabinet == (RYCADE_CAB_POWER_ON | RYCADE_CAB_POWER_OFF | RYCADE_CAB_LIVE));
+    panel_frame[0x02u] = 0x05u;
+    assert(encoder_parse(panel_frame, sizeof(panel_frame), 0u, states, &cabinet));
+    assert(cabinet == (RYCADE_CAB_POWER_ON | RYCADE_CAB_POWER_OFF | RYCADE_CAB_LIVE));
+
+    memcpy(panel_frame, idle_frame, sizeof(panel_frame));
+    panel_frame[0x05u] = RYCADE_BUTTON_C;
     states[0] = (struct player_state){0x31u, 0x42u};
     states[1] = (struct player_state){0x53u, 0x64u};
-    assert(encoder_parse(p1_up_frame, sizeof(p1_up_frame), 1u, states));
+    cabinet = 0x69u;
+    assert(encoder_parse(panel_frame, sizeof(panel_frame), 1u, states, &cabinet));
     assert(states[0].dirs == 0x31u && states[0].buttons == 0x42u);
     assert(states[1].dirs == 0x53u && states[1].buttons == 0x64u);
-    assert(states[2].dirs == RYCADE_DIR_UP && states[2].buttons == 0u);
-    assert(encoder_parse(p2_btn1_frame, sizeof(p2_btn1_frame), 1u, states));
+    assert(states[2].dirs == 0u && states[2].buttons == RYCADE_BUTTON_C);
+    assert(cabinet == 0x69u);
+    assert(encoder_parse(p2_btn1_frame, sizeof(p2_btn1_frame), 1u, states, NULL));
     assert(states[3].dirs == 0u && states[3].buttons == RYCADE_BUTTON_A);
 
     memcpy(states, untouched, sizeof(states));
-    assert(!encoder_parse(idle_frame, sizeof(idle_frame) - 1u, 0u, states));
+    cabinet = 0x7Bu;
+    assert(!encoder_parse(idle_frame, sizeof(idle_frame) - 1u, 0u, states, &cabinet));
+    assert(cabinet == 0x7Bu);
     assert_players_equal(states, untouched);
-    assert(!encoder_parse(NULL, sizeof(idle_frame), 0u, states));
+    assert(!encoder_parse(NULL, sizeof(idle_frame), 0u, states, &cabinet));
+    assert(cabinet == 0x7Bu);
     assert_players_equal(states, untouched);
-    assert(!encoder_parse(idle_frame, sizeof(idle_frame), 0u, NULL));
+    assert(!encoder_parse(idle_frame, sizeof(idle_frame), 0u, NULL, &cabinet));
+    assert(cabinet == 0x7Bu);
     assert_players_equal(states, untouched);
     memcpy(bad_header, idle_frame, sizeof(bad_header));
     bad_header[0] = 0u;
-    assert(!encoder_parse(bad_header, sizeof(bad_header), 0u, states));
+    assert(!encoder_parse(bad_header, sizeof(bad_header), 0u, states, &cabinet));
+    assert(cabinet == 0x7Bu);
     assert_players_equal(states, untouched);
-    assert(!encoder_parse(idle_frame, sizeof(idle_frame), 2u, states));
+    assert(!encoder_parse(idle_frame, sizeof(idle_frame), 2u, states, &cabinet));
+    assert(cabinet == 0x7Bu);
     assert_players_equal(states, untouched);
+    assert(encoder_parse(idle_frame, sizeof(idle_frame), 0u, states, NULL));
 }
 
 static void assert_framer_reads(const uint8_t *frame)

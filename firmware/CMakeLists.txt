@@ -29,6 +29,7 @@ if(RYCADE_MODE STREQUAL "sniff")
 else()
     add_executable(rycade_pico
         src/main.c
+        src/cabinet.c
         src/encoder.c
         src/gamepad.c
         src/usb_descriptors.c
