@@ -538,11 +538,11 @@ body[data-theme="studio"] .search-result {
 }
 
 body[data-theme="studio"] .search-result img,
-body[data-theme="studio"] .boot-choice :is(img, canvas) {
+body[data-theme="studio"] .boot-choice > :is(img, canvas) {
   border-radius: 7px;
 }
 
-body[data-theme="studio"] .boot-choice span {
+body[data-theme="studio"] .boot-choice > span:not(.ld-thumb) {
   font-size: 14px;
 }
 

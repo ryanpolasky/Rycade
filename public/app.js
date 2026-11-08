@@ -482,9 +482,9 @@ function flushFrame(frame) {
 async function launchCabGame(game, profile) {
   launched = true;
   const session = ++playSession;
-  monitor.classList.add('loading', 'show-status');
-  nowPlaying.textContent = 'LOADING GAME';
+  monitor.classList.add('loading');
   clearTimeout(statusTimer);
+  window.rycadeLoading?.show(game, window.rycadeFeatures?.settings.loading);
   try {
     await exiting;
     const rom = await window.rycadeEmulation.resolveRom(game);
@@ -492,6 +492,7 @@ async function launchCabGame(game, profile) {
     if (!rom || !rom.filename) {
       flashToast(`ROM not found: ${rom?.expected || game.title}`);
       launched = false;
+      window.rycadeLoading?.hide();
       monitor.classList.remove('loading', 'show-status');
       monitor.focus();
       return;
@@ -515,6 +516,7 @@ async function launchCabGame(game, profile) {
     if (session !== playSession) return;
     flashToast(`ROM not found: ${game.title}`);
     launched = false;
+    window.rycadeLoading?.hide();
     monitor.classList.remove('loading', 'show-status');
     monitor.focus();
   }
@@ -528,6 +530,7 @@ function exitGame() {
     ++playSession;
     launched = false;
     monitor.classList.remove('live', 'loading', 'show-status');
+    window.rycadeLoading?.hide();
     nowPlaying.textContent = 'NOW PLAYING · ESC TO EXIT';
     clearTimeout(statusTimer);
     endPlaytime();
@@ -549,17 +552,27 @@ function exitGame() {
 }
 
 window.rycadeMenuLaunched = () => launched;
+window.rycadeSelectedGame = () => view[index];
 window.rycadePlay = { exit: exitGame };
 window.addEventListener('message', event => {
   if (!cabMode || event.origin !== location.origin || !playFrame || event.source !== playFrame.contentWindow) return;
   const message = event.data;
   if (!message || message.type !== 'rycade-play') return;
-  if (message.state === 'started') {
-    monitor.classList.remove('loading');
-    monitor.classList.add('live', 'show-status');
-    nowPlaying.textContent = 'NOW PLAYING · F19 / ESC TO EXIT';
-    if (playTrack) playTrack.start = performance.now();
-    document.querySelector('#play-layer').classList.add('visible');
+  if (message.state === 'progress') {
+    window.rycadeLoading?.boot(message.progress);
+  } else if (message.state === 'started') {
+    const session = playSession;
+    Promise.resolve(window.rycadeLoading?.finish()).then(() => {
+      if (session !== playSession || !launched) return;
+      monitor.classList.remove('loading');
+      monitor.classList.add('live', 'show-status');
+      nowPlaying.textContent = 'NOW PLAYING · F19 / ESC TO EXIT';
+      if (playTrack) playTrack.start = performance.now();
+      document.querySelector('#play-layer').classList.add('visible');
+      setTimeout(() => {
+        if (session === playSession) window.rycadeLoading?.hide();
+      }, 320);
+    });
   } else if (message.state === 'error') {
     flashToast(message.message || 'Emulator failed to start');
     exitGame();

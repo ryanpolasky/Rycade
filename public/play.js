@@ -396,7 +396,9 @@
       manager.toggleFastForward(1);
       interval = setInterval(() => {
         try {
-          if (manager.getFrameNum() >= frames || Date.now() - skipStartedAt >= 15000) finish();
+          const progress = Math.max(manager.getFrameNum() / frames, (Date.now() - skipStartedAt) / 15000);
+          if (progress >= 1) finish();
+          else post('progress', null, { progress });
         } catch {
           finish();
         }
