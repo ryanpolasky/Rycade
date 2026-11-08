@@ -1,6 +1,7 @@
 const assert = require('node:assert/strict');
 const { test } = require('node:test');
 const { createMenuPadDriver } = require('../public/pads.js');
+const { expandPads } = require('../public/padsplit.js');
 
 function makePad({ x = 0, y = 0, buttons = [], id = '' } = {}) {
   return { id, axes: [x, y], buttons: Array.from({ length: 16 }, (_, index) => ({ pressed: !!buttons[index] })) };
@@ -55,4 +56,26 @@ test('menu pad remembers the seat for dispatched actions and can clear it', () =
 
   driver.clearSeat();
   assert.equal(driver.lastSeat(), null);
+});
+
+test('P3 from a combined pad moves the menu and records physical seat two', () => {
+  const events = [];
+  const buttons = Array.from({ length: 28 }, (_, index) => ({ pressed: index === 20 }));
+  const combined = {
+    id: 'Rycade Controls',
+    index: 0,
+    axes: [0, 0, 0, 0, 0, -1, 0, 0],
+    buttons
+  };
+  const driver = createMenuPadDriver(
+    () => expandPads([combined]),
+    (type, key) => events.push([type, key]),
+    () => false
+  );
+
+  driver.tick(0);
+
+  assert.ok(events.some(([type, key]) => type === 'keydown' && key === 'Enter'));
+  assert.ok(events.some(([type, key]) => type === 'keydown' && key === 'ArrowUp'));
+  assert.equal(driver.lastSeat(), 2);
 });

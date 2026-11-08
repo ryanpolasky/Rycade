@@ -1,4 +1,7 @@
 (function (root) {
+  const expandPads = typeof module !== 'undefined' && module.exports
+    ? require('./padsplit.js').expandPads
+    : root.rycadeExpandPads;
   const ACTIONS = [[0, '1'], [3, '2'], [1, '3'], [6, 'Enter']];
   const DIRECTIONS = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
 
@@ -63,7 +66,7 @@
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof window === 'undefined') return;
   const driver = createMenuPadDriver(
-    () => navigator.getGamepads(),
+    () => expandPads(navigator.getGamepads()),
     (type, key) => (document.activeElement || document.body).dispatchEvent(new KeyboardEvent(type, { key, bubbles: true })),
     () => !!(window.rycadeMenuLaunched && window.rycadeMenuLaunched())
   );

@@ -1,4 +1,5 @@
 (() => {
+  const expandPads = window.rycadeExpandPads;
   const overlay = document.querySelector('#attract-overlay');
   const video = overlay.querySelector('video');
   let lastInput = performance.now();
@@ -125,7 +126,7 @@
 
   function init() {
     setInterval(() => {
-      const pads = navigator.getGamepads?.() || [];
+      const pads = expandPads(navigator.getGamepads?.() || []);
       for (const pad of pads) {
         if (!pad) continue;
         if (pad.buttons.some(button => button.pressed) || pad.axes.some(axis => Math.abs(axis) > .35)) {

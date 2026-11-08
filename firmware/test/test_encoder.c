@@ -215,22 +215,27 @@ static void test_framer(void)
 
 static void test_gamepad_mapping(void)
 {
-    struct player_state state = {0u, 0u};
-    struct gamepad_report report = {0, 0, {0u, 0u}};
+    const uint8_t all_buttons = RYCADE_BUTTON_A | RYCADE_BUTTON_B | RYCADE_BUTTON_C |
+                                RYCADE_BUTTON_X | RYCADE_BUTTON_Y | RYCADE_BUTTON_Z;
+    const struct player_state states[RYCADE_PLAYER_COUNT] = {
+        {RYCADE_DIR_LEFT | RYCADE_DIR_RIGHT | RYCADE_DIR_UP | RYCADE_DIR_DOWN |
+             RYCADE_DIR_START, all_buttons},
+        {RYCADE_DIR_RIGHT | RYCADE_DIR_UP | RYCADE_DIR_START, all_buttons},
+        {RYCADE_DIR_DOWN | RYCADE_DIR_START, all_buttons},
+        {RYCADE_DIR_LEFT | RYCADE_DIR_START, all_buttons}
+    };
+    struct gamepad_report report;
 
-    state.dirs = RYCADE_DIR_LEFT | RYCADE_DIR_RIGHT | RYCADE_DIR_UP | RYCADE_DIR_DOWN;
-    player_state_to_report(&state, &report);
-    assert(report.x == 0);
-    assert(report.y == 0);
-
-    state.dirs = RYCADE_DIR_LEFT | RYCADE_DIR_DOWN | RYCADE_DIR_START;
-    state.buttons = RYCADE_BUTTON_A | RYCADE_BUTTON_B | RYCADE_BUTTON_C |
-                    RYCADE_BUTTON_X | RYCADE_BUTTON_Y | RYCADE_BUTTON_Z;
-    player_state_to_report(&state, &report);
-    assert(report.x == -127);
-    assert(report.y == 127);
-    assert(report.buttons[0] == 0x7Fu);
-    assert(report.buttons[1] == 0u);
+    player_states_to_report(states, &report);
+    assert(sizeof(report) == 12u);
+    assert(report.axes[0] == 0 && report.axes[1] == 0);
+    assert(report.axes[2] == 127 && report.axes[3] == -127);
+    assert(report.axes[4] == 0 && report.axes[5] == 127);
+    assert(report.axes[6] == -127 && report.axes[7] == 0);
+    assert(report.buttons[0] == 0xFFu);
+    assert(report.buttons[1] == 0xFFu);
+    assert(report.buttons[2] == 0xFFu);
+    assert(report.buttons[3] == 0x0Fu);
 }
 
 int main(void)

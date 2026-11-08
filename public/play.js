@@ -1,4 +1,7 @@
 (function (root) {
+  const expandPads = typeof module !== 'undefined' && module.exports
+    ? require('./padsplit.js').expandPads
+    : root.rycadeExpandPads;
   const SYSTEM_BUTTONS = {
     ARCADE: [0, 8, 1],
     GENESIS: [1, 0, 8],
@@ -22,7 +25,7 @@
   function orderPads(pads) {
     const players = Array(4).fill(null);
     const unassigned = [];
-    for (const pad of Array.from(pads || [])) {
+    for (const pad of expandPads(pads)) {
       if (!pad || pad.connected === false) continue;
       const match = typeof pad.id === 'string' && pad.id.match(/Rycade P([1-4])\b/);
       if (match) {
