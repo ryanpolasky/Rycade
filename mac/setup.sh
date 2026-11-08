@@ -142,10 +142,22 @@ repo() {
     gh auth status >/dev/null 2>&1 || run gh auth login --hostname github.com --git-protocol https --web
     run gh auth setup-git
     run gh repo clone "$REPO" "$APP"
+    git_creds
   else
+    git_creds
     run git -C "$APP" pull --ff-only
   fi
   ok "$APP"
+}
+
+git_creds() {
+  [[ -d $APP/.git ]] || return 0
+  run git -C "$APP" config credential.helper store
+  [[ -s $HOME/.git-credentials ]] && return
+  local token
+  token=$(gh auth token 2>/dev/null) || return 0
+  (( DRY )) && return
+  (umask 077; printf 'https://%s:%s@github.com\n' "${REPO%%/*}" "$token" > "$HOME/.git-credentials")
 }
 
 never_down() {
@@ -407,6 +419,7 @@ doctor() {
 update() {
   step "Update frontend from GitHub"
   srun rycade-net open 10m >/dev/null
+  git_creds
   run git -C "$APP" pull --ff-only
   srun rycade-net close >/dev/null
   ok "pulled"
@@ -418,6 +431,7 @@ refresh() {
   step "Reinstall rycade-net, rebuild helpers, reload kiosk"
   srun install -m 755 "$APP/mac/rycade-net" /usr/local/bin/rycade-net
   srun ln -sf "$APP/mac/setup.sh" /usr/local/bin/rycade
+  git_creds
   daemon com.rycade.net 30 /usr/local/bin/rycade-net enforce
   srun rycade-net enforce >/dev/null
   command -v caddy >/dev/null || for b in /usr/local/bin/brew /opt/homebrew/bin/brew; do [[ -x $b ]] && eval "$($b shellenv)"; done
