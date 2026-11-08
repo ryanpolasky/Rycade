@@ -454,6 +454,7 @@ async function launchCabGame(game) {
       file: `${rom.dir}/${rom.filename}`,
       core: rom.core,
       sys: rom.sys,
+      game: game.id,
       players: String(game.players),
       seat: String(window.rycadeMenuPads?.lastSeat() ?? 0)
     });

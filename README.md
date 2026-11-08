@@ -11,6 +11,7 @@ A static, playable game-library frontend for a four-player arcade cabinet. The l
 - In settings, Left from the section list closes it. In search, DONE closes it.
 - Enter (START): launch the selected game, including while watching its demo. Escape exits the launched prototype.
 - In cab mode, the seat that starts a 1–2-player game becomes P1; the next different seat to press START joins as P2. Games with 3+ players or unknown player counts keep fixed seats.
+- In cab mode, Smash TV and Robotron pair adjacent seats as each player's twin sticks, with START on either stick; Q*bert's diagonal four-way rotation is automatic.
 - 1 / 2 / 3: SHOOT / PASS / TURBO. SHOOT (1) opens the selected game's video demo; SHOOT again or Escape returns to the menu.
 - F: favorite or unfavorite the selected game. Favorites live in the ★ FAVORITES tab and persist in the browser.
 - Click or tap a flyer to select it, tap it again or the game screen to launch, and tap while launched to exit.
