@@ -45,6 +45,7 @@ table <lan> const { ${LAN// /, } }
 table <github> persist
 table <scores> persist
 block drop all
+pass quick on lo0 all
 pass out quick inet proto udp from any port 68 to any port 67
 pass in quick inet proto udp from any port 67 to any port 68
 pass out quick inet6 proto udp from any port 546 to any port 547 keep state
