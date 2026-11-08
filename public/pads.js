@@ -11,7 +11,7 @@
 
   function createMenuPadDriver(getPads, dispatch, isLaunched) {
     const previousButtons = Array.from({ length: 4 }, () => new Map());
-    const repeats = new Map(DIRECTIONS.map(key => [key, { held: false, next: 0 }]));
+    const repeats = new Map(DIRECTIONS.map(key => [key, { held: false, sent: false, next: 0 }]));
     let lastSeat = null;
     function tick(now) {
       const active = new Set();
@@ -30,8 +30,8 @@
           if (pressed && !previous.get(index) && !isLaunched()) {
             const match = typeof pad?.id === 'string' && pad.id.match(/Rycade P([1-4])\b/);
             lastSeat = match ? Number(match[1]) - 1 : player;
-            dispatch('keydown', key);
-            dispatch('keyup', key);
+            dispatch('keydown', key, false);
+            dispatch('keyup', key, false);
           }
           previous.set(index, pressed);
         }
@@ -40,21 +40,24 @@
         const state = repeats.get(key);
         const held = active.has(key);
         if (!held) {
+          if (state.sent) dispatch('keyup', key, false);
           state.held = false;
+          state.sent = false;
           continue;
         }
         if (!state.held) {
           state.held = true;
+          state.sent = false;
           state.next = now + 350;
           if (!isLaunched()) {
-            dispatch('keydown', key);
-            dispatch('keyup', key);
+            dispatch('keydown', key, false);
+            state.sent = true;
           }
         } else if (now >= state.next) {
           state.next = now + 120;
           if (!isLaunched()) {
-            dispatch('keydown', key);
-            dispatch('keyup', key);
+            dispatch('keydown', key, state.sent);
+            state.sent = true;
           }
         }
       }
@@ -67,7 +70,7 @@
   if (typeof window === 'undefined') return;
   const driver = createMenuPadDriver(
     () => expandPads(navigator.getGamepads()),
-    (type, key) => (document.activeElement || document.body).dispatchEvent(new KeyboardEvent(type, { key, bubbles: true })),
+    (type, key, repeat) => (document.activeElement || document.body).dispatchEvent(new KeyboardEvent(type, { key, bubbles: true, repeat: !!repeat })),
     () => !!(window.rycadeMenuLaunched && window.rycadeMenuLaunched())
   );
   window.rycadeMenuPads = driver;
