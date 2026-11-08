@@ -7,6 +7,10 @@
   };
   const PHYSICAL_BUTTONS = [0, 3, 1];
   const DIRECTION_IDS = { up: 4, down: 5, left: 6, right: 7 };
+  const INPUT_LAYOUTS = { smashtv: 'twin', robotron: 'twin' };
+  const CORE_OPTIONS = {
+    qbert: { 'mame2003-plus_four_way_emulation': 'enabled' }
+  };
 
   function buttonDown(button) {
     return typeof button === 'number' ? button > 0.5 : !!button && (button.pressed || button.value > 0.5);
@@ -29,8 +33,8 @@
     return players.map(pad => pad || unassigned[next++] || null);
   }
 
-  function createInputMapper(simulateInput, { players, seat } = {}) {
-    const flexible = Number.isInteger(players) && players >= 1 && players <= 2;
+  function createInputMapper(simulateInput, { players, seat, layout } = {}) {
+    const flexible = layout !== 'twin' && Number.isInteger(players) && players >= 1 && players <= 2;
     const seats = flexible
       ? [Number.isInteger(seat) && seat >= 0 && seat <= 3 ? seat : 0]
       : [];
@@ -64,7 +68,12 @@
           const id = actions[slot];
           if (id !== null && buttonDown(pad && pad.buttons && pad.buttons[index])) wanted.set(id, 1);
         });
-        const start = buttonDown(pad && pad.buttons && pad.buttons[6]);
+        const start = layout === 'twin'
+          ? player < 2 && (
+            buttonDown(playerPads[player * 2]?.buttons?.[6]) ||
+            buttonDown(playerPads[player * 2 + 1]?.buttons?.[6])
+          )
+          : buttonDown(pad && pad.buttons && pad.buttons[6]);
         const startState = starts[player];
         if (system === 'ARCADE') {
           if (start && !startState.held) startState.at = now;
@@ -88,7 +97,7 @@
     return { poll, release };
   }
 
-  const api = { SYSTEM_BUTTONS, PHYSICAL_BUTTONS, orderPads, createInputMapper };
+  const api = { SYSTEM_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, orderPads, createInputMapper };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof window === 'undefined') return;
 
@@ -96,6 +105,7 @@
   const file = params.get('file') || '';
   const core = params.get('core') || 'snes9x';
   const system = params.get('sys') || 'SNES';
+  const game = params.get('game') || '';
   const pads = navigator.getGamepads.bind(navigator);
   navigator.getGamepads = () => [];
   let started = false;
@@ -134,6 +144,9 @@
   window.EJS_startOnLoaded = true;
   window.EJS_fullscreenOnLoaded = false;
   window.EJS_defaultControls = { 0: {}, 1: {}, 2: {}, 3: {} };
+  if (core === 'mame2003_plus' && CORE_OPTIONS[game]) {
+    window.EJS_defaultOptions = CORE_OPTIONS[game];
+  }
   window.EJS_AdUrl = '';
   window.EJS_onGameStart = function () {
     started = true;
@@ -143,7 +156,8 @@
     if (!manager || typeof manager.simulateInput !== 'function') return;
     mapper = createInputMapper((player, id, value) => manager.simulateInput(player, id, value), {
       players: Number(params.get('players')),
-      seat: Number(params.get('seat'))
+      seat: Number(params.get('seat')),
+      layout: INPUT_LAYOUTS[game]
     });
     const poll = now => {
       if (!manager) return;

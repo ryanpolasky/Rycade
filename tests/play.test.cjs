@@ -1,6 +1,6 @@
 const assert = require('node:assert/strict');
 const { test } = require('node:test');
-const { SYSTEM_BUTTONS, orderPads, createInputMapper } = require('../public/play.js');
+const { SYSTEM_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, orderPads, createInputMapper } = require('../public/play.js');
 
 function pad(buttons = [], id = '') {
   return {
@@ -164,4 +164,79 @@ test('arcade Start pulses coin immediately and Start 250 ms later for 120 ms', (
   assert.deepEqual(inputs.at(-1), [0, 3, 1]);
   mapper.poll([pad()], 'ARCADE', 1370);
   assert.deepEqual(inputs.at(-1), [0, 3, 0]);
+});
+
+test('twin layout routes directions from all four physical seats to matching ports', () => {
+  const inputs = [];
+  const mapper = createInputMapper((...input) => inputs.push(input), {
+    players: 2,
+    seat: 2,
+    layout: 'twin'
+  });
+  const pads = [
+    pad([], 'Rycade P4'),
+    pad([], 'Rycade P3'),
+    pad([], 'Rycade P2'),
+    pad([], 'Rycade P1')
+  ];
+  for (const controller of pads) controller.axes[1] = -1;
+  mapper.poll(pads, 'ARCADE', 0);
+  assert.deepEqual(inputs, [[0, 4, 1], [1, 4, 1], [2, 4, 1], [3, 4, 1]]);
+});
+
+test('twin Start pairs pulse coin and Start on the corresponding game ports only', () => {
+  const inputs = [];
+  const mapper = createInputMapper((...input) => inputs.push(input), {
+    players: 2,
+    seat: 2,
+    layout: 'twin'
+  });
+  const twinPads = startSeats => [1, 2, 3, 4].map(seat =>
+    pad(startSeats.includes(seat) ? [6] : [], `Rycade P${seat}`)
+  );
+
+  mapper.poll(twinPads([2]), 'ARCADE', 0);
+  assert.deepEqual(inputs, [[0, 2, 1]]);
+  mapper.poll(twinPads([]), 'ARCADE', 120);
+  assert.deepEqual(inputs.at(-1), [0, 2, 0]);
+  mapper.poll(twinPads([]), 'ARCADE', 260);
+  assert.deepEqual(inputs.at(-1), [0, 3, 1]);
+  mapper.poll(twinPads([]), 'ARCADE', 370);
+  assert.deepEqual(inputs.at(-1), [0, 3, 0]);
+
+  mapper.poll(twinPads([4]), 'ARCADE', 400);
+  assert.deepEqual(inputs.at(-1), [1, 2, 1]);
+  mapper.poll(twinPads([]), 'ARCADE', 520);
+  mapper.poll(twinPads([]), 'ARCADE', 650);
+  assert.deepEqual(inputs.at(-1), [1, 3, 1]);
+  mapper.poll(twinPads([]), 'ARCADE', 770);
+  assert.deepEqual(inputs.at(-1), [1, 3, 0]);
+  assert.ok(inputs.every(([port, id]) => port < 2 || (id !== 2 && id !== 3)));
+});
+
+test('twin layout release sends zero for every held input', () => {
+  const inputs = [];
+  const mapper = createInputMapper((...input) => inputs.push(input), {
+    players: 2,
+    seat: 2,
+    layout: 'twin'
+  });
+  const pads = [1, 2, 3, 4].map(seat => {
+    const controller = pad([0], `Rycade P${seat}`);
+    controller.axes[1] = -1;
+    return controller;
+  });
+  mapper.poll(pads, 'ARCADE', 0);
+  mapper.release();
+  assert.deepEqual(inputs, [
+    [0, 4, 1], [0, 0, 1], [1, 4, 1], [1, 0, 1],
+    [2, 4, 1], [2, 0, 1], [3, 4, 1], [3, 0, 1],
+    [0, 4, 0], [0, 0, 0], [1, 4, 0], [1, 0, 0],
+    [2, 4, 0], [2, 0, 0], [3, 4, 0], [3, 0, 0]
+  ]);
+});
+
+test('twin input layouts and Q*bert core option are exported', () => {
+  assert.deepEqual(INPUT_LAYOUTS, { smashtv: 'twin', robotron: 'twin' });
+  assert.equal(CORE_OPTIONS.qbert['mame2003-plus_four_way_emulation'], 'enabled');
 });
