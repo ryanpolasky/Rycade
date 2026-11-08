@@ -3,23 +3,29 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="#09080c">
+    <meta name="theme-color" content="#000000">
     <link rel="icon" href="data:,">
     <title>RYCADE · High Scores</title>
     <link rel="stylesheet" href="/vendor/fonts/fonts.css">
     <link rel="stylesheet" href="/scores/scores.css">
   </head>
-  <body data-style="marquee">
-    <main class="scores-shell">
-      <header class="scores-header">
-        <span class="eyebrow">RYCADE · HIGH SCORES</span>
-        <h1>HALL OF FAME</h1>
-        <p>Straight off the cab. Top ten per game.</p>
-      </header>
-      <div id="scores-status" class="scores-status" role="status" aria-live="polite">LOADING…</div>
-      <section id="boards" class="boards" aria-label="Leaderboards"></section>
+  <body data-style="attract">
+    <main class="cab">
+      <div class="bezel">
+        <div class="crt" id="crt">
+          <div class="screen">
+            <div class="credit">CREDIT <b>01</b></div>
+            <canvas class="logo" id="logo" width="204" height="44" aria-label="RYCADE"></canvas>
+            <div class="menu" id="menu" role="listbox" aria-label="Games"></div>
+            <section class="board" id="board" aria-live="polite"></section>
+            <div class="hint" id="hint"></div>
+          </div>
+        </div>
+      </div>
+      <nav class="panel" id="panel" aria-label="Leaderboards"></nav>
     </main>
     <script src="/games.js"></script>
+    <script src="/hiscores.js"></script>
     <script src="/scores/scores.js"></script>
   </body>
 </html>

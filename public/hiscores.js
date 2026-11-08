@@ -89,6 +89,7 @@
 
   const api = { DECODERS, decode, createUploader };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
+  if (typeof window !== 'undefined') root.rycadeDecoders = DECODERS;
   if (typeof window === 'undefined' || !new URLSearchParams(location.search).has('cab')) return;
 
   const uploader = createUploader({

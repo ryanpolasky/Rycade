@@ -1,7 +1,7 @@
 import { GAME_IDS } from './games-ids.js';
 
 const CODE_PATTERN = /^[ABCDEFGHJKLMNPQRSTUVWXYZ23456789]{6}$/;
-const INITIALS_PATTERN = /^[A-Z0-9 .!?\-]{1,3}$/;
+const INITIALS_PATTERN = /^[A-Z0-9 .!?\-]{1,12}$/;
 const json = (body, status = 200, headers = {}) => new Response(JSON.stringify(body), {
   status,
   headers: { 'content-type': 'application/json; charset=utf-8', ...headers }
