@@ -323,14 +323,22 @@ body[data-theme="cover-flow"] .cf-fav {
   top: 12px;
   right: 12px;
   display: none;
-  padding: 5px 6px 4px;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  place-items: center;
   background: var(--pa);
   color: var(--pb);
-  font-size: 14px;
+}
+
+body[data-theme="cover-flow"] .cf-fav .fav-star {
+  width: 14px;
+  height: 14px;
+  margin: 0 0 1px;
 }
 
 body[data-theme="cover-flow"] .cf-card.fav .cf-fav {
-  display: block;
+  display: grid;
 }
 
 body[data-theme="cover-flow"] .cf-reflect {
@@ -400,9 +408,12 @@ body[data-theme="cover-flow"] .cf-stage-title {
   font-size: 28px;
 }
 
-body[data-theme="cover-flow"] .cf-stage-title.fav .mq-txt::before {
-  margin-right: 14px;
-  content: "★";
+body[data-theme="cover-flow"] .cf-stage-title .title-star {
+  width: 1em;
+  height: 1em;
+  margin-right: .5em;
+  vertical-align: calc(.5cap - .436em);
+  filter: drop-shadow(3px 3px 0 var(--pb)) drop-shadow(2px 2px 0 #000);
 }
 
 body[data-theme="cover-flow"] .cf-browse-meta p {

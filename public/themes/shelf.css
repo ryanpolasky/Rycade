@@ -210,10 +210,13 @@ body[data-theme="shelf"] .sh-title {
   letter-spacing: 1px;
 }
 
-body[data-theme="shelf"] .sh-title.fav .mq-txt::before {
-  margin-right: 18px;
+body[data-theme="shelf"] .sh-title .title-star {
+  width: .8em;
+  height: .8em;
+  margin-right: .25em;
   color: var(--pa);
-  content: "★";
+  vertical-align: calc(.5cap - .4em);
+  filter: drop-shadow(0 4px 0 var(--navy)) drop-shadow(0 0 15px rgba(0, 0, 0, .6));
 }
 
 body[data-theme="shelf"] .sh-browse p {
@@ -405,17 +408,29 @@ body[data-theme="shelf"] .sh-players {
 body[data-theme="shelf"] .sh-fav {
   left: 14px;
   display: none;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  place-items: center;
   background: var(--pb);
   color: var(--pa);
 }
 
+body[data-theme="shelf"] .sh-fav .fav-star {
+  width: 16px;
+  height: 16px;
+  margin: 0 0 2px;
+}
+
 body[data-theme="shelf"] .sh-slot.fav .sh-fav {
-  display: block;
+  display: grid;
 }
 
 body[data-theme="shelf"] .sh-slot.fav .sh-spine em::before {
-  margin-right: 3px;
-  content: "★";
+  width: 1em;
+  height: 1em;
+  margin-right: .2em;
+  vertical-align: calc(.5cap - .5em);
 }
 
 body[data-theme="shelf"] .sh-ledge {
