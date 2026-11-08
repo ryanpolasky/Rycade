@@ -1,9 +1,4 @@
 (function () {
-  const STYLES = ['attract', 'select'];
-  const style = new URLSearchParams(location.search).get('style');
-  if (STYLES.includes(style)) document.body.dataset.style = style;
-  const attract = document.body.dataset.style === 'attract';
-
   const PX = '"Press Start 2P", monospace';
   const PALETTE = ['#fff6a8', '#ffe14a', '#ffc21a', '#ff9a1f', '#ff6a1f', '#ff9a1f', '#ffc21a', '#ffe14a'];
   const ROW_COLORS = ['#ffe14a', '#ff2f45', '#3f7bff', '#2fdc6a', '#ff9a1f', '#e14aff', '#4af2ff', '#ffffff', '#ffffff', '#ffffff'];
@@ -111,35 +106,30 @@
     document.querySelectorAll('[data-game]').forEach(node => {
       const on = node.dataset.game === id;
       node.classList.toggle('on', on);
-      node.setAttribute('aria-selected', on);
+      node.setAttribute('aria-current', on);
       if (on && user) node.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
     });
     $('hint').textContent = `◀ ${index + 1}/${ids.length} ▶`;
     clearTimeout(timer);
-    if (attract) timer = setTimeout(() => show(index + 1), user ? CYCLE * 3 : CYCLE);
+    timer = setTimeout(() => show(index + 1), user ? CYCLE * 3 : CYCLE);
   }
 
   function build() {
-    const menu = $('menu');
     const panel = $('panel');
-    menu.replaceChildren();
     panel.replaceChildren();
     ids.forEach((id, i) => {
       const game = byId.get(id);
-      const item = el('button', 'menu-item', game.title.toUpperCase());
       const tile = el('button', 'tile');
       const art = el('img');
       art.src = '/' + game.logo;
       art.alt = game.title;
       tile.append(art);
-      for (const node of [item, tile]) {
-        node.type = 'button';
-        node.dataset.game = id;
-        node.setAttribute('role', 'option');
-        node.addEventListener('click', () => show(i, { user: true }));
-      }
+      tile.type = 'button';
+      tile.dataset.game = id;
+      tile.title = game.title;
+      tile.setAttribute('aria-label', game.title);
+      tile.addEventListener('click', () => show(i, { user: true }));
       tile.style.setProperty('--accent', game.color);
-      menu.append(item);
       panel.append(tile);
     });
   }
