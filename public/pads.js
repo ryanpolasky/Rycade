@@ -61,7 +61,7 @@
   if (typeof window === 'undefined') return;
   const driver = createMenuPadDriver(
     () => navigator.getGamepads(),
-    (type, key) => window.dispatchEvent(new KeyboardEvent(type, { key, bubbles: true })),
+    (type, key) => (document.activeElement || document.body).dispatchEvent(new KeyboardEvent(type, { key, bubbles: true })),
     () => !!(window.rycadeMenuLaunched && window.rycadeMenuLaunched())
   );
   const poll = now => {

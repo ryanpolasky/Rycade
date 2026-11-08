@@ -1,5 +1,6 @@
 const SYSTEMS = ['ALL', 'FAVORITES', '2P+', '4P', 'ARCADE', 'GENESIS', 'SNES', 'NES'];
 const FAVORITES_KEY = 'rycade.favorites';
+const LAST_PLAYED_KEY = 'rycade.lastPlayed';
 const CONTROL_COLORS = ['#ffd21f', '#ff2a2a', '#2a7bff'];
 const CABINET_KEYS = { start: 'Enter', shoot: '1', pass: '2', turbo: '3' };
 const keyFor = title => title.replace(/^the /i, '').toUpperCase();
@@ -43,6 +44,15 @@ function readFavorites() {
     return Array.isArray(saved) ? saved.filter(id => GAMES.some(game => game.id === id)) : [];
   } catch {
     return [];
+  }
+}
+
+function lastPlayedId() {
+  try {
+    const id = localStorage.getItem(LAST_PLAYED_KEY);
+    return GAMES.some(game => game.id === id) ? id : 'jamte';
+  } catch {
+    return 'jamte';
   }
 }
 
@@ -404,6 +414,9 @@ function closeDemo() {
 function launch() {
   window.rycadeAttract.reset();
   if (launched || !view[index]) return;
+  try {
+    localStorage.setItem(LAST_PLAYED_KEY, view[index].id);
+  } catch {}
   closeDemo();
   release();
   if (barFocus) setBarFocus(false);
@@ -656,7 +669,7 @@ stage.addEventListener('click', () => {
 });
 
 fit();
-build('jamte');
+build(lastPlayedId());
 document.fonts.ready.then(() => {
   place(true);
   window.__ready = true;
