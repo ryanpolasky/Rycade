@@ -121,7 +121,7 @@ function buildCoverFlow(surface) {
     <div class="cf-screen">
       <div class="cf-track"></div>
       <div class="cf-browse-meta">
-        <h2 class="cf-stage-title"><span class="mq-txt"></span></h2>
+        <h2 class="cf-stage-title"><span class="mq-txt"><b class="title-star"><i class="fav-star"></i></b><span></span></span></h2>
         <p></p>
       </div>
     </div>
@@ -152,7 +152,7 @@ function syncCoverCards(cf, games) {
         <img class="cf-art" src="${item.box}" alt="">
         <span class="cf-sys-pill">${item.sys}</span>
         <span class="cf-year">${item.year}</span>
-        <span class="cf-fav">★</span>
+        <span class="cf-fav"><i class="fav-star"></i></span>
       </div>
       <div class="cf-reflect"><img src="${item.box}" alt=""></div>
     `;
@@ -206,7 +206,7 @@ function layout(index, game, games) {
 
   const title = cf.querySelector('.cf-stage-title');
   title.classList.toggle('fav', Boolean(game && isFavorite(game.id)));
-  title.querySelector('.mq-txt').textContent = game ? game.title : 'NO FAVORITES YET';
+  title.querySelector('.mq-txt > span').textContent = game ? game.title : 'NO FAVORITES YET';
   cf.querySelector('.cf-browse-meta p').textContent = game
     ? `${game.pub.toUpperCase()} · ${game.sys} · ${game.year} · ${playersLabel(game)}`
     : 'PRESS F ON ANY GAME TO ADD IT HERE';
@@ -278,7 +278,7 @@ function buildShelf(surface) {
   wrap.className = 'sh-wrap';
   wrap.innerHTML = `
     <div class="sh-browse">
-      <h2 class="sh-title"><span class="mq-txt"></span></h2>
+      <h2 class="sh-title"><span class="mq-txt"><b class="title-star"><i class="fav-star"></i></b><span></span></span></h2>
       <p></p>
     </div>
     <div class="sh-shelf">
@@ -315,7 +315,7 @@ function syncShelfSlots(wrap, games) {
       <div class="sh-face">
         <img src="${item.box}" alt="">
         <span class="sh-players">${item.players > 1 ? `1-${item.players}` : '1'}P</span>
-        <span class="sh-fav">★</span>
+        <span class="sh-fav"><i class="fav-star"></i></span>
       </div>
     `;
     slot.querySelector('strong').textContent = item.title;
@@ -343,7 +343,7 @@ function layoutShelf(surface, index, game, games) {
 
   const title = wrap.querySelector('.sh-title');
   title.classList.toggle('fav', Boolean(game && isFavorite(game.id)));
-  title.querySelector('.mq-txt').textContent = game ? game.title : 'NO FAVORITES YET';
+  title.querySelector('.mq-txt > span').textContent = game ? game.title : 'NO FAVORITES YET';
   wrap.querySelector('.sh-browse p').textContent = game
     ? `${game.pub.toUpperCase()} · ${game.sys} · ${game.year} · ${playersLabel(game)}`
     : 'PRESS F ON ANY GAME TO ADD IT HERE';

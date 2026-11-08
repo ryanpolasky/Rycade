@@ -10,18 +10,54 @@ function makePad({ x = 0, y = 0, buttons = [], id = '' } = {}) {
 test('menu pad directions pulse immediately, then repeat at 350 ms and 120 ms', () => {
   const events = [];
   let pads = [makePad({ y: -1 })];
-  const driver = createMenuPadDriver(() => pads, (type, key) => events.push([type, key]), () => false);
+  const driver = createMenuPadDriver(() => pads, (type, key, repeat) => events.push([type, key, repeat]), () => false);
   driver.tick(0);
   driver.tick(349);
-  assert.equal(events.filter(([, key]) => key === 'ArrowUp').length, 2);
   driver.tick(350);
   driver.tick(469);
   driver.tick(470);
-  assert.equal(events.filter(([, key]) => key === 'ArrowUp').length, 6);
   pads = [makePad()];
   driver.tick(471);
   driver.tick(1000);
-  assert.equal(events.filter(([, key]) => key === 'ArrowUp').length, 6);
+  assert.deepEqual(events, [
+    ['keydown', 'ArrowUp', false],
+    ['keydown', 'ArrowUp', true],
+    ['keydown', 'ArrowUp', true],
+    ['keyup', 'ArrowUp', false]
+  ]);
+});
+
+test('menu pad directions release after launch suppresses held repeats', () => {
+  const events = [];
+  let launched = false;
+  let pads = [makePad({ y: -1 })];
+  const driver = createMenuPadDriver(() => pads, (type, key, repeat) => events.push([type, key, repeat]), () => launched);
+  driver.tick(0);
+  launched = true;
+  driver.tick(350);
+  driver.tick(470);
+  pads = [makePad()];
+  driver.tick(471);
+  assert.deepEqual(events, [
+    ['keydown', 'ArrowUp', false],
+    ['keyup', 'ArrowUp', false]
+  ]);
+});
+
+test('menu pad first sends a non-repeat direction keydown after launch closes', () => {
+  const events = [];
+  let launched = true;
+  let pads = [makePad({ y: -1 })];
+  const driver = createMenuPadDriver(() => pads, (type, key, repeat) => events.push([type, key, repeat]), () => launched);
+  driver.tick(0);
+  launched = false;
+  driver.tick(350);
+  pads = [makePad()];
+  driver.tick(351);
+  assert.deepEqual(events, [
+    ['keydown', 'ArrowUp', false],
+    ['keyup', 'ArrowUp', false]
+  ]);
 });
 
 test('menu pad actions map buttons 1, 2, 3, and Start while launched input is paused', () => {
