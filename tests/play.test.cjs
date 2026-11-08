@@ -6,6 +6,7 @@ const {
   CORE_OPTIONS,
   BOOT_FRAMES,
   bootSkipFrames,
+  clearSavedMute,
   RETRO_REMAPS,
   orderPads,
   createInputMapper
@@ -274,6 +275,53 @@ test('MAME games skip boot frames with per-game overrides', () => {
   } finally {
     delete BOOT_FRAMES.galaga;
   }
+});
+
+test('clearSavedMute clears only the saved mute flag', () => {
+  let stored = '{"volume":0.5,"muted":true}';
+  const storage = {
+    getItem: key => key === 'ejs-settings' ? stored : null,
+    setItem: (key, value) => {
+      assert.equal(key, 'ejs-settings');
+      stored = value;
+    }
+  };
+  clearSavedMute(storage);
+  assert.deepEqual(JSON.parse(stored), { volume: 0.5, muted: false });
+});
+
+test('clearSavedMute does not write settings that are already unmuted', () => {
+  let writes = 0;
+  clearSavedMute({
+    getItem: () => '{"volume":0.3,"muted":false}',
+    setItem: () => { writes += 1; }
+  });
+  assert.equal(writes, 0);
+});
+
+test('clearSavedMute ignores a missing saved settings key', () => {
+  let writes = 0;
+  assert.doesNotThrow(() => clearSavedMute({
+    getItem: () => null,
+    setItem: () => { writes += 1; }
+  }));
+  assert.equal(writes, 0);
+});
+
+test('clearSavedMute ignores invalid saved settings JSON', () => {
+  let writes = 0;
+  assert.doesNotThrow(() => clearSavedMute({
+    getItem: () => '{oops',
+    setItem: () => { writes += 1; }
+  }));
+  assert.equal(writes, 0);
+});
+
+test('clearSavedMute ignores storage read errors', () => {
+  assert.doesNotThrow(() => clearSavedMute({
+    getItem: () => { throw new Error('storage unavailable'); },
+    setItem: () => assert.fail('setItem should not be called')
+  }));
 });
 
 test('Marralhinha Blitz configures Four Score gamepads in the FCEUmm core remap', () => {

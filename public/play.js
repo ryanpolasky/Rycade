@@ -25,6 +25,15 @@
     return BOOT_FRAMES[game] ?? (core === 'mame2003_plus' ? 900 : 0);
   }
 
+  function clearSavedMute(storage) {
+    try {
+      const settings = JSON.parse(storage.getItem('ejs-settings'));
+      if (!settings || typeof settings !== 'object' || settings.muted !== true) return;
+      settings.muted = false;
+      storage.setItem('ejs-settings', JSON.stringify(settings));
+    } catch {}
+  }
+
   function findHiscore(fs, name, dir = '/data/saves', depth = 4) {
     let names;
     try { names = fs.readdir(dir); } catch { return null; }
@@ -176,7 +185,7 @@
     };
   }
 
-  const api = { SYSTEM_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, BOOT_FRAMES, bootSkipFrames, MAME_OPTIONS, RETRO_REMAPS, findHiscore, orderPads, createInputMapper, createProfileSaves };
+  const api = { SYSTEM_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, BOOT_FRAMES, bootSkipFrames, clearSavedMute, MAME_OPTIONS, RETRO_REMAPS, findHiscore, orderPads, createInputMapper, createProfileSaves };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof window === 'undefined') return;
 
@@ -382,6 +391,7 @@
       }
       try { manager.toggleFastForward(0); } catch {}
       try { emulator.setVolume(emulator.volume); } catch {}
+      try { clearSavedMute(localStorage); } catch {}
     };
     const finish = () => {
       if (finished) return;
@@ -411,6 +421,7 @@
   const script = document.createElement('script');
   script.src = window.EJS_pathtodata + 'loader.js';
   script.onerror = () => fail('Emulator loader unavailable');
+  try { clearSavedMute(localStorage); } catch {}
   document.head.appendChild(script);
   window.addEventListener('pagehide', () => mapper && mapper.release());
 })(typeof globalThis !== 'undefined' ? globalThis : window);
