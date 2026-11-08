@@ -59,9 +59,7 @@
     }
     current = queue.pop();
     if (!current) return stop();
-    const logo = overlay.querySelector('.attract-logo');
-    if (current.logo) logo.src = current.logo;
-    else logo.removeAttribute('src');
+    overlay.querySelector('.attract-logo').src = current.logo || '';
     overlay.dataset.logo = current.logo ? 'true' : 'false';
     overlay.querySelector('.attract-still').src = current.snap;
     overlay.querySelector('.attract-title').textContent = current.title;
