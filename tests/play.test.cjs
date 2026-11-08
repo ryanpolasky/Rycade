@@ -255,3 +255,28 @@ test('Marralhinha Blitz configures Four Score gamepads in the FCEUmm core remap'
   ]);
   assert.deepEqual(Object.keys(RETRO_REMAPS), ['mblitz']);
 });
+
+test("Dragon's Lair DirkSimple engine runs attract mode, starts game, and processes rooms", () => {
+  const { createDirkSimpleEngine, DLAIR_SCENES, DLAIR_ROWS } = require('../public/dlair.js');
+  assert.equal(DLAIR_ROWS.length, 13);
+  assert.ok(DLAIR_SCENES.the_dragons_lair);
+
+  const clips = [];
+  const sounds = [];
+  const engine = createDirkSimpleEngine({
+    startClip: ms => clips.push(ms),
+    showSingleFrame: ms => clips.push(ms),
+    playSound: name => sounds.push(name)
+  });
+
+  engine.tick(0, 0, { pressed: {}, held: {} });
+  assert.equal(engine.getState().inAttractMode, true);
+  assert.ok(clips.length > 0);
+
+  engine.tick(100, 100, { pressed: { coinslot: true, start: true }, held: { start: true } });
+  assert.equal(engine.getState().inAttractMode, false);
+  assert.equal(engine.getState().sceneName, 'introduction');
+  assert.equal(engine.getState().lives, 5);
+  assert.ok(sounds.includes('coinslot'));
+});
+

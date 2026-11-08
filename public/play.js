@@ -185,6 +185,50 @@
   window.addEventListener('error', event => fail(event.message), true);
   window.addEventListener('unhandledrejection', event => fail(String(event.reason || 'Emulator failed')));
   timeout = window.setTimeout(() => fail('Emulator timed out'), 60000);
+  if (game === 'dlair' || core === 'dirksimple' || /\.mp4$/i.test(file)) {
+    const videoPath = /\.mp4$/i.test(file) ? file : (file ? file.replace(/\.[^./]+$/, '') + '.mp4' : 'arcade/dlair.mp4');
+    const videoUrl = '/roms/' + videoPath.split('/').map(encodeURIComponent).join('/');
+    let player = null;
+    let onPadInput = null;
+    mapper = createInputMapper((p, id, value) => {
+      if (onPadInput) onPadInput(p, id, value);
+    }, {
+      players: Number(params.get('players')),
+      seat: Number(params.get('seat')),
+      layout: INPUT_LAYOUTS[game]
+    });
+    const dlairScript = document.createElement('script');
+    dlairScript.src = '/dlair.js';
+    dlairScript.onload = () => {
+      if (!window.rycadeDlair || typeof window.rycadeDlair.mountDlairPlayer !== 'function') {
+        fail("Dragon's Lair player unavailable");
+        return;
+      }
+      player = window.rycadeDlair.mountDlairPlayer({
+        container: document.querySelector('#game'),
+        videoUrl,
+        pollPads(now, handler) {
+          onPadInput = handler;
+          mapper.poll(pads(), system, now);
+        },
+        onStarted() {
+          started = true;
+          clearTimeout(timeout);
+          post('started');
+        },
+        onError(msg) {
+          fail(msg);
+        }
+      });
+    };
+    dlairScript.onerror = () => fail("Dragon's Lair player unavailable");
+    document.head.appendChild(dlairScript);
+    window.addEventListener('pagehide', () => {
+      if (mapper) mapper.release();
+      if (player) player.stop();
+    });
+    return;
+  }
   window.EJS_player = '#game';
   window.EJS_gameUrl = '/roms/' + file.split('/').map(encodeURIComponent).join('/');
   window.EJS_gameName = file.split('/').pop();
