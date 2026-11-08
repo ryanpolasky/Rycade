@@ -12,6 +12,7 @@ const roster = document.querySelector('#roster');
 const list = document.querySelector('#list');
 const tabs = document.querySelector('#tabs');
 const monitor = document.querySelector('#monitor');
+const nowPlaying = document.querySelector('#now-playing');
 const letterOverlay = document.querySelector('#letter');
 const demoOverlay = document.querySelector('#demo-overlay');
 const demoVideo = document.querySelector('#demo-video');
@@ -20,6 +21,10 @@ let view = [];
 let index = 0;
 let holding = null;
 let launched = false;
+const cabMode = new URLSearchParams(location.search).get('cab') === '1';
+let playSession = 0;
+let playFrame = null;
+let playExitTimer = 0;
 let demoGame = null;
 let demoSession = 0;
 let demoFrameCallback = 0;
@@ -404,20 +409,96 @@ function launch() {
   if (barFocus) setBarFocus(false);
   renderDetail(view[index]);
   window.rycadeAudio?.play('launch');
+  if (cabMode) {
+    launchCabGame(view[index]);
+    return;
+  }
   launched = true;
   monitor.classList.add('live', 'show-status');
   clearTimeout(statusTimer);
   statusTimer = setTimeout(() => monitor.classList.remove('show-status'), 2400);
 }
 
+async function launchCabGame(game) {
+  launched = true;
+  clearTimeout(playExitTimer);
+  const session = ++playSession;
+  monitor.classList.add('loading', 'show-status');
+  nowPlaying.textContent = 'LOADING GAME';
+  clearTimeout(statusTimer);
+  try {
+    const rom = await window.rycadeEmulation.resolveRom(game);
+    if (session !== playSession || !launched) return;
+    if (!rom || !rom.filename) {
+      flashToast(`ROM not found: ${rom?.expected || game.title}`);
+      launched = false;
+      monitor.classList.remove('loading', 'show-status');
+      monitor.focus();
+      return;
+    }
+    const layer = document.querySelector('#play-layer');
+    const params = new URLSearchParams({
+      file: `${rom.dir}/${rom.filename}`,
+      core: rom.core,
+      sys: rom.sys
+    });
+    playFrame = document.createElement('iframe');
+    playFrame.title = `${game.title} emulator`;
+    playFrame.allow = 'autoplay; fullscreen; gamepad';
+    playFrame.src = `/play.html?${params}`;
+    layer.replaceChildren(playFrame);
+  } catch {
+    if (session !== playSession) return;
+    flashToast(`ROM not found: ${game.title}`);
+    launched = false;
+    monitor.classList.remove('loading', 'show-status');
+    monitor.focus();
+  }
+}
+
 function exitGame() {
   window.rycadeAttract.reset();
   if (!launched) return;
   window.rycadeAudio?.play('back');
+  if (cabMode) {
+    ++playSession;
+    launched = false;
+    monitor.classList.remove('live', 'loading', 'show-status');
+    nowPlaying.textContent = 'NOW PLAYING · ESC TO EXIT';
+    clearTimeout(statusTimer);
+    const layer = document.querySelector('#play-layer');
+    layer.classList.remove('visible');
+    clearTimeout(playExitTimer);
+    playExitTimer = setTimeout(() => {
+      layer.replaceChildren();
+      playFrame = null;
+      monitor.focus();
+    }, 300);
+    return;
+  }
   launched = false;
   monitor.classList.remove('live', 'show-status');
   clearTimeout(statusTimer);
 }
+
+window.rycadeMenuLaunched = () => launched;
+window.rycadePlay = { exit: exitGame };
+window.addEventListener('message', event => {
+  if (!cabMode || event.origin !== location.origin || !playFrame || event.source !== playFrame.contentWindow) return;
+  const message = event.data;
+  if (!message || message.type !== 'rycade-play') return;
+  if (message.state === 'started') {
+    monitor.classList.remove('loading');
+    monitor.classList.add('live', 'show-status');
+    nowPlaying.textContent = 'NOW PLAYING · F19 / ESC TO EXIT';
+    document.querySelector('#play-layer').classList.add('visible');
+  } else if (message.state === 'error') {
+    flashToast(message.message || 'Emulator failed to start');
+    exitGame();
+  } else if (message.state === 'exit') {
+    exitGame();
+  }
+});
 
 function barItems() {
   return [document.querySelector('#search-open'), ...tabs.children, document.querySelector('#settings-open')];
@@ -475,7 +556,7 @@ window.addEventListener('keydown', event => {
   const start = event.key === CABINET_KEYS.start;
   const shoot = event.key === CABINET_KEYS.shoot;
   if (launched) {
-    if (event.key === 'Escape') {
+    if (event.key === 'Escape' || (cabMode && event.key === 'F19')) {
       event.preventDefault();
       exitGame();
     }
