@@ -328,11 +328,11 @@ runtime() {
 	file_server
 }
 C
-  cmp -s "$HOME_DIR/Caddyfile.tmp" "$HOME_DIR/Caddyfile" || restart+=(com.rycade.server)
-  mv "$HOME_DIR/Caddyfile.tmp" "$HOME_DIR/Caddyfile"
+  if cmp -s "$HOME_DIR/Caddyfile.tmp" "$HOME_DIR/Caddyfile"; then rm "$HOME_DIR/Caddyfile.tmp"
+  else mv "$HOME_DIR/Caddyfile.tmp" "$HOME_DIR/Caddyfile"; restart+=(com.rycade.server); fi
   agent com.rycade.server "$(command -v caddy)" run --config "$HOME_DIR/Caddyfile" --adapter caddyfile
 
-  cat > "$BIN/rycade-kiosk" <<K
+  cat > "$BIN/rycade-kiosk.tmp" <<K
 #!/bin/bash
 for _ in \$(seq 60); do nc -z 127.0.0.1 $PORT && break; sleep 1; done
 id=\$(displayplacer list 2>/dev/null | awk '/^Persistent screen id:/ {print \$4; exit}')
@@ -347,7 +347,8 @@ exec "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \\
   --disable-pinch --overscroll-history-navigation=0 \\
   "http://127.0.0.1:$PORT/?cab=1"
 K
-  chmod +x "$BIN/rycade-kiosk"
+  if cmp -s "$BIN/rycade-kiosk.tmp" "$BIN/rycade-kiosk"; then rm "$BIN/rycade-kiosk.tmp"
+  else chmod +x "$BIN/rycade-kiosk.tmp"; mv "$BIN/rycade-kiosk.tmp" "$BIN/rycade-kiosk"; fi
   agent com.rycade.kiosk "$BIN/rycade-kiosk"
 
   local src=$APP/mac/rycade-power.swift stamp=$BIN/.rycade-power.sha
@@ -378,7 +379,7 @@ cores() {
 
 network() {
   step "Network lockdown (rycade-net)"
-  srun install -m 755 "$APP/mac/rycade-net" /usr/local/bin/rycade-net
+  cmp -s "$APP/mac/rycade-net" /usr/local/bin/rycade-net || srun install -m 755 "$APP/mac/rycade-net" /usr/local/bin/rycade-net
   srun ln -sf "$APP/mac/setup.sh" /usr/local/bin/rycade
   daemon com.rycade.net 30 /usr/local/bin/rycade-net enforce
   trap - EXIT
@@ -429,7 +430,7 @@ update() {
 
 refresh() {
   step "Reinstall rycade-net, rebuild helpers, reload kiosk"
-  srun install -m 755 "$APP/mac/rycade-net" /usr/local/bin/rycade-net
+  cmp -s "$APP/mac/rycade-net" /usr/local/bin/rycade-net || srun install -m 755 "$APP/mac/rycade-net" /usr/local/bin/rycade-net
   srun ln -sf "$APP/mac/setup.sh" /usr/local/bin/rycade
   git_creds
   daemon com.rycade.net 30 /usr/local/bin/rycade-net enforce
