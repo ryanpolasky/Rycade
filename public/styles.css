@@ -487,32 +487,3 @@ body {
   object-fit: contain;
 }
 
-.demo-hud {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 24px;
-  padding: 32px 44px;
-  background: linear-gradient(transparent, rgba(0, 0, 0, .8));
-  font: 500 18px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
-
-.demo-title {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.demo-hud > span:last-child {
-  flex-shrink: 0;
-}
-
-.demo-hud b {
-  margin-left: 24px;
-  font-weight: 600;
-}

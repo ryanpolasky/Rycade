@@ -11,6 +11,13 @@
   let swallowPointer = false;
   const swallowedKeys = new Set();
 
+  function fill(root, game) {
+    root.querySelector('.attract-logo').src = game.logo || '';
+    root.dataset.logo = game.logo ? 'true' : 'false';
+    root.querySelector('.attract-title').textContent = game.title;
+    root.querySelector('.attract-players').textContent = game.players === 1 ? '1 PLAYER' : `1–${game.players} PLAYERS`;
+  }
+
   function reset() {
     lastInput = performance.now();
   }
@@ -59,11 +66,8 @@
     }
     current = queue.pop();
     if (!current) return stop();
-    overlay.querySelector('.attract-logo').src = current.logo || '';
-    overlay.dataset.logo = current.logo ? 'true' : 'false';
+    fill(overlay, current);
     overlay.querySelector('.attract-still').src = current.snap;
-    overlay.querySelector('.attract-title').textContent = current.title;
-    overlay.querySelector('.attract-players').textContent = current.players === 1 ? '1 PLAYER' : `1–${current.players} PLAYERS`;
     const skip = () => {
       if (!active || session !== clipSession) return;
       if (++failures >= GAMES.length) stop();
@@ -140,5 +144,5 @@
     }, 100);
   }
 
-  window.rycadeAttract = { init, reset, activity };
+  window.rycadeAttract = { init, reset, activity, fill };
 })();
