@@ -32,7 +32,7 @@ After that it's installed as `rycade`:
 | `open [30m]` | the above + GitHub (hosts resolved when opened) |
 | `full [30m]` | everything |
 
-Open modes always expire. LAN SSH/VNC (22/5900) is allowed in.
+Open modes always expire. The LAN (incl. mDNS, so AirPlay speakers like a HomePod work) is always allowed both ways; only the internet is locked down.
 
 ## Remote access
 
