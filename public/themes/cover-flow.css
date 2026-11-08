@@ -536,7 +536,12 @@ body[data-theme="cover-flow"] .mq {
   box-shadow: 0 0 0 4px #000, 0 0 0 8px var(--pa), 0 0 0 12px #000;
 }
 
-body[data-theme="cover-flow"] #stage.is-fav .mq::after {
+body[data-theme="cover-flow"] .mq-fav {
+  display: none;
+}
+
+body[data-theme="cover-flow"] #stage.is-fav .mq-fav {
+  display: block;
   position: absolute;
   top: 10px;
   right: 10px;
@@ -544,7 +549,6 @@ body[data-theme="cover-flow"] #stage.is-fav .mq::after {
   border: 3px solid #000;
   background: var(--pb);
   color: var(--pa);
-  content: "★ FAVORITE";
   font-family: var(--px);
   font-size: 10px;
 }
