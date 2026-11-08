@@ -29,14 +29,31 @@
     return players.map(pad => pad || unassigned[next++] || null);
   }
 
-  function createInputMapper(simulateInput) {
+  function createInputMapper(simulateInput, { players, seat } = {}) {
+    const flexible = Number.isInteger(players) && players >= 1 && players <= 2;
+    const seats = flexible
+      ? [Number.isInteger(seat) && seat >= 0 && seat <= 3 ? seat : 0]
+      : [];
+    const seatStartHeld = Array(4).fill(false);
     const previous = Array.from({ length: 4 }, () => new Map());
     const starts = Array.from({ length: 4 }, () => ({ held: false, at: null }));
     function poll(pads, system, now) {
       const actions = SYSTEM_BUTTONS[system] || SYSTEM_BUTTONS.ARCADE;
       const playerPads = orderPads(pads);
+      if (flexible) {
+        for (let physicalSeat = 0; physicalSeat < 4; physicalSeat++) {
+          const startDown = buttonDown(playerPads[physicalSeat]?.buttons?.[6]);
+          if (seats.length < 2 && !seats.includes(physicalSeat) && startDown && !seatStartHeld[physicalSeat]) {
+            seats.push(physicalSeat);
+          }
+          seatStartHeld[physicalSeat] = startDown;
+        }
+      }
+      const routed = flexible
+        ? [0, 1, 2, 3].map(player => seats[player] === undefined ? null : playerPads[seats[player]])
+        : playerPads;
       for (let player = 0; player < 4; player++) {
-        const pad = playerPads[player];
+        const pad = routed[player];
         const wanted = new Map();
         const axes = pad && pad.axes || [];
         if (axes[1] < -0.5) wanted.set(DIRECTION_IDS.up, 1);
@@ -124,7 +141,10 @@
     post('started');
     manager = window.EJS_emulator && window.EJS_emulator.gameManager;
     if (!manager || typeof manager.simulateInput !== 'function') return;
-    mapper = createInputMapper((player, id, value) => manager.simulateInput(player, id, value));
+    mapper = createInputMapper((player, id, value) => manager.simulateInput(player, id, value), {
+      players: Number(params.get('players')),
+      seat: Number(params.get('seat'))
+    });
     const poll = now => {
       if (!manager) return;
       mapper.poll(pads(), system, now);

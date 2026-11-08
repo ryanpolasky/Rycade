@@ -50,6 +50,92 @@ test('input mapping re-resolves player order after controller indexes change', (
   assert.deepEqual(inputs, [[0, 1, 1]]);
 });
 
+test('small games route the launcher seat to logical player one', () => {
+  const inputs = [];
+  const mapper = createInputMapper((...input) => inputs.push(input), { players: 2, seat: 2 });
+  const p4 = pad([], 'Rycade P4');
+  const p3 = pad([], 'Rycade P3');
+  const p2 = pad([], 'Rycade P2');
+  const p1 = pad([0], 'Rycade P1');
+  mapper.poll([p4, p3, p2, p1], 'GENESIS', 0);
+  assert.deepEqual(inputs, []);
+
+  mapper.poll([p4, pad([0], 'Rycade P3'), p2, p1], 'GENESIS', 16);
+  assert.deepEqual(inputs, [[0, 1, 1]]);
+});
+
+test('a different seat joins as logical player two and its Start press is mapped', () => {
+  const inputs = [];
+  const mapper = createInputMapper((...input) => inputs.push(input), { players: 2, seat: 2 });
+  const p4 = pad([], 'Rycade P4');
+  const p3 = pad([], 'Rycade P3');
+  const p2 = pad([], 'Rycade P2');
+  let p1 = pad([], 'Rycade P1');
+  mapper.poll([p4, p3, p2, p1], 'GENESIS', 0);
+
+  p1 = pad([6], 'Rycade P1');
+  mapper.poll([p4, p3, p2, p1], 'GENESIS', 16);
+  assert.deepEqual(inputs, [[1, 3, 1]]);
+
+  p1 = pad([0, 6], 'Rycade P1');
+  mapper.poll([p4, p3, p2, p1], 'GENESIS', 32);
+  assert.deepEqual(inputs, [[1, 3, 1], [1, 1, 1]]);
+
+  const beforeIgnoredStart = inputs.length;
+  mapper.poll([pad([6], 'Rycade P4'), p3, p2, p1], 'GENESIS', 48);
+  assert.equal(inputs.length, beforeIgnoredStart);
+});
+
+test('an arcade joiner Start press immediately triggers its coin pulse', () => {
+  const inputs = [];
+  const mapper = createInputMapper((...input) => inputs.push(input), { players: 2, seat: 2 });
+  mapper.poll([
+    pad([], 'Rycade P4'),
+    pad([], 'Rycade P3'),
+    pad([], 'Rycade P2'),
+    pad([6], 'Rycade P1')
+  ], 'ARCADE', 1000);
+  assert.deepEqual(inputs, [[1, 2, 1]]);
+});
+
+test('the launcher Start press stays on logical player one and one-player games allow a joiner', () => {
+  const inputs = [];
+  const mapper = createInputMapper((...input) => inputs.push(input), { players: 1, seat: 2 });
+  const p4 = pad([], 'Rycade P4');
+  const p2 = pad([], 'Rycade P2');
+  const p1 = pad([], 'Rycade P1');
+  mapper.poll([p4, pad([6], 'Rycade P3'), p2, p1], 'GENESIS', 0);
+  mapper.poll([p4, pad([], 'Rycade P3'), p2, p1], 'GENESIS', 16);
+  mapper.poll([p4, pad([], 'Rycade P3'), p2, pad([6], 'Rycade P1')], 'GENESIS', 32);
+  assert.deepEqual(inputs, [[0, 3, 1], [0, 3, 0], [1, 3, 1]]);
+});
+
+test('larger games keep fixed seat mapping', () => {
+  const inputs = [];
+  const mapper = createInputMapper((...input) => inputs.push(input), { players: 4, seat: 2 });
+  mapper.poll([
+    pad([], 'Rycade P4'),
+    pad([0], 'Rycade P3'),
+    pad([], 'Rycade P2'),
+    pad([], 'Rycade P1')
+  ], 'GENESIS', 0);
+  assert.deepEqual(inputs, [[2, 1, 1]]);
+});
+
+test('invalid flexible launch seats default to physical seat zero', () => {
+  for (const seat of [NaN, 7]) {
+    const inputs = [];
+    const mapper = createInputMapper((...input) => inputs.push(input), { players: 2, seat });
+    mapper.poll([
+      pad([], 'Rycade P4'),
+      pad([], 'Rycade P3'),
+      pad([], 'Rycade P2'),
+      pad([0], 'Rycade P1')
+    ], 'GENESIS', 0);
+    assert.deepEqual(inputs, [[0, 1, 1]], `seat ${seat}`);
+  }
+});
+
 test('physical face buttons map to libretro ids for each system', () => {
   assert.deepEqual(SYSTEM_BUTTONS, {
     ARCADE: [0, 8, 1],

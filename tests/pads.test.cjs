@@ -2,8 +2,8 @@ const assert = require('node:assert/strict');
 const { test } = require('node:test');
 const { createMenuPadDriver } = require('../public/pads.js');
 
-function makePad({ x = 0, y = 0, buttons = [] } = {}) {
-  return { axes: [x, y], buttons: Array.from({ length: 16 }, (_, index) => ({ pressed: !!buttons[index] })) };
+function makePad({ x = 0, y = 0, buttons = [], id = '' } = {}) {
+  return { id, axes: [x, y], buttons: Array.from({ length: 16 }, (_, index) => ({ pressed: !!buttons[index] })) };
 }
 
 test('menu pad directions pulse immediately, then repeat at 350 ms and 120 ms', () => {
@@ -33,4 +33,26 @@ test('menu pad actions map buttons 1, 2, 3, and Start while launched input is pa
   launched = true;
   driver.tick(500);
   assert.equal(events.length, 8);
+});
+
+test('menu pad remembers the seat for dispatched actions and can clear it', () => {
+  const events = [];
+  let launched = false;
+  let pads = [makePad({ id: 'Rycade P3', buttons: { 6: true } })];
+  const driver = createMenuPadDriver(() => pads, (type, key) => events.push([type, key]), () => launched);
+  assert.equal(driver.lastSeat(), null);
+  driver.tick(0);
+  assert.equal(driver.lastSeat(), 2);
+
+  pads = [makePad({ id: 'Rycade P3' }), makePad({ buttons: { 6: true } })];
+  driver.tick(1);
+  assert.equal(driver.lastSeat(), 1);
+
+  launched = true;
+  pads = [makePad({ id: 'Rycade P4', buttons: { 0: true } }), makePad()];
+  driver.tick(2);
+  assert.equal(driver.lastSeat(), 1);
+
+  driver.clearSeat();
+  assert.equal(driver.lastSeat(), null);
 });
