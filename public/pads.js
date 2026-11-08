@@ -9,6 +9,7 @@
   function createMenuPadDriver(getPads, dispatch, isLaunched) {
     const previousButtons = Array.from({ length: 4 }, () => new Map());
     const repeats = new Map(DIRECTIONS.map(key => [key, { held: false, next: 0 }]));
+    let lastSeat = null;
     function tick(now) {
       const active = new Set();
       const pads = getPads() || [];
@@ -24,6 +25,8 @@
         for (const [index, key] of ACTIONS) {
           const pressed = down(buttons[index]);
           if (pressed && !previous.get(index) && !isLaunched()) {
+            const match = typeof pad?.id === 'string' && pad.id.match(/Rycade P([1-4])\b/);
+            lastSeat = match ? Number(match[1]) - 1 : player;
             dispatch('keydown', key);
             dispatch('keyup', key);
           }
@@ -53,7 +56,7 @@
         }
       }
     }
-    return { tick };
+    return { tick, lastSeat: () => lastSeat, clearSeat() { lastSeat = null; } };
   }
 
   const api = { ACTIONS, DIRECTIONS, createMenuPadDriver };
@@ -64,6 +67,10 @@
     (type, key) => (document.activeElement || document.body).dispatchEvent(new KeyboardEvent(type, { key, bubbles: true })),
     () => !!(window.rycadeMenuLaunched && window.rycadeMenuLaunched())
   );
+  window.rycadeMenuPads = driver;
+  window.addEventListener('keydown', event => {
+    if (event.isTrusted) driver.clearSeat();
+  }, true);
   const poll = now => {
     driver.tick(now);
     requestAnimationFrame(poll);

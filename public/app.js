@@ -453,7 +453,9 @@ async function launchCabGame(game) {
     const params = new URLSearchParams({
       file: `${rom.dir}/${rom.filename}`,
       core: rom.core,
-      sys: rom.sys
+      sys: rom.sys,
+      players: String(game.players),
+      seat: String(window.rycadeMenuPads?.lastSeat() ?? 0)
     });
     playFrame = document.createElement('iframe');
     playFrame.title = `${game.title} emulator`;
