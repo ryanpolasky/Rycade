@@ -1,12 +1,9 @@
-// rycade-power: deck power slider -> display sleep/wake, streamed to the frontend over SSE on 127.0.0.1:8788.
+// rycade-power: Rycade Cabinet F17/F18 -> display wake/sleep, streamed to the frontend over SSE on 127.0.0.1:8788.
 import Foundation
 import IOKit.hid
 import Network
 
-let args = CommandLine.arguments.dropFirst().compactMap { Int($0) }
-let offUsage = args.count > 0 ? args[0] : 5
-let onUsage = args.count > 1 ? args[1] : 3
-let startUsage = 7
+let powerOn = 0x6C, powerOff = 0x6D
 var asleep = false
 var clients: [NWConnection] = []
 
@@ -38,24 +35,17 @@ func wakeCab() {
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { broadcast("wake") }
 }
 
-func isP1(_ device: IOHIDDevice) -> Bool {
-    let service = IOHIDDeviceGetService(device)
-    let number = IORegistryEntrySearchCFProperty(service, kIOServicePlane, "bInterfaceNumber" as CFString, kCFAllocatorDefault,
-                                                IOOptionBits(kIORegistryIterateRecursively | kIORegistryIterateParents))
-    return (number as? Int) == 0
-}
-
 let manager = IOHIDManagerCreate(kCFAllocatorDefault, IOOptionBits(kIOHIDOptionsTypeNone))
-IOHIDManagerSetDeviceMatching(manager, [kIOHIDVendorIDKey: 0xCAFE, kIOHIDProductIDKey: 0x4004] as CFDictionary)
+IOHIDManagerSetDeviceMatchingMultiple(manager, [0x4004, 0x4005, 0x4006, 0x4007].map {
+    [kIOHIDVendorIDKey: 0xCAFE, kIOHIDProductIDKey: $0] as CFDictionary
+} as CFArray)
 IOHIDManagerRegisterInputValueCallback(manager, { _, _, _, value in
     let element = IOHIDValueGetElement(value)
-    guard isP1(IOHIDElementGetDevice(element)) else { return }
-    guard IOHIDElementGetUsagePage(element) == UInt32(kHIDPage_Button), IOHIDValueGetIntegerValue(value) == 1 else { return }
-    switch Int(IOHIDElementGetUsage(element)) {
-    case offUsage: sleepCab()
-    case onUsage, startUsage: wakeCab()
-    default: if asleep { wakeCab() }
-    }
+    guard IOHIDValueGetIntegerValue(value) == 1 else { return }
+    let page = Int(IOHIDElementGetUsagePage(element)), usage = Int(IOHIDElementGetUsage(element))
+    if page == kHIDPage_KeyboardOrKeypad && usage == powerOff { sleepCab() }
+    else if page == kHIDPage_KeyboardOrKeypad && usage == powerOn { wakeCab() }
+    else if page == kHIDPage_Button && asleep { wakeCab() }
 }, nil)
 IOHIDManagerScheduleWithRunLoop(manager, CFRunLoopGetMain(), CFRunLoopMode.defaultMode.rawValue)
 IOHIDManagerOpen(manager, IOOptionBits(kIOHIDOptionsTypeNone))

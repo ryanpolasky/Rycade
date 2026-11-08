@@ -43,4 +43,4 @@ Open modes always expire. LAN SSH/VNC (22/5900) is allowed in.
 
 The kiosk opens `http://127.0.0.1:8787/?cab=1` (Caddy). `cab.js` then decodes and pins all art and loads every demo clip into memory as a blob, uses the vendored fonts, turns off the phone remote, and listens for `rycade-power` events.
 
-`rycade-power` watches P1 (interface 0) on the Pico. Slider off (button usage 5) mutes and sleeps the display, and the Mac stays awake. Slider on (usage 3), START or any button wakes it and plays the boot scene. If the slider is on different buttons, pass the usages as args in `com.rycade.power`.
+`rycade-power` watches the Pico's Rycade Cabinet keyboard. Power-off (F18) mutes and sleeps the display, and the Mac stays awake. Power-on (F17) or any pad button wakes it and plays the boot scene. Volume keys are native, so macOS handles them.
