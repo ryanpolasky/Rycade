@@ -714,7 +714,7 @@ function handleRemoteMessage(data) {
 }
 
 function connectRemote() {
-  if (!settings.remote.enabled || remoteSocket || !('WebSocket' in window)) return;
+  if (!settings.remote.enabled || remoteSocket || window.rycadeCab || !('WebSocket' in window)) return;
   const generation = remoteSocketGeneration;
   const protocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
   const socket = new WebSocket(`${protocol}//${location.host}/api/ws?code=${encodeURIComponent(getPairingCode())}`);
@@ -929,6 +929,8 @@ applyRemoteSetting();
 window.rycadeAttract.init();
 window.rycadeFeatures = {
   openSearch,
+  playBoot,
+  closeBoot,
   openSettings,
   closeOverlays,
   get settings() {

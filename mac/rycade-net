@@ -1,0 +1,112 @@
+#!/bin/bash
+# rycade-net: outbound allowlist for the cab. closed = tunnel only, open = + GitHub, full = everything.
+set -euo pipefail
+
+STATE=/var/db/rycade-net
+RULES=/etc/rycade/pf.conf
+CF_EDGE="198.41.192.0/24 198.41.200.0/24 198.41.218.0/24 2606:4700:a0::/44 2606:4700:a8::/44"
+GITHUB_HOSTS="github.com api.github.com codeload.github.com raw.githubusercontent.com objects.githubusercontent.com release-assets.githubusercontent.com github-releases.githubusercontent.com"
+LAN="10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 fe80::/10"
+MARK="# rycade-net"
+
+die() { echo "rycade-net: $*" >&2; exit 1; }
+[[ $EUID -eq 0 ]] || exec sudo "$0" "$@"
+mkdir -p "$STATE" /etc/rycade
+
+minutes() {
+  local v=${1:-30m}
+  case $v in
+    *h) echo $(( ${v%h} * 60 )) ;;
+    *m) echo "${v%m}" ;;
+    *[0-9]) echo "$v" ;;
+    *) die "bad duration: $v (use 30m or 2h)" ;;
+  esac
+}
+
+mode() {
+  local m exp
+  m=$(cat "$STATE/mode" 2>/dev/null || echo closed)
+  exp=$(cat "$STATE/expires" 2>/dev/null || echo 0)
+  if [[ $m != closed && $(date +%s) -ge $exp ]]; then
+    echo closed > "$STATE/mode"
+    m=closed
+  fi
+  echo "$m"
+}
+
+render() {
+  local m=$1
+  cat <<EOF
+$MARK $m
+set skip on lo0
+set block-policy drop
+table <cf_edge> const { ${CF_EDGE// /, } }
+table <lan> const { ${LAN// /, } }
+table <github> persist
+block drop all
+pass out quick inet proto udp from any port 68 to any port 67
+pass in quick inet proto udp from any port 67 to any port 68
+pass out quick inet6 proto udp from any port 546 to any port 547 keep state
+pass quick inet6 proto icmp6 all
+pass out quick inet proto icmp all keep state
+pass out quick proto { tcp, udp } to any port 53 keep state
+pass out quick proto udp to any port 123 keep state
+pass out quick proto { tcp, udp } to <cf_edge> port 7844 keep state
+pass in quick proto tcp from <lan> to any port { 22, 5900 } keep state
+pass out quick proto tcp to <github> port { 22, 443 } keep state
+EOF
+  [[ $m == full ]] && echo "pass out quick all keep state"
+  return 0
+}
+
+github_ips() {
+  local h
+  for h in $GITHUB_HOSTS; do
+    dscacheutil -q host -a name "$h" 2>/dev/null | awk '/^ip(v6)?_address:/ {print $2}'
+  done | sort -u
+}
+
+enforce() {
+  local m want
+  m=$(mode)
+  want=$(render "$m")
+  if [[ "$(cat "$RULES" 2>/dev/null)" != "$want" ]] || ! pfctl -s rules 2>/dev/null | grep -q '<cf_edge>'; then
+    printf '%s\n' "$want" > "$RULES"
+    pfctl -q -f "$RULES"
+  fi
+  pfctl -s info 2>/dev/null | grep -q 'Status: Enabled' || pfctl -q -e 2>/dev/null || true
+  if [[ $m == closed ]]; then
+    pfctl -q -t github -T flush 2>/dev/null || true
+  else
+    # shellcheck disable=SC2046
+    pfctl -q -t github -T replace $(github_ips) 2>/dev/null || true
+  fi
+}
+
+set_mode() {
+  local m=$1 mins
+  mins=$(minutes "${2:-30m}")
+  echo "$m" > "$STATE/mode"
+  echo $(( $(date +%s) + mins * 60 )) > "$STATE/expires"
+  enforce
+  echo "rycade-net: $m for ${mins}m (rycade-net close to end early)"
+}
+
+status() {
+  local m exp
+  m=$(mode)
+  exp=$(cat "$STATE/expires" 2>/dev/null || echo 0)
+  if [[ $m == closed ]]; then echo "closed (tunnel, DNS, NTP only)"
+  else echo "$m until $(date -r "$exp" '+%H:%M') ($(( (exp - $(date +%s)) / 60 ))m left)"; fi
+  pfctl -s info 2>/dev/null | grep 'Status:' || true
+}
+
+case ${1:-status} in
+  open|github) set_mode github "${2:-}" ;;
+  full) set_mode full "${2:-}" ;;
+  close|closed) echo closed > "$STATE/mode"; echo 0 > "$STATE/expires"; enforce; echo "rycade-net: closed" ;;
+  enforce) enforce ;;
+  status) status ;;
+  rules) render "$(mode)" ;;
+  *) echo "usage: rycade-net [status|open [30m]|full [30m]|close]"; exit 2 ;;
+esac
