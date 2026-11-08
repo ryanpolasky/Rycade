@@ -1529,7 +1529,7 @@
       "source_file": "blitz.nes (captured headless in jsnes 1.2.1, P1 tapping A, 3 CPUs, end of a full game)",
       "start_seconds": 559.33,
       "duration_seconds": 25,
-      "encoding": "H.264 yuv420p / AAC stereo; 30fps; 320x240; 250ms fade through black at loop boundary"
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; 640x480 (nearest-neighbor 5x4 then halved, stays crisp under attract pixelated scaling); 250ms fade through black at loop boundary"
     }
   ]
 }
