@@ -26,6 +26,18 @@ test('Rycade pad IDs order reversed player indexes and leave extra pads unused',
   assert.deepEqual(orderPads([p4, p3, p2, p1, stadia]), [p1, p2, p3, p4]);
 });
 
+test('a combined Rycade gamepad expands into P1 through P4 before ordering', () => {
+  const combined = {
+    id: 'Rycade Controls',
+    index: 0,
+    axes: [0, 1, 2, 3, 4, 5, 6, 7],
+    buttons: Array.from({ length: 28 }, (_, index) => ({ pressed: index % 7 === 0 }))
+  };
+  assert.deepEqual(orderPads([combined]).map(pad => pad.id), [
+    'Rycade P1', 'Rycade P2', 'Rycade P3', 'Rycade P4'
+  ]);
+});
+
 test('non-Rycade pads fill player slots left empty by a missing Rycade pad', () => {
   const p4 = pad([], 'Rycade P4');
   const p3 = pad([], 'Rycade P3');
@@ -279,4 +291,3 @@ test("Dragon's Lair DirkSimple engine runs attract mode, starts game, and proces
   assert.equal(engine.getState().lives, 5);
   assert.ok(sounds.includes('coinslot'));
 });
-

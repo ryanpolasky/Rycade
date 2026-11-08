@@ -2,6 +2,7 @@ const assert = require('node:assert/strict');
 const { readFileSync } = require('node:fs');
 const { test } = require('node:test');
 const { runInNewContext } = require('node:vm');
+const { expandPads } = require('../public/padsplit.js');
 
 const source = readFileSync(`${__dirname}/../public/attract.js`, 'utf8');
 
@@ -17,7 +18,10 @@ function cabinet(games = ['one', 'two', 'three']) {
   const state = {
     performance: { now: () => now },
     document: { hidden: false, querySelector: () => overlay },
-    window: { addEventListener: (type, listener) => { listeners[type] = listener; } },
+    window: {
+      addEventListener: (type, listener) => { listeners[type] = listener; },
+      rycadeExpandPads: expandPads
+    },
     navigator: { getGamepads: () => [] },
     setInterval: callback => { tick = callback; },
     setTimeout: callback => { timers.set(++timerId, callback); return timerId; },

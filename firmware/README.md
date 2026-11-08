@@ -1,6 +1,6 @@
 # Rycade Pico controls
 
-The default `demo` build exposes four separate USB HID gamepads. The `encoder` build reads the cab's two independent encoder links with PIO UARTs and maps them to those same four gamepads.
+The `demo` build and the `encoder` build expose one combined player gamepad plus the cabinet-control interface. Encoder mode reads the cab's two independent links with PIO UARTs and maps their inputs to the four players.
 
 The NBA Jam joystick board protocol is written up in [docs/nba-jam-joystick-board.md](../docs/nba-jam-joystick-board.md).
 
@@ -40,7 +40,9 @@ Use raw dumps to identify unknown encoder inputs, including the cabinet volume s
 
 ## Cabinet device
 
-The fifth HID interface exposes power-on, power-off, and LIVE as F17, F18, and F19, and reports the volume slider as native consumer volume keys with hold-repeat. A power-on edge requests USB remote wakeup when the host is suspended. The normal and debug device PIDs are `0x4006` and `0x4007`.
+HID interface 0, `Rycade Players`, reports all four players in one 12-byte input report: eight signed axes followed by 28 button bits and four padding bits. Each player has two axes (X, Y) and seven button bits ordered A, B, C, X, Y, Z, Start. Axes retain the `-127 / 0 / 127` values. HID interface 1, `Rycade Cabinet`, exposes power-on, power-off, and LIVE as F17, F18, and F19, and reports the volume slider as native consumer volume keys with hold-repeat. A power-on edge requests USB remote wakeup when the host is suspended.
+
+Chrome on macOS keys gamepads by USB location and drops additional gamepad interfaces at a location already represented. Combining all four players into one gamepad interface lets Chrome see every seat; Rycade splits that report into four virtual pads in the frontend. The normal and debug device PIDs remain `0x4006` and `0x4007`.
 
 ## Sniff mode
 
@@ -57,6 +59,6 @@ The sniff UF2 is `firmware/build-sniff/rycade_pico.uf2`.
 
 ## Flash and test
 
-Hold BOOTSEL while plugging in the Pico, then drag the demo UF2 onto the `RPI-RP2` drive. On the Mac, verify four controllers at [hardwaretester.com/gamepad](https://hardwaretester.com/gamepad) or in System Information → USB.
+Hold BOOTSEL while plugging in the Pico, then drag the demo UF2 onto the `RPI-RP2` drive. The USB gamepad appears as one combined controller; Rycade exposes its four players as virtual pads. Confirm the two HID interfaces in System Information → USB.
 
 do not connect J3 to the Pico until the signal voltage has been measured. RP2040 GPIO is not 5V tolerant.

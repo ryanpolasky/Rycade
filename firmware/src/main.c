@@ -9,6 +9,7 @@
 #include "hardware/gpio.h"
 #include "pico/stdlib.h"
 #include "tusb.h"
+#include "usb_descriptors.h"
 
 #if RYCADE_MODE_ENCODER
 #include "hardware/clocks.h"
@@ -28,7 +29,7 @@
 
 static struct player_state player_states[RYCADE_PLAYER_COUNT];
 static struct player_state sent_states[RYCADE_PLAYER_COUNT];
-static bool reports_sent[RYCADE_PLAYER_COUNT];
+static bool player_report_sent;
 static bool usb_mounted;
 static uint8_t cabinet_bits;
 static uint8_t cabinet_keys_report[3];
@@ -43,7 +44,7 @@ static bool power_on_was_pressed;
 void tud_mount_cb(void)
 {
     usb_mounted = true;
-    memset(reports_sent, 0, sizeof(reports_sent));
+    player_report_sent = false;
     cabinet_keys_report_sent = false;
     cabinet_volume_report_sent = false;
 }
@@ -51,7 +52,7 @@ void tud_mount_cb(void)
 void tud_umount_cb(void)
 {
     usb_mounted = false;
-    memset(reports_sent, 0, sizeof(reports_sent));
+    player_report_sent = false;
     cabinet_keys_report_sent = false;
     cabinet_volume_report_sent = false;
 }
@@ -62,7 +63,7 @@ uint16_t tud_hid_get_report_cb(uint8_t instance, uint8_t report_id, hid_report_t
     struct gamepad_report report;
     uint16_t copy_length;
 
-    if (instance == RYCADE_PLAYER_COUNT) {
+    if (instance == RYCADE_CABINET_HID_INSTANCE) {
         const uint8_t *cabinet_report;
         uint16_t report_length;
 
@@ -83,11 +84,12 @@ uint16_t tud_hid_get_report_cb(uint8_t instance, uint8_t report_id, hid_report_t
         return copy_length;
     }
 
-    if (instance >= RYCADE_PLAYER_COUNT || report_type != HID_REPORT_TYPE_INPUT || buffer == NULL) {
+    if (instance != RYCADE_PLAYERS_HID_INSTANCE ||
+        report_type != HID_REPORT_TYPE_INPUT || buffer == NULL) {
         return 0u;
     }
 
-    player_state_to_report(&player_states[instance], &report);
+    player_states_to_report(player_states, &report);
     copy_length = reqlen < sizeof(report) ? reqlen : (uint16_t)sizeof(report);
     memcpy(buffer, &report, copy_length);
     return copy_length;
@@ -114,21 +116,20 @@ static void send_changed_reports(void)
         return;
     }
 
+    bool states_changed = !player_report_sent;
     for (uint8_t player = 0u; player < RYCADE_PLAYER_COUNT; ++player) {
-        struct gamepad_report report;
+        states_changed = states_changed ||
+                         !states_equal(&player_states[player], &sent_states[player]);
+    }
+    if (!states_changed || !tud_hid_n_ready(RYCADE_PLAYERS_HID_INSTANCE)) {
+        return;
+    }
 
-        if (reports_sent[player] && states_equal(&player_states[player], &sent_states[player])) {
-            continue;
-        }
-        if (!tud_hid_n_ready(player)) {
-            continue;
-        }
-
-        player_state_to_report(&player_states[player], &report);
-        if (tud_hid_n_report(player, 0u, &report, sizeof(report))) {
-            sent_states[player] = player_states[player];
-            reports_sent[player] = true;
-        }
+    struct gamepad_report report;
+    player_states_to_report(player_states, &report);
+    if (tud_hid_n_report(RYCADE_PLAYERS_HID_INSTANCE, 0u, &report, sizeof(report))) {
+        memcpy(sent_states, player_states, sizeof(sent_states));
+        player_report_sent = true;
     }
 }
 
@@ -150,8 +151,8 @@ static void send_cabinet_reports(uint32_t now_ms)
 
     if ((!cabinet_keys_report_sent ||
          memcmp(cabinet_keys_report, sent_cabinet_keys, sizeof(cabinet_keys_report)) != 0) &&
-        tud_hid_n_ready(RYCADE_PLAYER_COUNT)) {
-        if (tud_hid_n_report(RYCADE_PLAYER_COUNT, 1u, cabinet_keys_report,
+        tud_hid_n_ready(RYCADE_CABINET_HID_INSTANCE)) {
+        if (tud_hid_n_report(RYCADE_CABINET_HID_INSTANCE, 1u, cabinet_keys_report,
                              (uint16_t)sizeof(cabinet_keys_report))) {
             memcpy(sent_cabinet_keys, cabinet_keys_report, sizeof(cabinet_keys_report));
             cabinet_keys_report_sent = true;
@@ -161,8 +162,8 @@ static void send_cabinet_reports(uint32_t now_ms)
 
     if ((!cabinet_volume_report_sent ||
          cabinet_volume_report_bits != sent_cabinet_volume_report_bits) &&
-        tud_hid_n_ready(RYCADE_PLAYER_COUNT) &&
-        tud_hid_n_report(RYCADE_PLAYER_COUNT, 2u, &cabinet_volume_report_bits,
+        tud_hid_n_ready(RYCADE_CABINET_HID_INSTANCE) &&
+        tud_hid_n_report(RYCADE_CABINET_HID_INSTANCE, 2u, &cabinet_volume_report_bits,
                          (uint16_t)sizeof(cabinet_volume_report_bits))) {
         sent_cabinet_volume_report_bits = cabinet_volume_report_bits;
         cabinet_volume_report_sent = true;
