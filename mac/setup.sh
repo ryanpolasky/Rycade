@@ -13,6 +13,7 @@ HOME_DIR=$HOME/Rycade
 APP=$HOME_DIR/app
 BIN=$HOME_DIR/bin
 PORT=8787
+SCORES_HOST=arcade.ryanpolasky.com
 CAB_MODE=1280x960
 RESTART="U 04:00:00"
 CORES="genesis_plus_gx snes9x mesen fbneo mame"
@@ -306,6 +307,13 @@ display() {
 runtime() {
   step "Rycade runtime: local server, kiosk, power slider"
   local restart=()
+  local key=$HOME_DIR/score.key
+  if [[ ! -s $key ]]; then
+    local sk
+    read -r -s -p "  high score upload key (Worker secret SCORE_KEY, blank to skip): " sk </dev/tty; echo
+    (( DRY )) || { umask 077; printf '%s' "$sk" > "$key"; }
+  fi
+  (umask 077; : > "$HOME_DIR/Caddyfile.tmp")
   cat > "$HOME_DIR/Caddyfile.tmp" <<C
 {
 	admin off
@@ -324,6 +332,19 @@ runtime() {
 	}
 	reverse_proxy /power/* 127.0.0.1:8788 {
 		flush_interval -1
+	}
+	@scores {
+		method POST
+		path /api/scores
+	}
+	handle @scores {
+		reverse_proxy https://$SCORES_HOST {
+			header_up -*
+			header_up Host $SCORES_HOST
+			header_up Content-Type application/json
+			header_up User-Agent rycade
+			header_up Authorization "Bearer $(cat "$key" 2>/dev/null)"
+		}
 	}
 	file_server
 }
@@ -408,6 +429,8 @@ doctor() {
   check "kiosk running" 'launchctl print gui/$(id -u)/com.rycade.kiosk | grep -q "state = running"'
   check "power helper running" 'launchctl print gui/$(id -u)/com.rycade.power | grep -q "state = running"'
   check "pf enabled" 'sudo pfctl -s info | grep -q "Status: Enabled"'
+  check "score key set" '[[ -s '"$HOME_DIR"'/score.key ]]'
+  check "score host allowed" 'sudo pfctl -t scores -T show | grep -q .'
   if [[ $(sudo rycade-net status 2>/dev/null | head -1) == closed* ]]; then
     check "internet blocked" '! curl -fs --max-time 4 -o /dev/null https://example.com'
     check "GitHub blocked" '! curl -fs --max-time 4 -o /dev/null https://github.com'

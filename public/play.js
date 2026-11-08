@@ -11,6 +11,30 @@
   const CORE_OPTIONS = {
     qbert: { 'mame2003-plus_four_way_emulation': 'enabled' }
   };
+  const MAME_OPTIONS = {
+    'mame2003-plus_autosave_hiscore': 'recursively',
+    'mame2003-plus_skip_disclaimer': 'enabled',
+    'mame2003-plus_skip_warnings': 'enabled'
+  };
+
+  function findHiscore(fs, name, dir = '/data/saves', depth = 4) {
+    let names;
+    try { names = fs.readdir(dir); } catch { return null; }
+    for (const entry of names) {
+      if (entry === '.' || entry === '..') continue;
+      const path = `${dir}/${entry}`;
+      let stat;
+      try { stat = fs.stat(path); } catch { continue; }
+      if (fs.isDir(stat.mode)) {
+        const found = depth > 0 && findHiscore(fs, name, path, depth - 1);
+        if (found) return found;
+      } else if (entry === name) {
+        return fs.readFile(path);
+      }
+    }
+    return null;
+  }
+
   const RETRO_REMAPS = {
     mblitz: ['input_libretro_device_p3 = "513"', 'input_libretro_device_p4 = "513"']
   };
@@ -144,7 +168,7 @@
     };
   }
 
-  const api = { SYSTEM_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, RETRO_REMAPS, orderPads, createInputMapper, createProfileSaves };
+  const api = { SYSTEM_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, MAME_OPTIONS, RETRO_REMAPS, findHiscore, orderPads, createInputMapper, createProfileSaves };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof window === 'undefined') return;
 
@@ -161,8 +185,14 @@
   let mapper = null;
   let timeout;
   let saves = null;
-  function post(state, message) {
-    parent.postMessage({ type: 'rycade-play', state, ...(message ? { message } : {}) }, location.origin);
+  function post(state, message, extra) {
+    parent.postMessage({ type: 'rycade-play', state, ...(message ? { message } : {}), ...extra }, location.origin);
+  }
+  function hiscore() {
+    if (core !== 'mame2003_plus' || !manager || !manager.FS) return undefined;
+    const set = file.split('/').pop().replace(/\.[^.]+$/, '');
+    const bytes = findHiscore(manager.FS, set + '.hi') || findHiscore(manager.FS, set + '.nv');
+    return bytes ? { hiscore: { game, bytes: Uint8Array.from(bytes) } } : undefined;
   }
   function fail(message) {
     if (started) return;
@@ -172,7 +202,7 @@
     if (event.key === 'F19' || event.key === 'Escape') {
       event.preventDefault();
       event.stopImmediatePropagation();
-      post('exit');
+      post('exit', null, hiscore());
     } else {
       event.preventDefault();
       event.stopImmediatePropagation();
@@ -237,7 +267,7 @@
   window.EJS_startOnLoaded = true;
   window.EJS_fullscreenOnLoaded = false;
   window.EJS_defaultControls = { 0: {}, 1: {}, 2: {}, 3: {} };
-  window.EJS_defaultOptions = { 'save-save-interval': '30', ...(core === 'mame2003_plus' && CORE_OPTIONS[game]) };
+  window.EJS_defaultOptions = { 'save-save-interval': '30', ...(core === 'mame2003_plus' && { ...MAME_OPTIONS, ...CORE_OPTIONS[game] }) };
   if (profileId && Profiles) {
     window.EJS_ready = function () {
       const emulator = window.EJS_emulator;

@@ -28,11 +28,13 @@ After that it's installed as `rycade`:
 
 | mode | allowed out |
 | --- | --- |
-| `close` (default) | DHCP, DNS, NTP, Cloudflare tunnel edge on 7844 |
+| `close` (default) | DHCP, DNS, NTP, Cloudflare tunnel edge on 7844, `arcade.ryanpolasky.com:443` for score uploads |
 | `open [30m]` | the above + GitHub (hosts resolved when opened) |
 | `full [30m]` | everything |
 
 Open modes always expire. The LAN (incl. mDNS, so AirPlay speakers like a HomePod work) is always allowed both ways; only the internet is locked down.
+
+High scores: arcade games keep their own tables (mame2003-plus hiscore.dat). New entries go to Caddy's `POST /api/scores`, which forwards to the Worker with every browser header stripped: only `{game, entries: [{initials, score}]}` and the key in `~/Rycade/score.key` leave the box.
 
 ## Remote access
 
