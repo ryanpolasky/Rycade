@@ -32,6 +32,10 @@ Direction bits are Right `0x01`, Down `0x02`, Left `0x04`, Up `0x08`, and Start 
 
 **Never run the encoder build while the original main board is connected; both would drive holes 4 and 8. Remove the original main board first.** With it removed, connect Pico VBUS pin 40 to Game Port hole 3 (joystick-board 5V) and the shifter HV pin, and connect Pico GND to hole 5.
 
+Build the raw-frame variant with `-DRYCADE_ENCODER_DEBUG=ON` alongside `-DRYCADE_MODE=encoder`; it keeps the four HID gamepads and adds CDC with PID `0x4005`.
+CDC lines are `L0 XX XX ... XX` / `L1 XX XX ... XX` (18 uppercase bytes for Link A/Link B).
+Use raw dumps to identify unknown encoder inputs, including the cabinet volume slider.
+
 ## Sniff mode
 
 Build the CDC-only passive sniffer with `-DRYCADE_MODE=sniff`. It samples the eight signal holes as inputs: `1,2,4,6,8,10,11,12` map to GP2 through GP9 in that order. Connect with a USB CDC terminal; on DTR connect it prints the command help and then `S t=<ms> lv=<8 levels> e=<8 edge counts> hi=<8 minimum high widths> lo=<8 minimum low widths>`. The eight comma-separated `hi` and `lo` values are minimum pulse widths in microseconds, or `-` if no pulse was measured. PIO UART frames print as `U<hole> <length> <hex bytes>`.

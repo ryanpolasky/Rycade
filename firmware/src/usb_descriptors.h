@@ -7,6 +7,12 @@
 
 #define RYCADE_CONFIGURATION_DESCRIPTOR_LENGTH 109u
 
+#if defined(RYCADE_ENCODER_DEBUG) && RYCADE_ENCODER_DEBUG
+#include "tusb.h"
+#define RYCADE_DEBUG_CONFIGURATION_DESCRIPTOR_LENGTH (9u + 4u * 25u + TUD_CDC_DESC_LEN)
+extern const uint8_t rycade_debug_configuration_descriptor[RYCADE_DEBUG_CONFIGURATION_DESCRIPTOR_LENGTH];
+#endif
+
 extern const uint8_t rycade_device_descriptor[18];
 extern const uint8_t rycade_configuration_descriptor[RYCADE_CONFIGURATION_DESCRIPTOR_LENGTH];
 extern const uint8_t rycade_hid_report_descriptor[];
