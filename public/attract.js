@@ -127,7 +127,7 @@
           activity(Boolean(pad.buttons[9]?.pressed));
         }
       }
-      const blocked = settingsOpen || searchOpen || demoGame || launched || bootOpen || document.hidden || window.rycadeCab?.asleep;
+      const blocked = settingsOpen || searchOpen || demoGame || launched || window.rycadeSavePick?.active() || bootOpen || document.hidden || window.rycadeCab?.asleep;
       if (blocked) return reset();
       const minutes = settings.attractMinutes;
       if (!active && minutes > 0 && performance.now() - lastInput >= minutes * 60000) {
