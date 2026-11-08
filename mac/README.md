@@ -18,7 +18,8 @@ After that it's installed as `rycade`:
 | --- | --- |
 | `rycade` | re-run the whole setup (idempotent) |
 | `rycade doctor` | health check |
-| `rycade update` | pull the frontend through GitHub-only mode, reload the kiosk |
+| `rycade update` | pull through GitHub-only mode, then `refresh` with the new script |
+| `rycade refresh` | reinstall `rycade-net`, rebuild `rycade-power` if its source changed, restart what changed, reload the kiosk |
 | `rycade --dry-run` | print what would change |
 
 ## Network

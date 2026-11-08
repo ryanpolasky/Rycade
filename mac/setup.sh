@@ -1,6 +1,6 @@
 #!/bin/bash
 # Rycade cab setup for the Mac mini. Safe to re-run.
-# usage: setup.sh [all|doctor|update|display] [--dry-run]
+# usage: setup.sh [all|doctor|update|refresh|display] [--dry-run]
 set -euo pipefail
 
 CAB_USER=rycade
@@ -23,8 +23,8 @@ DRY=0
 for arg in "$@"; do
   case $arg in
     --dry-run) DRY=1 ;;
-    all|doctor|update|display) ACTION=$arg ;;
-    *) echo "usage: setup.sh [all|doctor|update|display] [--dry-run]"; exit 2 ;;
+    all|doctor|update|refresh|display) ACTION=$arg ;;
+    *) echo "usage: setup.sh [all|doctor|update|refresh|display] [--dry-run]"; exit 2 ;;
   esac
 done
 
@@ -98,6 +98,7 @@ preflight() {
   [[ $(id -un) == "$CAB_USER" ]] || note "logged in as $(id -un), expected $CAB_USER"
   sudo -v
   while true; do sudo -n true; sleep 50; kill -0 "$$" 2>/dev/null || exit; done 2>/dev/null &
+  [[ ${1:-} == offline ]] && return
   if command -v rycade-net >/dev/null && [[ $(sudo rycade-net status | head -1) == closed* ]]; then
     note "opening the firewall for setup, closes again at the end"
     srun rycade-net full 60m >/dev/null
@@ -292,6 +293,7 @@ display() {
 
 runtime() {
   step "Rycade runtime: local server, kiosk, power slider"
+  local restart=()
   cat > "$HOME_DIR/Caddyfile.tmp" <<C
 {
 	admin off
@@ -314,6 +316,7 @@ runtime() {
 	file_server
 }
 C
+  cmp -s "$HOME_DIR/Caddyfile.tmp" "$HOME_DIR/Caddyfile" || restart+=(com.rycade.server)
   mv "$HOME_DIR/Caddyfile.tmp" "$HOME_DIR/Caddyfile"
   agent com.rycade.server "$(command -v caddy)" run --config "$HOME_DIR/Caddyfile" --adapter caddyfile
 
@@ -337,10 +340,14 @@ K
 
   local src=$APP/mac/rycade-power.swift stamp=$BIN/.rycade-power.sha
   if [[ ! -x $BIN/rycade-power ]] || [[ $(shasum "$src" | cut -d' ' -f1) != $(cat "$stamp" 2>/dev/null) ]]; then
-    if run swiftc -O -o "$BIN/rycade-power" "$src"; then shasum "$src" | cut -d' ' -f1 > "$stamp"
+    if run swiftc -O -o "$BIN/rycade-power" "$src"; then
+      shasum "$src" | cut -d' ' -f1 > "$stamp"
+      restart+=(com.rycade.power)
     else note "rycade-power failed to compile, power slider won't sleep/wake"; fi
   fi
   [[ -x $BIN/rycade-power ]] && agent com.rycade.power "$BIN/rycade-power"
+  local label
+  for label in ${restart[@]+"${restart[@]}"}; do run launchctl kickstart -k "gui/$(id -u)/$label"; done
 }
 
 cores() {
@@ -402,6 +409,19 @@ update() {
   srun rycade-net open 10m >/dev/null
   run git -C "$APP" pull --ff-only
   srun rycade-net close >/dev/null
+  ok "pulled"
+  (( DRY )) && { refresh; return; }
+  exec "$APP/mac/setup.sh" refresh
+}
+
+refresh() {
+  step "Reinstall rycade-net, rebuild helpers, reload kiosk"
+  srun install -m 755 "$APP/mac/rycade-net" /usr/local/bin/rycade-net
+  srun ln -sf "$APP/mac/setup.sh" /usr/local/bin/rycade
+  daemon com.rycade.net 30 /usr/local/bin/rycade-net enforce
+  srun rycade-net enforce >/dev/null
+  command -v caddy >/dev/null || for b in /usr/local/bin/brew /opt/homebrew/bin/brew; do [[ -x $b ]] && eval "$($b shellenv)"; done
+  runtime
   run launchctl kickstart -k "gui/$(id -u)/com.rycade.kiosk"
   ok "updated and reloaded"
 }
@@ -428,7 +448,8 @@ T
 
 case $ACTION in
   doctor) doctor ;;
-  update) preflight; update ;;
+  update) preflight offline; update ;;
+  refresh) preflight offline; refresh ;;
   display) display ;;
   all)
     preflight
