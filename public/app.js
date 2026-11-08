@@ -372,7 +372,7 @@ function openDemo() {
     window.rycadeAudio?.play('error');
     flashToast(`DEMO VIDEO UNAVAILABLE: ${game.title.toUpperCase()}`);
   };
-  demoOverlay.querySelector('.demo-title').textContent = game.title;
+  window.rycadeAttract.fill(demoOverlay, game);
   demoOverlay.classList.remove('ready');
   demoOverlay.hidden = false;
   const reveal = () => {
