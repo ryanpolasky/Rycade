@@ -593,7 +593,7 @@ window.addEventListener('keydown', event => {
     launch();
     return;
   }
-  if (pressed === 'f') {
+  if (pressed === 'f' || event.key === CABINET_KEYS.pass) {
     event.preventDefault();
     toggleFavorite();
     return;

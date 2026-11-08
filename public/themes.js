@@ -229,7 +229,7 @@ function layoutStudio(surface, index, game, games) {
       </div>
       <div class="st-library-heading"><h3>Browse library</h3><span class="st-count"></span></div>
       <div class="st-gallery"><div class="st-track"></div></div>
-      <div class="st-empty"><h3>No favorites yet</h3><p>Press F on a game to add it here.</p></div>
+      <div class="st-empty"><h3>No favorites yet</h3><p>Press PASS on a game to add it here.</p></div>
       <div class="st-footer"><span>HOLD &#8592; &#8594; to browse <b>SHOOT demo</b><b>START play</b></span></div>
     `;
     surface.append(wrap);
