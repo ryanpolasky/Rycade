@@ -14,6 +14,7 @@
   function fill(root, game) {
     root.querySelector('.attract-logo').src = game.logo || '';
     root.dataset.logo = game.logo ? 'true' : 'false';
+    root.style.setProperty('--attract-tint', game.color || '#0c0b10');
     root.querySelector('.attract-title').textContent = game.title;
     root.querySelector('.attract-players').textContent = game.players === 1 ? '1 PLAYER' : `1–${game.players} PLAYERS`;
   }

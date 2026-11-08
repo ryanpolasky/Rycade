@@ -13,7 +13,7 @@ function cabinet(games = ['one', 'two', 'three']) {
   const listeners = {};
   const nodes = {};
   const video = { play: () => Promise.resolve(), pause() {}, load() {}, removeAttribute() {}, duration: 25 };
-  const overlay = { hidden: true, dataset: {}, querySelector: selector => selector === 'video' ? video : (nodes[selector] ||= {}) };
+  const overlay = { hidden: true, dataset: {}, style: { setProperty() {} }, querySelector: selector => selector === 'video' ? video : (nodes[selector] ||= {}) };
   const state = {
     performance: { now: () => now },
     document: { hidden: false, querySelector: () => overlay },
