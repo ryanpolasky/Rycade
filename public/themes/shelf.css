@@ -525,7 +525,7 @@ body[data-theme="shelf"] #stage.is-fav .mq-fav {
   position: absolute;
   top: 8px;
   right: 8px;
-  padding: 4px 10px 2px;
+  padding: 3px 10px 3px;
   border-radius: 4px;
   background: var(--pb);
   color: var(--pa);
