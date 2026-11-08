@@ -30,7 +30,7 @@ How Rycade is put together, how to run it, and how to drive it. For the showcase
 - Z / C: switch categories directly.
 - In settings, Left from the section list closes it. In search, DONE closes it.
 - Enter (START): launch the selected game, including while watching its demo. Escape exits a launched game.
-- In cab mode, the seat that starts a 1–2-player game becomes P1; the next different seat to press START joins as P2. Games with 3+ players or unknown player counts keep fixed seats.
+- In cab mode, the seat that starts a 1–3-player game becomes P1; the next different seats to press START join as P2, then P3. Games with 4+ players or unknown player counts keep fixed seats.
 - In cab mode, Smash TV pairs seats 1/2 and 3/4 as each player's twin sticks (Robotron's alternating turns both use seats 1/2), with START on either stick of a pair; Q*bert's diagonal four-way rotation is automatic.
 - 1 / 2 / 3: SHOOT / PASS / TURBO. SHOOT (1) opens the selected game's video demo; SHOOT again or Escape returns to the menu.
 - PASS (2) or F: favorite or unfavorite the selected game. Favorites live in the ★ FAVORITES tab and persist in the browser.

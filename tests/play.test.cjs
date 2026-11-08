@@ -132,6 +132,67 @@ test('the launcher Start press stays on logical player one and one-player games 
   assert.deepEqual(inputs, [[0, 3, 1], [0, 3, 0], [1, 3, 1]]);
 });
 
+test('three-player games fill seats in Start order and reject a fourth seat', () => {
+  const inputs = [];
+  const mapper = createInputMapper((...input) => inputs.push(input), { players: 3, seat: 1 });
+  let p1 = pad([], 'Rycade P1');
+  const p2 = pad([0], 'Rycade P2');
+  const p3 = pad([], 'Rycade P3');
+  let p4 = pad([], 'Rycade P4');
+
+  mapper.poll([p1, p2, p3, p4], 'ARCADE', 0);
+  assert.deepEqual(inputs, [[0, 0, 1]]);
+  inputs.length = 0;
+
+  p4 = pad([6], 'Rycade P4');
+  mapper.poll([p1, p2, p3, p4], 'ARCADE', 100);
+  assert.deepEqual(inputs, [[1, 2, 1]]);
+  p4 = pad([], 'Rycade P4');
+  mapper.poll([p1, p2, p3, p4], 'ARCADE', 101);
+  mapper.poll([p1, p2, p3, p4], 'ARCADE', 500);
+  inputs.length = 0;
+
+  p1 = pad([6], 'Rycade P1');
+  mapper.poll([p1, p2, p3, p4], 'ARCADE', 600);
+  assert.deepEqual(inputs, [[2, 2, 1]]);
+  p1 = pad([], 'Rycade P1');
+  mapper.poll([p1, p2, p3, p4], 'ARCADE', 601);
+  mapper.poll([p1, p2, p3, p4], 'ARCADE', 1000);
+  inputs.length = 0;
+
+  mapper.poll([p1, p2, pad([6], 'Rycade P3'), p4], 'ARCADE', 1100);
+  assert.deepEqual(inputs, []);
+});
+
+test('three-player joiners keep their player assignments for button input', () => {
+  const inputs = [];
+  const mapper = createInputMapper((...input) => inputs.push(input), { players: 3, seat: 1 });
+  let p1 = pad([], 'Rycade P1');
+  const p2 = pad([], 'Rycade P2');
+  const p3 = pad([], 'Rycade P3');
+  let p4 = pad([], 'Rycade P4');
+
+  mapper.poll([p1, p2, p3, p4], 'ARCADE', 0);
+  p4 = pad([6], 'Rycade P4');
+  mapper.poll([p1, p2, p3, p4], 'ARCADE', 100);
+  p4 = pad([], 'Rycade P4');
+  mapper.poll([p1, p2, p3, p4], 'ARCADE', 101);
+  mapper.poll([p1, p2, p3, p4], 'ARCADE', 500);
+  p1 = pad([6], 'Rycade P1');
+  mapper.poll([p1, p2, p3, p4], 'ARCADE', 600);
+  p1 = pad([], 'Rycade P1');
+  mapper.poll([p1, p2, p3, p4], 'ARCADE', 601);
+  mapper.poll([p1, p2, p3, p4], 'ARCADE', 1000);
+  inputs.length = 0;
+
+  p4 = pad([0], 'Rycade P4');
+  mapper.poll([p1, p2, p3, p4], 'ARCADE', 1100);
+  assert.deepEqual(inputs, [[1, 0, 1]]);
+  p1 = pad([0], 'Rycade P1');
+  mapper.poll([p1, p2, p3, p4], 'ARCADE', 1116);
+  assert.deepEqual(inputs, [[1, 0, 1], [2, 0, 1]]);
+});
+
 test('larger games keep fixed seat mapping', () => {
   const inputs = [];
   const mapper = createInputMapper((...input) => inputs.push(input), { players: 4, seat: 2 });

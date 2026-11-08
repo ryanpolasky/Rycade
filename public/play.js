@@ -78,7 +78,8 @@
   }
 
   function createInputMapper(simulateInput, { players, seat, layout } = {}) {
-    const flexible = layout !== 'twin' && Number.isInteger(players) && players >= 1 && players <= 2;
+    const flexible = layout !== 'twin' && Number.isInteger(players) && players >= 1 && players <= 3;
+    const capacity = Math.max(2, players);
     const seats = flexible
       ? [Number.isInteger(seat) && seat >= 0 && seat <= 3 ? seat : 0]
       : [];
@@ -91,7 +92,7 @@
       if (flexible) {
         for (let physicalSeat = 0; physicalSeat < 4; physicalSeat++) {
           const startDown = buttonDown(playerPads[physicalSeat]?.buttons?.[6]);
-          if (seats.length < 2 && !seats.includes(physicalSeat) && startDown && !seatStartHeld[physicalSeat]) {
+          if (seats.length < capacity && !seats.includes(physicalSeat) && startDown && !seatStartHeld[physicalSeat]) {
             seats.push(physicalSeat);
           }
           seatStartHeld[physicalSeat] = startDown;
