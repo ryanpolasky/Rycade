@@ -36,9 +36,8 @@ mode() {
 }
 
 render() {
-  local m=$1
   cat <<EOF
-$MARK $m
+$MARK
 set skip on lo0
 set block-policy drop
 table <cf_edge> const { ${CF_EDGE// /, } }
@@ -57,9 +56,8 @@ pass out quick proto { tcp, udp } to <cf_edge> port 7844 keep state
 pass in quick proto tcp from <lan> to any port { 22, 5900 } keep state
 pass out quick proto tcp to <github> port { 22, 443 } keep state
 pass out quick proto tcp to <scores> port 443 keep state
+anchor "rycade-full"
 EOF
-  [[ $m == full ]] && echo "pass out quick all keep state"
-  return 0
 }
 
 resolve() {
@@ -72,12 +70,17 @@ resolve() {
 enforce() {
   local m want
   m=$(mode)
-  want=$(render "$m")
+  want=$(render)
   if [[ "$(cat "$RULES" 2>/dev/null)" != "$want" ]] || ! pfctl -s rules 2>/dev/null | grep -q '<cf_edge>'; then
     printf '%s\n' "$want" > "$RULES"
     pfctl -q -f "$RULES"
   fi
   pfctl -s info 2>/dev/null | grep -q 'Status: Enabled' || pfctl -q -e 2>/dev/null || true
+  if [[ $m == full ]]; then
+    pfctl -a rycade-full -s rules 2>/dev/null | grep -q pass || echo "pass out quick all keep state" | pfctl -q -a rycade-full -f -
+  else
+    pfctl -q -a rycade-full -F rules 2>/dev/null || true
+  fi
   if [[ $m == closed ]]; then
     pfctl -q -t github -T flush 2>/dev/null || true
   else
@@ -112,6 +115,6 @@ case ${1:-status} in
   close|closed) echo closed > "$STATE/mode"; echo 0 > "$STATE/expires"; enforce; echo "rycade-net: closed" ;;
   enforce) enforce ;;
   status) status ;;
-  rules) render "$(mode)" ;;
+  rules) render; [[ $(mode) == full ]] && echo 'anchor "rycade-full": pass out quick all keep state' ;;
   *) echo "usage: rycade-net [status|open [30m]|full [30m]|close]"; exit 2 ;;
 esac

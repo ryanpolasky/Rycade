@@ -25,7 +25,9 @@ let launched = false;
 const cabMode = new URLSearchParams(location.search).get('cab') === '1';
 let playSession = 0;
 let playFrame = null;
-let playExitTimer = 0;
+let playTrack = null;
+let exiting = Promise.resolve();
+const picking = () => !!window.rycadeSavePick?.active();
 let demoGame = null;
 let demoSession = 0;
 let demoFrameCallback = 0;
@@ -68,9 +70,15 @@ function inSystem(game, system) {
   return game.sys === system;
 }
 
-function flashToast(text) {
+function favStar() {
+  const star = document.createElement('i');
+  star.className = 'fav-star';
+  return star;
+}
+
+function flashToast(text, starred = false) {
   const toast = document.querySelector('#remote-toast');
-  toast.textContent = text;
+  toast.replaceChildren(...(starred ? [favStar()] : []), text);
   toast.classList.add('visible');
   clearTimeout(flashToast.timer);
   flashToast.timer = setTimeout(() => toast.classList.remove('visible'), 1800);
@@ -78,14 +86,14 @@ function flashToast(text) {
 
 function toggleFavorite() {
   const game = view[index];
-  if (!game || launched || demoGame) return;
+  if (!game || launched || picking() || demoGame) return;
   if (favorites.has(game.id)) favorites.delete(game.id);
   else favorites.add(game.id);
   try {
     localStorage.setItem(FAVORITES_KEY, JSON.stringify([...favorites]));
   } catch {}
   window.rycadeAudio?.play('toggle');
-  flashToast(`${favorites.has(game.id) ? '★ ADDED TO' : 'REMOVED FROM'} FAVORITES · ${game.title.toUpperCase()}`);
+  flashToast(`${favorites.has(game.id) ? 'ADDED TO' : 'REMOVED FROM'} FAVORITES · ${game.title.toUpperCase()}`, favorites.has(game.id));
   if (stage.dataset.detailId === game.id) stage.classList.toggle('is-fav', favorites.has(game.id));
   if (SYSTEMS[tab] === 'FAVORITES') {
     const neighbour = view[index + 1] || view[index - 1];
@@ -107,7 +115,7 @@ function renderTabs() {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = `${systemIndex === tab ? 'on' : ''}${system === 'FAVORITES' ? ' fav-tab' : ''}`;
-    button.innerHTML = `${system === 'FAVORITES' ? '★ FAVORITES' : system}<sup>${count}</sup>`;
+    button.innerHTML = `${system === 'FAVORITES' ? '<i class="fav-star"></i>FAVORITES' : system}<sup>${count}</sup>`;
     button.setAttribute('aria-label', `${system} ${count}`);
     button.addEventListener('click', () => changeTab(systemIndex));
     return button;
@@ -134,7 +142,7 @@ function build(keepId) {
 }
 
 function changeTab(nextTab) {
-  if (launched || demoGame || nextTab === tab) return;
+  if (launched || picking() || demoGame || nextTab === tab) return;
   window.rycadeAudio?.play('tab');
   const selectedId = view[index] && view[index].id;
   tab = nextTab;
@@ -297,7 +305,7 @@ function syncMarquees() {
 }
 
 function step(direction, pitchMultiplier = 1) {
-  if (launched || demoGame) return;
+  if (launched || picking() || demoGame) return;
   const nextIndex = Math.max(0, Math.min(view.length - 1, index + direction));
   if (nextIndex !== index) {
     if (window.__rycadeAudioDebug) window.__rycadeAudioDebug.stepsTaken++;
@@ -359,7 +367,7 @@ function release() {
 
 function openDemo() {
   window.rycadeAttract.reset();
-  if (launched || demoGame || !view[index]) return;
+  if (launched || picking() || demoGame || !view[index]) return;
   release();
   demoGame = view[index];
   const session = ++demoSession;
@@ -370,7 +378,7 @@ function openDemo() {
     window.rycadeAudio?.play('error');
     flashToast(`DEMO VIDEO UNAVAILABLE: ${game.title.toUpperCase()}`);
   };
-  demoOverlay.querySelector('.demo-title').textContent = game.title;
+  window.rycadeAttract.fill(demoOverlay, game);
   demoOverlay.classList.remove('ready');
   demoOverlay.hidden = false;
   const reveal = () => {
@@ -413,17 +421,28 @@ function closeDemo() {
 
 function launch() {
   window.rycadeAttract.reset();
-  if (launched || !view[index]) return;
+  if (launched || picking() || !view[index]) return;
+  const game = view[index];
   try {
-    localStorage.setItem(LAST_PLAYED_KEY, view[index].id);
+    localStorage.setItem(LAST_PLAYED_KEY, game.id);
   } catch {}
   closeDemo();
   release();
   if (barFocus) setBarFocus(false);
-  renderDetail(view[index]);
+  renderDetail(game);
+  if (window.rycadeSavePick && window.rycadeProfiles?.usesSaves(game.id)) {
+    window.rycadeAudio?.play('open');
+    window.rycadeSavePick.open(game, profile => startGame(game, profile), () => monitor.focus());
+    return;
+  }
+  startGame(game, null);
+}
+
+function startGame(game, profile) {
   window.rycadeAudio?.play('launch');
+  playTrack = profile ? { profileId: profile.id, gameId: game.id, start: cabMode ? 0 : performance.now() } : null;
   if (cabMode) {
-    launchCabGame(view[index]);
+    launchCabGame(game, profile);
     return;
   }
   launched = true;
@@ -432,14 +451,42 @@ function launch() {
   statusTimer = setTimeout(() => monitor.classList.remove('show-status'), 2400);
 }
 
-async function launchCabGame(game) {
+function endPlaytime() {
+  if (playTrack?.start) {
+    const { profileId, gameId, start } = playTrack;
+    window.rycadeProfiles.update(state => window.rycadeProfiles.addPlaytime(state, profileId, gameId, performance.now() - start));
+  }
+  playTrack = null;
+}
+
+function flushFrame(frame) {
+  return new Promise(resolve => {
+    const timer = setTimeout(done, 2000);
+    function done() {
+      clearTimeout(timer);
+      window.removeEventListener('message', onMessage);
+      resolve();
+    }
+    function onMessage(event) {
+      if (event.source === frame.contentWindow && event.data?.type === 'rycade-play' && event.data.state === 'saved') done();
+    }
+    window.addEventListener('message', onMessage);
+    try {
+      frame.contentWindow.postMessage({ type: 'rycade-save' }, location.origin);
+    } catch {
+      done();
+    }
+  });
+}
+
+async function launchCabGame(game, profile) {
   launched = true;
-  clearTimeout(playExitTimer);
   const session = ++playSession;
   monitor.classList.add('loading', 'show-status');
   nowPlaying.textContent = 'LOADING GAME';
   clearTimeout(statusTimer);
   try {
+    await exiting;
     const rom = await window.rycadeEmulation.resolveRom(game);
     if (session !== playSession || !launched) return;
     if (!rom || !rom.filename) {
@@ -458,6 +505,7 @@ async function launchCabGame(game) {
       players: String(game.players),
       seat: String(window.rycadeMenuPads?.lastSeat() ?? 0)
     });
+    if (profile) params.set('profile', profile.id);
     playFrame = document.createElement('iframe');
     playFrame.title = `${game.title} emulator`;
     playFrame.allow = 'autoplay; fullscreen; gamepad';
@@ -482,16 +530,19 @@ function exitGame() {
     monitor.classList.remove('live', 'loading', 'show-status');
     nowPlaying.textContent = 'NOW PLAYING · ESC TO EXIT';
     clearTimeout(statusTimer);
+    endPlaytime();
     const layer = document.querySelector('#play-layer');
     layer.classList.remove('visible');
-    clearTimeout(playExitTimer);
-    playExitTimer = setTimeout(() => {
-      layer.replaceChildren();
-      playFrame = null;
-      monitor.focus();
-    }, 300);
+    const frame = playFrame;
+    playFrame = null;
+    const fade = new Promise(resolve => setTimeout(resolve, 300));
+    exiting = Promise.all([fade, frame ? flushFrame(frame) : null]).then(() => {
+      frame?.remove();
+      if (!launched) monitor.focus();
+    });
     return;
   }
+  endPlaytime();
   launched = false;
   monitor.classList.remove('live', 'show-status');
   clearTimeout(statusTimer);
@@ -507,6 +558,7 @@ window.addEventListener('message', event => {
     monitor.classList.remove('loading');
     monitor.classList.add('live', 'show-status');
     nowPlaying.textContent = 'NOW PLAYING · F19 / ESC TO EXIT';
+    if (playTrack) playTrack.start = performance.now();
     document.querySelector('#play-layer').classList.add('visible');
   } else if (message.state === 'error') {
     flashToast(message.message || 'Emulator failed to start');
@@ -579,6 +631,10 @@ window.addEventListener('keydown', event => {
     }
     return;
   }
+  if (picking()) {
+    window.rycadeSavePick.key(event);
+    return;
+  }
   if (demoGame) {
     event.preventDefault();
     if (start) launch();
@@ -594,7 +650,7 @@ window.addEventListener('keydown', event => {
     launch();
     return;
   }
-  if (pressed === 'f') {
+  if (pressed === 'f' || event.key === CABINET_KEYS.pass) {
     event.preventDefault();
     toggleFavorite();
     return;
@@ -634,7 +690,7 @@ window.addEventListener('blur', release);
 
 roster.addEventListener('click', event => {
   const row = event.target.closest('.lr');
-  if (!row || ignoreClick || launched || demoGame) {
+  if (!row || ignoreClick || launched || picking() || demoGame) {
     ignoreClick = false;
     return;
   }
@@ -648,7 +704,7 @@ roster.addEventListener('click', event => {
 });
 roster.addEventListener('wheel', event => {
   event.preventDefault();
-  if (!launched) step(event.deltaY > 0 ? 1 : -1);
+  if (!launched && !picking()) step(event.deltaY > 0 ? 1 : -1);
 }, { passive: false });
 roster.addEventListener('pointerdown', event => {
   swipe = { y: event.clientY };
@@ -657,7 +713,7 @@ window.addEventListener('pointerup', event => {
   if (!swipe) return;
   const delta = event.clientY - swipe.y;
   swipe = null;
-  if (Math.abs(delta) > 24 && !launched) {
+  if (Math.abs(delta) > 24 && !launched && !picking()) {
     moveByGesture(delta);
     ignoreClick = true;
     setTimeout(() => { ignoreClick = false; }, 300);

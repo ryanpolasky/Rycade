@@ -1,6 +1,6 @@
 #!/bin/bash
 # Rycade cab setup for the Mac mini. Safe to re-run.
-# usage: setup.sh [all|doctor|update|display] [--dry-run]
+# usage: setup.sh [all|doctor|update|refresh|display] [--dry-run]
 set -euo pipefail
 
 CAB_USER=rycade
@@ -24,8 +24,8 @@ DRY=0
 for arg in "$@"; do
   case $arg in
     --dry-run) DRY=1 ;;
-    all|doctor|update|display) ACTION=$arg ;;
-    *) echo "usage: setup.sh [all|doctor|update|display] [--dry-run]"; exit 2 ;;
+    all|doctor|update|refresh|display) ACTION=$arg ;;
+    *) echo "usage: setup.sh [all|doctor|update|refresh|display] [--dry-run]"; exit 2 ;;
   esac
 done
 
@@ -99,6 +99,7 @@ preflight() {
   [[ $(id -un) == "$CAB_USER" ]] || note "logged in as $(id -un), expected $CAB_USER"
   sudo -v
   while true; do sudo -n true; sleep 50; kill -0 "$$" 2>/dev/null || exit; done 2>/dev/null &
+  [[ ${1:-} == offline ]] && return
   if command -v rycade-net >/dev/null && [[ $(sudo rycade-net status | head -1) == closed* ]]; then
     note "opening the firewall for setup, closes again at the end"
     srun rycade-net full 60m >/dev/null
@@ -142,10 +143,22 @@ repo() {
     gh auth status >/dev/null 2>&1 || run gh auth login --hostname github.com --git-protocol https --web
     run gh auth setup-git
     run gh repo clone "$REPO" "$APP"
+    git_creds
   else
+    git_creds
     run git -C "$APP" pull --ff-only
   fi
   ok "$APP"
+}
+
+git_creds() {
+  [[ -d $APP/.git ]] || return 0
+  run git -C "$APP" config credential.helper store
+  [[ -s $HOME/.git-credentials ]] && return
+  local token
+  token=$(gh auth token 2>/dev/null) || return 0
+  (( DRY )) && return
+  (umask 077; printf 'https://%s:%s@github.com\n' "${REPO%%/*}" "$token" > "$HOME/.git-credentials")
 }
 
 never_down() {
@@ -293,6 +306,7 @@ display() {
 
 runtime() {
   step "Rycade runtime: local server, kiosk, power slider"
+  local restart=()
   local key=$HOME_DIR/score.key
   if [[ ! -s $key ]]; then
     local sk
@@ -335,10 +349,11 @@ runtime() {
 	file_server
 }
 C
-  mv "$HOME_DIR/Caddyfile.tmp" "$HOME_DIR/Caddyfile"
+  if cmp -s "$HOME_DIR/Caddyfile.tmp" "$HOME_DIR/Caddyfile"; then rm "$HOME_DIR/Caddyfile.tmp"
+  else mv "$HOME_DIR/Caddyfile.tmp" "$HOME_DIR/Caddyfile"; restart+=(com.rycade.server); fi
   agent com.rycade.server "$(command -v caddy)" run --config "$HOME_DIR/Caddyfile" --adapter caddyfile
 
-  cat > "$BIN/rycade-kiosk" <<K
+  cat > "$BIN/rycade-kiosk.tmp" <<K
 #!/bin/bash
 for _ in \$(seq 60); do nc -z 127.0.0.1 $PORT && break; sleep 1; done
 id=\$(displayplacer list 2>/dev/null | awk '/^Persistent screen id:/ {print \$4; exit}')
@@ -353,15 +368,20 @@ exec "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \\
   --disable-pinch --overscroll-history-navigation=0 \\
   "http://127.0.0.1:$PORT/?cab=1"
 K
-  chmod +x "$BIN/rycade-kiosk"
+  if cmp -s "$BIN/rycade-kiosk.tmp" "$BIN/rycade-kiosk"; then rm "$BIN/rycade-kiosk.tmp"
+  else chmod +x "$BIN/rycade-kiosk.tmp"; mv "$BIN/rycade-kiosk.tmp" "$BIN/rycade-kiosk"; fi
   agent com.rycade.kiosk "$BIN/rycade-kiosk"
 
   local src=$APP/mac/rycade-power.swift stamp=$BIN/.rycade-power.sha
   if [[ ! -x $BIN/rycade-power ]] || [[ $(shasum "$src" | cut -d' ' -f1) != $(cat "$stamp" 2>/dev/null) ]]; then
-    if run swiftc -O -o "$BIN/rycade-power" "$src"; then shasum "$src" | cut -d' ' -f1 > "$stamp"
+    if run swiftc -O -o "$BIN/rycade-power" "$src"; then
+      shasum "$src" | cut -d' ' -f1 > "$stamp"
+      restart+=(com.rycade.power)
     else note "rycade-power failed to compile, power slider won't sleep/wake"; fi
   fi
   [[ -x $BIN/rycade-power ]] && agent com.rycade.power "$BIN/rycade-power"
+  local label
+  for label in ${restart[@]+"${restart[@]}"}; do run launchctl kickstart -k "gui/$(id -u)/$label"; done
 }
 
 cores() {
@@ -380,7 +400,7 @@ cores() {
 
 network() {
   step "Network lockdown (rycade-net)"
-  srun install -m 755 "$APP/mac/rycade-net" /usr/local/bin/rycade-net
+  cmp -s "$APP/mac/rycade-net" /usr/local/bin/rycade-net || srun install -m 755 "$APP/mac/rycade-net" /usr/local/bin/rycade-net
   srun ln -sf "$APP/mac/setup.sh" /usr/local/bin/rycade
   daemon com.rycade.net 30 /usr/local/bin/rycade-net enforce
   trap - EXIT
@@ -423,8 +443,23 @@ doctor() {
 update() {
   step "Update frontend from GitHub"
   srun rycade-net open 10m >/dev/null
+  git_creds
   run git -C "$APP" pull --ff-only
   srun rycade-net close >/dev/null
+  ok "pulled"
+  (( DRY )) && { refresh; return; }
+  exec "$APP/mac/setup.sh" refresh
+}
+
+refresh() {
+  step "Reinstall rycade-net, rebuild helpers, reload kiosk"
+  cmp -s "$APP/mac/rycade-net" /usr/local/bin/rycade-net || srun install -m 755 "$APP/mac/rycade-net" /usr/local/bin/rycade-net
+  srun ln -sf "$APP/mac/setup.sh" /usr/local/bin/rycade
+  git_creds
+  daemon com.rycade.net 30 /usr/local/bin/rycade-net enforce
+  srun rycade-net enforce >/dev/null
+  command -v caddy >/dev/null || for b in /usr/local/bin/brew /opt/homebrew/bin/brew; do [[ -x $b ]] && eval "$($b shellenv)"; done
+  runtime
   run launchctl kickstart -k "gui/$(id -u)/com.rycade.kiosk"
   ok "updated and reloaded"
 }
@@ -451,7 +486,8 @@ T
 
 case $ACTION in
   doctor) doctor ;;
-  update) preflight; update ;;
+  update) preflight offline; update ;;
+  refresh) preflight offline; refresh ;;
   display) display ;;
   all)
     preflight

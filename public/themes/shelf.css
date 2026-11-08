@@ -516,15 +516,19 @@ body[data-theme="shelf"] .mq {
   box-shadow: 0 0 0 4px var(--pa), 0 0 0 8px var(--navy), 0 16px 40px rgba(0, 0, 0, .6);
 }
 
-body[data-theme="shelf"] #stage.is-fav .mq::after {
+body[data-theme="shelf"] .mq-fav {
+  display: none;
+}
+
+body[data-theme="shelf"] #stage.is-fav .mq-fav {
+  display: block;
   position: absolute;
   top: 8px;
   right: 8px;
-  padding: 4px 10px 2px;
+  padding: 3px 10px 3px;
   border-radius: 4px;
   background: var(--pb);
   color: var(--pa);
-  content: "★ FAVORITE";
   font-size: 15px;
   font-weight: 800;
   letter-spacing: 2px;

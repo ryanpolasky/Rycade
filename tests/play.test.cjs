@@ -1,6 +1,13 @@
 const assert = require('node:assert/strict');
 const { test } = require('node:test');
-const { SYSTEM_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, orderPads, createInputMapper } = require('../public/play.js');
+const {
+  SYSTEM_BUTTONS,
+  INPUT_LAYOUTS,
+  CORE_OPTIONS,
+  RETRO_REMAPS,
+  orderPads,
+  createInputMapper
+} = require('../public/play.js');
 
 function pad(buttons = [], id = '') {
   return {
@@ -240,3 +247,36 @@ test('twin input layouts and Q*bert core option are exported', () => {
   assert.deepEqual(INPUT_LAYOUTS, { smashtv: 'twin', robotron: 'twin' });
   assert.equal(CORE_OPTIONS.qbert['mame2003-plus_four_way_emulation'], 'enabled');
 });
+
+test('Marralhinha Blitz configures Four Score gamepads in the FCEUmm core remap', () => {
+  assert.deepEqual(RETRO_REMAPS.mblitz, [
+    'input_libretro_device_p3 = "513"',
+    'input_libretro_device_p4 = "513"'
+  ]);
+  assert.deepEqual(Object.keys(RETRO_REMAPS), ['mblitz']);
+});
+
+test("Dragon's Lair DirkSimple engine runs attract mode, starts game, and processes rooms", () => {
+  const { createDirkSimpleEngine, DLAIR_SCENES, DLAIR_ROWS } = require('../public/dlair.js');
+  assert.equal(DLAIR_ROWS.length, 13);
+  assert.ok(DLAIR_SCENES.the_dragons_lair);
+
+  const clips = [];
+  const sounds = [];
+  const engine = createDirkSimpleEngine({
+    startClip: ms => clips.push(ms),
+    showSingleFrame: ms => clips.push(ms),
+    playSound: name => sounds.push(name)
+  });
+
+  engine.tick(0, 0, { pressed: {}, held: {} });
+  assert.equal(engine.getState().inAttractMode, true);
+  assert.ok(clips.length > 0);
+
+  engine.tick(100, 100, { pressed: { coinslot: true, start: true }, held: { start: true } });
+  assert.equal(engine.getState().inAttractMode, false);
+  assert.equal(engine.getState().sceneName, 'introduction');
+  assert.equal(engine.getState().lives, 5);
+  assert.ok(sounds.includes('coinslot'));
+});
+

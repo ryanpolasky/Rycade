@@ -11,6 +11,14 @@
   let swallowPointer = false;
   const swallowedKeys = new Set();
 
+  function fill(root, game) {
+    root.querySelector('.attract-logo').src = game.logo || '';
+    root.dataset.logo = game.logo ? 'true' : 'false';
+    root.style.setProperty('--attract-tint', game.color || '#0c0b10');
+    root.querySelector('.attract-title').textContent = game.title;
+    root.querySelector('.attract-players').textContent = game.players === 1 ? '1 PLAYER' : `1–${game.players} PLAYERS`;
+  }
+
   function reset() {
     lastInput = performance.now();
   }
@@ -59,10 +67,8 @@
     }
     current = queue.pop();
     if (!current) return stop();
-    overlay.querySelector('.attract-cover').src = current.box;
+    fill(overlay, current);
     overlay.querySelector('.attract-still').src = current.snap;
-    overlay.querySelector('.attract-title').textContent = current.title;
-    overlay.querySelector('.attract-players').textContent = current.players === 1 ? '1 PLAYER' : `1–${current.players} PLAYERS`;
     const skip = () => {
       if (!active || session !== clipSession) return;
       if (++failures >= GAMES.length) stop();
@@ -126,7 +132,7 @@
           activity(Boolean(pad.buttons[9]?.pressed));
         }
       }
-      const blocked = settingsOpen || searchOpen || demoGame || launched || bootOpen || document.hidden || window.rycadeCab?.asleep;
+      const blocked = settingsOpen || searchOpen || demoGame || launched || window.rycadeSavePick?.active() || bootOpen || document.hidden || window.rycadeCab?.asleep;
       if (blocked) return reset();
       const minutes = settings.attractMinutes;
       if (!active && minutes > 0 && performance.now() - lastInput >= minutes * 60000) {
@@ -139,5 +145,5 @@
     }, 100);
   }
 
-  window.rycadeAttract = { init, reset, activity };
+  window.rycadeAttract = { init, reset, activity, fill };
 })();

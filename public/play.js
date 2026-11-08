@@ -35,6 +35,10 @@
     return null;
   }
 
+  const RETRO_REMAPS = {
+    mblitz: ['input_libretro_device_p3 = "513"', 'input_libretro_device_p4 = "513"']
+  };
+
   function buttonDown(button) {
     return typeof button === 'number' ? button > 0.5 : !!button && (button.pressed || button.value > 0.5);
   }
@@ -120,7 +124,51 @@
     return { poll, release };
   }
 
-  const api = { SYSTEM_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, MAME_OPTIONS, findHiscore, orderPads, createInputMapper };
+  const Profiles = typeof module !== 'undefined' && module.exports ? require('./profiles.js') : root.rycadeProfiles;
+
+  function exists(FS, path) {
+    return !!path && FS.analyzePath(path).exists;
+  }
+
+  function makeDirs(FS, dir) {
+    let path = '';
+    for (const part of dir.split('/').filter(Boolean)) {
+      path += `/${part}`;
+      if (!exists(FS, path)) FS.mkdir(path);
+    }
+  }
+
+  function listFiles(FS, dir) {
+    if (!exists(FS, dir)) return [];
+    return FS.readdir(dir).filter(name => name !== '.' && name !== '..').flatMap(name => {
+      const path = `${dir}/${name}`;
+      return FS.isDir(FS.stat(path).mode) ? listFiles(FS, path) : [path];
+    });
+  }
+
+  function copyFile(FS, from, to) {
+    makeDirs(FS, to.slice(0, to.lastIndexOf('/')));
+    FS.writeFile(to, FS.readFile(from));
+  }
+
+  function createProfileSaves(FS, { state, profileId, gameId, sharedPath }) {
+    const own = Profiles.savePath(profileId, gameId);
+    return {
+      restore() {
+        for (const file of Profiles.staleSaves(state, listFiles(FS, Profiles.SAVE_ROOT))) FS.unlink(file);
+        if (!sharedPath) return;
+        if (exists(FS, own)) copyFile(FS, own, sharedPath);
+        else if (exists(FS, sharedPath)) FS.unlink(sharedPath);
+      },
+      keep(path) {
+        if (!exists(FS, path)) return false;
+        copyFile(FS, path, own);
+        return true;
+      }
+    };
+  }
+
+  const api = { SYSTEM_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, MAME_OPTIONS, RETRO_REMAPS, findHiscore, orderPads, createInputMapper, createProfileSaves };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof window === 'undefined') return;
 
@@ -129,12 +177,14 @@
   const core = params.get('core') || 'snes9x';
   const system = params.get('sys') || 'SNES';
   const game = params.get('game') || '';
+  const profileId = params.get('profile') || '';
   const pads = navigator.getGamepads.bind(navigator);
   navigator.getGamepads = () => [];
   let started = false;
   let manager = null;
   let mapper = null;
   let timeout;
+  let saves = null;
   function post(state, message, extra) {
     parent.postMessage({ type: 'rycade-play', state, ...(message ? { message } : {}), ...extra }, location.origin);
   }
@@ -165,6 +215,50 @@
   window.addEventListener('error', event => fail(event.message), true);
   window.addEventListener('unhandledrejection', event => fail(String(event.reason || 'Emulator failed')));
   timeout = window.setTimeout(() => fail('Emulator timed out'), 60000);
+  if (game === 'dlair' || core === 'dirksimple' || /\.mp4$/i.test(file)) {
+    const videoPath = /\.mp4$/i.test(file) ? file : (file ? file.replace(/\.[^./]+$/, '') + '.mp4' : 'arcade/dlair.mp4');
+    const videoUrl = '/roms/' + videoPath.split('/').map(encodeURIComponent).join('/');
+    let player = null;
+    let onPadInput = null;
+    mapper = createInputMapper((p, id, value) => {
+      if (onPadInput) onPadInput(p, id, value);
+    }, {
+      players: Number(params.get('players')),
+      seat: Number(params.get('seat')),
+      layout: INPUT_LAYOUTS[game]
+    });
+    const dlairScript = document.createElement('script');
+    dlairScript.src = '/dlair.js';
+    dlairScript.onload = () => {
+      if (!window.rycadeDlair || typeof window.rycadeDlair.mountDlairPlayer !== 'function') {
+        fail("Dragon's Lair player unavailable");
+        return;
+      }
+      player = window.rycadeDlair.mountDlairPlayer({
+        container: document.querySelector('#game'),
+        videoUrl,
+        pollPads(now, handler) {
+          onPadInput = handler;
+          mapper.poll(pads(), system, now);
+        },
+        onStarted() {
+          started = true;
+          clearTimeout(timeout);
+          post('started');
+        },
+        onError(msg) {
+          fail(msg);
+        }
+      });
+    };
+    dlairScript.onerror = () => fail("Dragon's Lair player unavailable");
+    document.head.appendChild(dlairScript);
+    window.addEventListener('pagehide', () => {
+      if (mapper) mapper.release();
+      if (player) player.stop();
+    });
+    return;
+  }
   window.EJS_player = '#game';
   window.EJS_gameUrl = '/roms/' + file.split('/').map(encodeURIComponent).join('/');
   window.EJS_gameName = file.split('/').pop();
@@ -173,8 +267,65 @@
   window.EJS_startOnLoaded = true;
   window.EJS_fullscreenOnLoaded = false;
   window.EJS_defaultControls = { 0: {}, 1: {}, 2: {}, 3: {} };
-  if (core === 'mame2003_plus') {
-    window.EJS_defaultOptions = { ...MAME_OPTIONS, ...CORE_OPTIONS[game] };
+  window.EJS_defaultOptions = { 'save-save-interval': '30', ...(core === 'mame2003_plus' && { ...MAME_OPTIONS, ...CORE_OPTIONS[game] }) };
+  if (profileId && Profiles) {
+    window.EJS_ready = function () {
+      const emulator = window.EJS_emulator;
+      emulator.on('saveDatabaseLoaded', FS => {
+        const paths = Profiles.read(localStorage, Profiles.SAVE_PATHS_KEY, {});
+        saves = createProfileSaves(FS, { state: Profiles.load(), profileId, gameId: game, sharedPath: paths[game] });
+        try {
+          saves.restore();
+        } catch (error) {
+          console.warn('Rycade save restore failed', error);
+        }
+      });
+      emulator.on('saveSaveFiles', () => {
+        try {
+          saves && manager && saves.keep(manager.getSaveFilePath());
+        } catch (error) {
+          console.warn('Rycade save keep failed', error);
+        }
+      });
+    };
+  }
+  function flushSaves() {
+    return new Promise(resolve => {
+      if (!manager) return resolve();
+      setTimeout(resolve, 1500);
+      try {
+        manager.saveSaveFiles();
+        manager.FS.syncfs(false, () => resolve());
+      } catch {
+        resolve();
+      }
+    });
+  }
+  window.addEventListener('message', event => {
+    if (event.origin !== location.origin || event.data?.type !== 'rycade-save') return;
+    flushSaves().then(() => post('saved'));
+  });
+  const remapLines = RETRO_REMAPS[game];
+  if (remapLines) {
+    let GameManager;
+    Object.defineProperty(window, 'EJS_GameManager', {
+      configurable: true,
+      get() {
+        return GameManager;
+      },
+      set(cls) {
+        const writeConfigFile = cls.prototype.writeConfigFile;
+        cls.prototype.writeConfigFile = function (...args) {
+          const result = writeConfigFile.apply(this, args);
+          this.writeFile(
+            '/home/web_user/retroarch/userdata/config/remaps/FCEUmm/FCEUmm.rmp',
+            remapLines.join('\n') + '\n'
+          );
+          return result;
+        };
+        GameManager = cls;
+      }
+    });
   }
   window.EJS_AdUrl = '';
   window.EJS_onGameStart = function () {
@@ -182,6 +333,13 @@
     clearTimeout(timeout);
     post('started');
     manager = window.EJS_emulator && window.EJS_emulator.gameManager;
+    if (profileId && manager) {
+      try {
+        const paths = Profiles.read(localStorage, Profiles.SAVE_PATHS_KEY, {});
+        paths[game] = manager.getSaveFilePath();
+        localStorage.setItem(Profiles.SAVE_PATHS_KEY, JSON.stringify(paths));
+      } catch {}
+    }
     if (!manager || typeof manager.simulateInput !== 'function') return;
     mapper = createInputMapper((player, id, value) => manager.simulateInput(player, id, value), {
       players: Number(params.get('players')),
