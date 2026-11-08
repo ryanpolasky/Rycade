@@ -1,5 +1,5 @@
 #!/bin/bash
-# rycade-net: outbound allowlist for the cab. closed = tunnel only, open = + GitHub, full = everything.
+# rycade-net: outbound allowlist for the cab. LAN (incl. AirPlay/mDNS) always allowed; closed = + tunnel, open = + GitHub, full = everything.
 set -euo pipefail
 
 STATE=/var/db/rycade-net
@@ -51,7 +51,9 @@ pass out quick inet proto icmp all keep state
 pass out quick proto { tcp, udp } to any port 53 keep state
 pass out quick proto udp to any port 123 keep state
 pass out quick proto { tcp, udp } to <cf_edge> port 7844 keep state
-pass in quick proto tcp from <lan> to any port { 22, 5900 } keep state
+pass quick proto udp from any to { 224.0.0.251, ff02::fb } port 5353
+pass quick from <lan> to any keep state
+pass out quick to <lan> keep state
 pass out quick proto tcp to <github> port { 22, 443 } keep state
 anchor "rycade-full"
 EOF
