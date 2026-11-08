@@ -1,38 +1,84 @@
-# RYCADE
+<p align="center">
+  <img src="docs/media/hero.gif" width="720" alt="The Rycade title screen from the Insert Coin boot scene">
+</p>
 
-A static, playable game-library frontend for a four-player arcade cabinet. The library is a visual prototype; it does not run emulators.
+<p align="center">
+  A custom game frontend for a real four-player arcade cabinet.<br>
+  170 games. Four sticks. One Arcade1Up NBA Jam cab.
+</p>
 
-## Controls
+<p align="center">
+  <a href="https://arcade.ryanpolasky.com">arcade.ryanpolasky.com</a> · <a href="docs/TECHNICAL.md">how it works</a>
+</p>
 
-- Left / Right: browse the flyers; hold to repeat and skim by letter. Pause on a game (or press Down) to open its details.
-- Up: move into the top bar. Left / Right picks search, a category, or settings; SHOOT selects it; Down goes back to the games.
-- Categories: ALL, ★ FAVORITES, 2P+ (2 or more players), 4P (4 or more players), then each system.
-- Z / C: switch categories directly.
-- In settings, Left from the section list closes it. In search, DONE closes it.
-- Enter (START): launch the selected game, including while watching its demo. Escape exits the launched prototype.
-- In cab mode, the seat that starts a 1–2-player game becomes P1; the next different seat to press START joins as P2. Games with 3+ players or unknown player counts keep fixed seats.
-- In cab mode, Smash TV pairs seats 1/2 and 3/4 as each player's twin sticks (Robotron's alternating turns both use seats 1/2), with START on either stick of a pair; Q*bert's diagonal four-way rotation is automatic.
-- 1 / 2 / 3: SHOOT / PASS / TURBO. SHOOT (1) opens the selected game's video demo; SHOOT again or Escape returns to the menu.
-- PASS (2) or F: favorite or unfavorite the selected game. Favorites live in the ★ FAVORITES tab and persist in the browser.
-- Click or tap a flyer to select it, tap it again or the game screen to launch, and tap while launched to exit.
-- `/` or `S`: search the library; `M`: open settings. Settings persist in the browser.
-- Use the Phone Remote section in settings to scan the pairing QR code and send a game selection from your phone.
-- Attract mode starts after 2 minutes idle and shuffles full-screen game demos without repeats. Settings > Display offers Off / 1 / 2 / 5 minutes. Any input returns to browsing; START selects the game shown without launching it. Attract clips are muted; manual demos keep their existing audio controls. Settings, search, demos, launched games and boot previews suspend the idle countdown. Gamepad buttons/sticks wake it (standard gamepad START is button 9).
-- Reduced motion uses still gameplay snaps and a steady START prompt during attract mode, keeping the same clip-length rotation.
-- Settings > Boot > Play boot now previews the selected scene. Boot scenes are rendered live in `public/boot.js`, clocked to `public/boot/rycade.wav`, with the big reveal on the 4.44s synth hit. Each intro plays once, then holds its title screen with ambient motion until a key or click dismisses it; that input is consumed. Reduced motion shows the finished title screen. Boot audio follows master volume and mute.
+---
 
-## Demo videos
+Rycade lives inside an Arcade1Up NBA Jam cabinet with the stock Android board pulled out. A Mac mini drives the screen, and a Raspberry Pi Pico talks to the cab's original control deck, which turned out to speak a serial protocol rather than plain switches. Pick a game with the stick, press START, and the emulator runs inside the same window: no app switching and no desktop flashing between games. LIVE drops you straight back to the menu.
 
-Real gameplay/attract video snaps are bundled for every library entry in `public/videos/<game-id>.mp4`, for example `public/videos/jamte.mp4`. Sources and encoding details are recorded in `public/videos/sources.json`. Clips are approximately 25 seconds, H.264 + AAC, at most 480 pixels wide, with faststart and a short fade through black at the loop boundary. A game's optional `video` field can override that path for another video format or location.
+## The library
 
-SHOOT opens a looping, full-screen demo. SHOOT or Escape closes it; START stops the demo and launches the selected game. Missing or unplayable clips return to the menu with an unavailable message. Demo audio follows the master volume and mute setting.
+<p align="center">
+  <img src="docs/media/library.jpg" alt="Box art and flyers for all 170 games in the library">
+</p>
 
-## Audio credits
+**95 arcade, 27 Genesis, 18 SNES and 30 NES games**, chosen to fit four players who each have an 8-way stick, three buttons and START. There are plenty of couch-wreckers (Turtles in Time, The Simpsons, X-Men, Gauntlet, NBA Jam T.E., Bomberman, Micro Machines) next to the classics that come down to who has the high score (Donkey Kong 3, Galaga, Dig Dug, Qix, BurgerTime).
 
-Navigation and feedback sounds are synthesized in-browser with the Web Audio API in the Cabinet, Chip, and Neo sound sets. Boot previews use the supplied `rycade.wav` and `rycadeping.wav` recordings. Both files share one timeline: `rycadeping.wav` already has 4.44 seconds of leading silence, so it plays in sync with `rycade.wav` at 32% level, skipping a 25ms click at 4.44s. It keeps its recorded fade-in and fades out over its final eight seconds, ending around 48.84 seconds into the sequence.
+Every game has its real flyer or box art, its marquee logo, and a gameplay clip pulled from archive.org video-snap sets. Super Famicom covers and Japanese flyers stay in where they're the best art available.
 
-## Deploy
+## Three looks
 
-```sh
-npx wrangler deploy
-```
+| Cover Flow | Shelf | Studio |
+| :---: | :---: | :---: |
+| <img src="docs/media/theme-cover-flow.jpg" alt="Cover Flow theme"> | <img src="docs/media/theme-shelf.jpg" alt="Shelf theme"> | <img src="docs/media/theme-studio.jpg" alt="Studio theme"> |
+| A lit flyer, a marquee and a CRT, tinted by each game's own artwork | A row of spines with the selected game turned face-out | A dark gallery with unframed art |
+
+Cover Flow pulls its colors from the selected game's artwork. Shelf and Studio come in six palettes (Classic, Neon, Phosphor, Amber, Ice, Grape). A CRT filter can go on top of any of them.
+
+## It boots like a machine
+
+Flip the power slider and the cab plays a boot scene instead of showing a desktop. Each scene is drawn live on a canvas and timed to the same synth track, with the big reveal landing on the hit at 4.44 seconds.
+
+| Insert Coin | Lights On | CRT Power-on |
+| :---: | :---: | :---: |
+| <img src="docs/media/boot-coin.gif" alt="Insert Coin boot scene"> | <img src="docs/media/boot-lights.gif" alt="Lights On boot scene"> | <img src="docs/media/boot-crt.gif" alt="CRT Power-on boot scene"> |
+
+## Attract mode
+
+<img src="docs/media/attract.jpg" align="right" width="440" alt="Attract mode playing a Saturday Night Slam Masters demo">
+
+Leave the cab alone for a couple of minutes and it starts cycling full-screen gameplay demos without repeats, the way cabinets do in an arcade. The clips play muted. Touch any control to go back to browsing, or press START to jump to the game that's on screen.
+
+<br clear="right">
+
+## The little things
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/media/search.jpg" alt="On-screen search keyboard"></td>
+    <td width="50%"><img src="docs/media/settings.jpg" alt="Settings overlay, Themes tab"></td>
+  </tr>
+  <tr>
+    <td>Search with an on-screen keyboard you drive with the stick. Nobody has to find a real keyboard.</td>
+    <td>Every setting is reachable with the stick and three buttons: themes, boot scene, sound, attract timing, and skim speed.</td>
+  </tr>
+</table>
+
+<img src="docs/media/remote.jpg" align="right" width="260" alt="Phone remote">
+
+- **Phone remote.** Scan the QR code in settings and you can pick a game from your phone.
+- **Hold to skim.** Hold the stick and the list speeds up and jumps by letter.
+- **Player profiles.** Pick your initials before games with battery saves (Super Metroid, Zelda, Yoshi's Island), and every player keeps their own save file.
+- **High scores.** Arcade high-score tables are read from each game's own save data and posted to [arcade.ryanpolasky.com/scores](https://arcade.ryanpolasky.com/scores). Only the game, initials and score leave the cab.
+- **Flexible seats.** In a 1–2 player game, the seat that pressed START becomes Player 1, so you can play solo from either middle stick.
+- **Synthesized sounds.** Every blip and confirm is generated with the Web Audio API, in three sound sets (Cabinet, Chip, Neo).
+- **Offline by default.** The cab runs a local copy of the frontend behind a firewall that blocks the internet. The only exceptions are score uploads and its remote-access tunnel.
+
+<br clear="right">
+
+## Under the hood
+
+The frontend is plain HTML, CSS and JavaScript with no build step. It runs on a Cloudflare Worker, and on the cab it runs locally in a kiosk Chrome. Games run in-page through [EmulatorJS](https://emulatorjs.org) (MAME 2003-Plus, Genesis Plus GX, Snes9x and FCEUmm). The Pico firmware converts the cab's control deck into USB gamepads, and the NBA Jam deck protocol is [written up here](docs/nba-jam-joystick-board.md).
+
+All the technical detail (controls, architecture, cab setup, firmware, deploys) is in **[docs/TECHNICAL.md](docs/TECHNICAL.md)**.
+
+No ROMs are included. Bring your own legally obtained dumps; [SOURCING.md](SOURCING.md) lists the exact sets Rycade expects.
