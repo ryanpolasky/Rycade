@@ -2,6 +2,8 @@
 
 The default `demo` build exposes four separate USB HID gamepads. The `encoder` build reads the cab's two independent encoder links with PIO UARTs and maps them to those same four gamepads.
 
+The NBA Jam joystick board protocol is written up in [docs/nba-jam-joystick-board.md](../docs/nba-jam-joystick-board.md).
+
 ## Build
 
 Install the ARM GCC toolchain and Pico SDK 2.1.1, then set `PICO_SDK_PATH`:
