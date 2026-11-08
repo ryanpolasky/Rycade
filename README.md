@@ -4,7 +4,6 @@
 
 <p align="center">
   A custom game frontend for a real four-player arcade cabinet.<br>
-  170 games. Four sticks. One Arcade1Up NBA Jam cab.
 </p>
 
 <p align="center">
@@ -21,7 +20,7 @@ Rycade lives inside an Arcade1Up NBA Jam cabinet with the stock Android board pu
   <img src="docs/media/library.jpg" alt="Box art and flyers for all 170 games in the library">
 </p>
 
-**95 arcade, 27 Genesis, 18 SNES and 30 NES games**, chosen to fit four players who each have an 8-way stick, three buttons and START. There are plenty of couch-wreckers (Turtles in Time, The Simpsons, X-Men, Gauntlet, NBA Jam T.E., Bomberman, Micro Machines) next to the classics that come down to who has the high score (Donkey Kong 3, Galaga, Dig Dug, Qix, BurgerTime).
+**Way too many games across arcade, Genesis, SNES, and NES**, chosen to fit four players who each have an 8-way stick, three buttons and START. There are plenty of couch-wreckers (Turtles in Time, The Simpsons, X-Men, Gauntlet, NBA Jam T.E., Bomberman, Micro Machines) next to the classics that come down to who has the high score (Donkey Kong 3, Galaga, Dig Dug, Qix, BurgerTime).
 
 Every game has its real flyer or box art, its marquee logo, and a gameplay clip pulled from archive.org video-snap sets. Super Famicom covers and Japanese flyers stay in where they're the best art available.
 
@@ -50,7 +49,7 @@ Leave the cab alone for a couple of minutes and it starts cycling full-screen ga
 
 <br clear="right">
 
-## The little things
+## Other niceties
 
 <table>
   <tr>
