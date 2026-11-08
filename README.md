@@ -1,8 +1,6 @@
 <p align="center">
-  <img src="docs/media/hero.gif" width="720" alt="Browsing the Rycade library in the Cover Flow theme">
+  <img src="docs/media/hero.gif" width="720" alt="The Rycade title screen from the Insert Coin boot scene">
 </p>
-
-<h1 align="center">RYCADE</h1>
 
 <p align="center">
   A custom game frontend for a real four-player arcade cabinet.<br>
