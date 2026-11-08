@@ -1,13 +1,54 @@
 const assert = require('node:assert/strict');
 const { test } = require('node:test');
-const { SYSTEM_BUTTONS, createInputMapper } = require('../public/play.js');
+const { SYSTEM_BUTTONS, orderPads, createInputMapper } = require('../public/play.js');
 
-function pad(buttons = []) {
+function pad(buttons = [], id = '') {
   return {
+    id,
     axes: [0, 0],
     buttons: Array.from({ length: 7 }, (_, index) => ({ pressed: buttons.includes(index) }))
   };
 }
+
+test('Rycade pad IDs order reversed player indexes and leave extra pads unused', () => {
+  const p4 = pad([], 'Rycade P4 (Vendor: cafe)');
+  const p3 = pad([], 'Rycade P3 (Vendor: cafe)');
+  const p2 = pad([], 'Rycade P2 (Vendor: cafe)');
+  const p1 = pad([], 'Rycade P1 (Vendor: cafe)');
+  const stadia = pad([], 'Stadia Controller rev. A');
+  assert.deepEqual(orderPads([p4, p3, p2, p1, stadia]), [p1, p2, p3, p4]);
+});
+
+test('non-Rycade pads fill player slots left empty by a missing Rycade pad', () => {
+  const p4 = pad([], 'Rycade P4');
+  const p3 = pad([], 'Rycade P3');
+  const p1 = pad([], 'Rycade P1');
+  const stadia = pad([], 'Stadia Controller rev. A');
+  assert.deepEqual(orderPads([p4, p3, p1, stadia]), [p1, stadia, p3, p4]);
+});
+
+test('all non-Rycade pads fill slots in index order', () => {
+  const stadia = pad([], 'Stadia Controller rev. A');
+  const other = pad([], 'Other Controller');
+  assert.deepEqual(orderPads([stadia, null, other]), [stadia, other, null, null]);
+});
+
+test('null and disconnected entries are skipped', () => {
+  const p1 = pad([], 'Rycade P1');
+  const disconnected = { id: 'Rycade P2', connected: false };
+  const p4 = pad([], 'Rycade P4');
+  assert.deepEqual(orderPads([null, disconnected, p1, null, p4]), [p1, null, null, p4]);
+});
+
+test('input mapping re-resolves player order after controller indexes change', () => {
+  const inputs = [];
+  const mapper = createInputMapper((...input) => inputs.push(input));
+  const p1 = pad([0], 'Rycade P1');
+  const p2 = pad([], 'Rycade P2');
+  mapper.poll([p1, p2], 'GENESIS', 0);
+  mapper.poll([p2, p1], 'GENESIS', 16);
+  assert.deepEqual(inputs, [[0, 1, 1]]);
+});
 
 test('physical face buttons map to libretro ids for each system', () => {
   assert.deepEqual(SYSTEM_BUTTONS, {
