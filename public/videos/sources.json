@@ -1521,6 +1521,15 @@
       "start_seconds": 0.5,
       "duration_seconds": 25,
       "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary; 280k video target / 64k audio"
+    },
+    {
+      "id": "mblitz",
+      "url": "https://github.com/ryanpolasky/MarralhinhaBlitz/blob/main/blitz.nes",
+      "collection": "https://github.com/ryanpolasky/MarralhinhaBlitz",
+      "source_file": "blitz.nes (captured headless in jsnes 1.2.1, P1 tapping A, 3 CPUs, end of a full game)",
+      "start_seconds": 559.33,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; 320x240; 250ms fade through black at loop boundary"
     }
   ]
 }
