@@ -169,10 +169,10 @@ export class Scores {
     if (url.pathname === '/list') {
       const game = url.searchParams.get('game');
       const rows = game
-        ? this.sql.exec('SELECT game, initials, score, at FROM scores WHERE game = ? ORDER BY score DESC, at ASC LIMIT 10', game).toArray()
+        ? this.sql.exec('SELECT game, initials, score, at FROM scores WHERE game = ? ORDER BY score DESC, at ASC, rowid ASC LIMIT 10', game).toArray()
         : this.sql.exec(`SELECT game, initials, score, at FROM (
-            SELECT *, ROW_NUMBER() OVER (PARTITION BY game ORDER BY score DESC, at ASC) AS rank FROM scores
-          ) WHERE rank <= 10 ORDER BY game, score DESC, at ASC`).toArray();
+            SELECT *, ROW_NUMBER() OVER (PARTITION BY game ORDER BY score DESC, at ASC, rowid ASC) AS rank FROM scores
+          ) WHERE rank <= 10 ORDER BY game, score DESC, at ASC, rowid ASC`).toArray();
       const games = {};
       for (const row of rows) (games[row.game] ||= []).push({ initials: row.initials, score: row.score, at: row.at });
       return json({ ok: true, games });
