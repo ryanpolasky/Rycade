@@ -4,13 +4,14 @@ This repository contains a static frontend and media, **not ROMs**, emulator cor
 
 ## Before sourcing
 
-- Cabinet: four stations, digital eight-way stick, three face buttons and START each. `ctl` describes the intended left-to-right actions, not an implemented emulator remap. Arcade caps read TURBO / SHOOT / PASS; Genesis A / B / C; SNES Y / B / A; NES B / A / SELECT. Where noted, bind a face button to a **virtual** Select/L/R input: no physical shoulder/Select button is assumed. START remains available. Arcade coin input must be provided by the host's coin/start policy; this frontend does not add a coin input or emulator launcher.
+- Cabinet: four stations, digital eight-way stick, three face buttons and START each. `ctl` describes the intended left-to-right actions, not an implemented emulator remap. Arcade caps read TURBO / SHOOT / PASS; Genesis A / B / C; SNES Y / B / A; NES B / A / SELECT; GBA A / L / R. Where noted, bind a face button to a **virtual** Select/L/R input: no physical shoulder/Select button is assumed. START remains available. Arcade coin input must be provided by the host's coin/start policy; this frontend does not add a coin input or emulator launcher.
 - “Players” is the catalog maximum, not a promise of simultaneous play. Four-player filters include alternating games and originally five/six-player titles capped by the cabinet. Notes identify these cases.
 - MAME names below follow current upstream driver definitions. Use the **exact release's matching DAT/listxml**, not an arbitrary same-named ZIP. Non-merged sets simplify clone dependencies; split clones need their parent. A current MAME libretro core is the default recommendation. FBNeo supports many 2D games, but must use its own matching DAT (typically labeled 1.0.0.03); it is not interchangeable with a current MAME set. For MAME 2003-Plus use its own DAT, not the current names below. BIOS/device ROMs and CHDs must also match the selected core version. Check that core's support for the chosen title before sourcing; no blanket FBNeo compatibility is claimed.
 - Console filenames are exact No-Intro-style names from the libretro DAT mirrors (snapshots dated 2026-10-07); revisions and DAT updates can change names/checksums. Verify checksums against your DAT, not filename alone. NES uses the No-Intro headered NES DAT. The filenames are identifiers/checklist items, not files bundled here.
 - Genesis: **Genesis Plus GX**, 3-button pads. Set the indicated Team Player / 4-Way Play device before starting a multitap title; reset after changing devices. Micro Machines 2 uses automatic J-Cart cartridge hardware detection instead. Ordinary 1–2P games need no adapter.
 - SNES: **Snes9x**; configure a Multitap on emulated port 2 for the named 4P/5P battle modes, four RetroPads connected. Ordinary 1–2P games use two normal pads. Bind only the three actions indicated; notes explicitly identify optional unavailable actions.
 - NES: **FCEUmm**, enable the Four Score core option for the five listed four-player games (or use an equivalent Four Score/Satellite mode in Nestopia UE). Use ordinary controllers for other games. B/A plus a third face button assigned virtual Select cover the noted cases.
+- GBA: **mGBA** (built-in BIOS, nothing to source). The three face buttons send A / L / R and START sends B, since the GBA's own START/SELECT go unused by the homebrew listed.
 
 ## ARCADE (MAME)
 
@@ -203,6 +204,12 @@ All rows use digital controls; 0–3 independent action buttons except retained-
 | Dr. Mario | 2 | `Dr. Mario (Japan, USA) (En).nes` | B: Rotate left; A: Rotate right; SEL: unused. Digital D-pad and the listed face actions; no multitap needed. |
 | Bubble Bobble | 2 | `Bubble Bobble (USA).nes` | B: Bubble; A: Jump; SEL: unused. Digital D-pad and the listed face actions; no multitap needed. |
 | Marralhinha Blitz | 4 | `Marralhinha Blitz.nes` | B: Cycle move; A: Roll / confirm; SEL: unused. Homebrew from ryanpolasky/MarralhinhaBlitz: download `blitz.nes` and rename it. Four players need the NES Four Score, which cab mode turns on for this game. |
+
+## GBA
+
+| Title | Players | Exact No-Intro filename | Controls / multiplayer notes |
+| --- | ---: | --- | --- |
+| Balatro | 1 | `Balatro.gba` | A: Pick card / confirm (hold + stick moves cards and jokers); L: Play hand / Sell joker; R: Discard. START sends B: deselect all, hold in the shop for joker descriptions. Free fan demake by GBALATRO: download `balatro-gba-v<version>.gba` from https://github.com/GBALATRO/balatro-gba/releases and save it as `Balatro.gba`. |
 
 ## New additions not retained
 

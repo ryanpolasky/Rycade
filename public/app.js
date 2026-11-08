@@ -1,4 +1,4 @@
-const SYSTEMS = ['ALL', 'FAVORITES', '2P+', '4P', 'ARCADE', 'GENESIS', 'SNES', 'NES'];
+const SYSTEMS = ['ALL', 'FAVORITES', '2P+', '4P', 'ARCADE', 'GENESIS', 'SNES', 'NES', 'GBA'];
 const FAVORITES_KEY = 'rycade.favorites';
 const LAST_PLAYED_KEY = 'rycade.lastPlayed';
 const CONTROL_COLORS = ['#ffd21f', '#ff2a2a', '#2a7bff'];

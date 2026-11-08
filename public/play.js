@@ -6,8 +6,10 @@
     ARCADE: [0, 8, 1],
     GENESIS: [1, 0, 8],
     SNES: [1, 0, 8],
-    NES: [0, 8, null]
+    NES: [0, 8, null],
+    GBA: [8, 10, 11]
   };
+  const START_BUTTONS = { GBA: 0 };
   const PHYSICAL_BUTTONS = [0, 3, 1];
   const DIRECTION_IDS = { up: 4, down: 5, left: 6, right: 7 };
   const INPUT_LAYOUTS = { smashtv: 'twin', robotron: 'twin' };
@@ -125,7 +127,7 @@
           startState.held = start;
           if (startState.at !== null && now < startState.at + 120) wanted.set(2, 1);
           if (startState.at !== null && now >= startState.at + 250 && now < startState.at + 370) wanted.set(3, 1);
-        } else if (start) wanted.set(3, 1);
+        } else if (start) wanted.set(START_BUTTONS[system] ?? 3, 1);
         const old = previous[player];
         for (const id of new Set([...old.keys(), ...wanted.keys()])) {
           const value = wanted.get(id) || 0;
@@ -186,7 +188,7 @@
     };
   }
 
-  const api = { SYSTEM_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, BOOT_FRAMES, bootSkipFrames, clearSavedMute, MAME_OPTIONS, RETRO_REMAPS, findHiscore, orderPads, createInputMapper, createProfileSaves };
+  const api = { SYSTEM_BUTTONS, START_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, BOOT_FRAMES, bootSkipFrames, clearSavedMute, MAME_OPTIONS, RETRO_REMAPS, findHiscore, orderPads, createInputMapper, createProfileSaves };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof window === 'undefined') return;
 

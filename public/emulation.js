@@ -1190,10 +1190,17 @@
     "expected": "Marralhinha Blitz.nes",
     "core": "fceumm",
     "parent": null
+  },
+  "balatro": {
+    "sys": "GBA",
+    "dir": "gba",
+    "expected": "Balatro.gba",
+    "core": "mgba",
+    "parent": null
   }
 };
-  const DEFAULT_CORES = {"ARCADE":"mame2003_plus","GENESIS":"genesis_plus_gx","SNES":"snes9x","NES":"fceumm"};
-  const SYS_DIRS = {"ARCADE":"arcade","GENESIS":"genesis","SNES":"snes","NES":"nes"};
+  const DEFAULT_CORES = {"ARCADE":"mame2003_plus","GENESIS":"genesis_plus_gx","SNES":"snes9x","NES":"fceumm","GBA":"mgba"};
+  const SYS_DIRS = {"ARCADE":"arcade","GENESIS":"genesis","SNES":"snes","NES":"nes","GBA":"gba"};
 
   function normalizeRomName(value) {
     return String(value || '')

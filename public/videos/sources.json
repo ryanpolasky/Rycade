@@ -1530,6 +1530,15 @@
       "start_seconds": 559.33,
       "duration_seconds": 25,
       "encoding": "H.264 yuv420p / AAC stereo; 30fps; 640x480 (nearest-neighbor 5x4 then halved, stays crisp under attract pixelated scaling); 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "balatro",
+      "url": "https://github.com/GBALATRO/balatro-gba/releases/download/v0.2.3/balatro-gba-v0.2.3.gba",
+      "collection": "https://github.com/GBALATRO/balatro-gba",
+      "source_file": "balatro-gba-v0.2.3.gba (captured headless in the mGBA 0.9.3 libretro core, Red Deck, Small Blind: play a pair, discard, play again)",
+      "start_seconds": 15.07,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; 720x480 (nearest-neighbor 3x of the 240x160 GBA screen); 250ms fade through black at loop boundary"
     }
   ]
 }

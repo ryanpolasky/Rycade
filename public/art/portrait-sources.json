@@ -928,6 +928,14 @@
         "arc_digdug2_Box.png": "https://flyers.arcade-museum.com/videogame-flyers/3/dig-dug-ii-03670-01.jpg"
       },
       "note": "Japan-only landscape Namco flyer; centre crop x 269-922 of 1192x850 (1.30 h/w) keeps the full Dig Dug II logo, resized to 512x665."
+    },
+    {
+      "url": "https://store.steampowered.com/app/2379780/Balatro/",
+      "files": {
+        "con_balatro_Boxarts.png": "https://shared.steamstatic.com/store_item_assets/steam/apps/2379780/library_600x900_2x.jpg",
+        "con_balatro_Logos.png": "https://shared.steamstatic.com/store_item_assets/steam/apps/2379780/logo.png"
+      },
+      "note": "Official Steam library capsule and logo for Balatro (LocalThunk / Playstack); the GBA demake has no box. Capsule cropped y 24-876 of 600x900 to 1.42 h/w and resized to 512x727; logo trimmed to its alpha bounds and resized to 512 wide. Snap is the demake's own title screen."
     }
   ],
   "crops": "Super Famicom covers (1.81 h/w) are cropped to 1.42 h/w to match the other systems' boxes and flyers: full width, vertical cut placed 60% of the way down the excess. scv4 and sunsetsnes are uncropped."
