@@ -1,0 +1,9 @@
+; firmware/src/uart_tx.pio
+.pio_version 0
+.program uart_tx
+.side_set 1 opt
+pull side 1 [7]
+set x, 7 side 0 [7]
+bitloop:
+    out pins, 1
+    jmp x-- bitloop [6]

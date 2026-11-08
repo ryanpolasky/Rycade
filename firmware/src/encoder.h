@@ -7,6 +7,8 @@
 #include <stdint.h>
 
 #define RYCADE_PLAYER_COUNT 4u
+#define RYCADE_LINK_COUNT 2u
+#define RYCADE_ENCODER_FRAME_LENGTH 18u
 
 #define RYCADE_DIR_RIGHT (1u << 0)
 #define RYCADE_DIR_DOWN (1u << 1)
@@ -26,6 +28,14 @@ struct player_state {
     uint8_t buttons;
 };
 
-bool encoder_parse(const uint8_t *buf, size_t len, struct player_state out[RYCADE_PLAYER_COUNT]);
+struct encoder_framer {
+    uint8_t frame[RYCADE_ENCODER_FRAME_LENGTH];
+    uint8_t length;
+};
+
+bool encoder_parse(const uint8_t *buf, size_t len, uint8_t link,
+                   struct player_state states[RYCADE_PLAYER_COUNT]);
+void encoder_framer_reset(struct encoder_framer *f);
+bool encoder_framer_push(struct encoder_framer *f, uint8_t byte);
 
 #endif

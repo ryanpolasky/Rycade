@@ -1,6 +1,6 @@
 # Rycade Pico controls
 
-The default `demo` build exposes four separate USB HID gamepads. The `encoder` build reads the cab encoder over UART0 and is included for later wiring.
+The default `demo` build exposes four separate USB HID gamepads. The `encoder` build reads the cab's two independent encoder links with PIO UARTs and maps them to those same four gamepads.
 
 ## Build
 
@@ -16,6 +16,21 @@ make -C firmware/test
 ```
 
 The demo UF2 is `firmware/build-demo/rycade_pico.uf2`.
+
+## Encoder mode
+
+Both links use 115200 8N1. The Pico sends `A6 01 00` every 4 ms; each reply is an 18-byte frame beginning `A7 10`. Bytes 4/5 carry the first player's direction/button bytes and bytes 8/9 carry the second player's; bytes 12–17 are zero.
+
+| Link | Signal | Game Port hole | Pico GPIO | Players |
+| --- | --- | ---: | ---: | --- |
+| A | Pico TX / request | 8 | GP6 | — |
+| A | Board RX / reply | 10 | GP7 | P1 (bytes 4/5), P2 (bytes 8/9) |
+| B | Pico TX / request | 4 | GP4 | — |
+| B | Board RX / reply | 2 | GP3 | P3 (bytes 4/5), P4 (bytes 8/9) |
+
+Direction bits are Right `0x01`, Down `0x02`, Left `0x04`, Up `0x08`, and Start `0x20`. Button bits are btn1/A `0x10`, btn2/X `0x08`, and btn3/B `0x02`.
+
+**Never run the encoder build while the original main board is connected; both would drive holes 4 and 8. Remove the original main board first.** With it removed, connect Pico VBUS pin 40 to Game Port hole 3 (joystick-board 5V) and the shifter HV pin, and connect Pico GND to hole 5.
 
 ## Sniff mode
 
