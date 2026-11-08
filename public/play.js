@@ -140,7 +140,8 @@
   }
   function hiscore() {
     if (core !== 'mame2003_plus' || !manager || !manager.FS) return undefined;
-    const bytes = findHiscore(manager.FS, file.split('/').pop().replace(/\.[^.]+$/, '') + '.hi');
+    const set = file.split('/').pop().replace(/\.[^.]+$/, '');
+    const bytes = findHiscore(manager.FS, set + '.hi') || findHiscore(manager.FS, set + '.nv');
     return bytes ? { hiscore: { game, bytes: Uint8Array.from(bytes) } } : undefined;
   }
   function fail(message) {

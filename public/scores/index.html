@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#09080c">
+    <link rel="icon" href="data:,">
+    <title>RYCADE · High Scores</title>
+    <link rel="stylesheet" href="/vendor/fonts/fonts.css">
+    <link rel="stylesheet" href="/scores/scores.css">
+  </head>
+  <body data-style="marquee">
+    <main class="scores-shell">
+      <header class="scores-header">
+        <span class="eyebrow">RYCADE · HIGH SCORES</span>
+        <h1>HALL OF FAME</h1>
+        <p>Straight off the cab. Top ten per game.</p>
+      </header>
+      <div id="scores-status" class="scores-status" role="status" aria-live="polite">LOADING…</div>
+      <section id="boards" class="boards" aria-label="Leaderboards"></section>
+    </main>
+    <script src="/games.js"></script>
+    <script src="/scores/scores.js"></script>
+  </body>
+</html>

@@ -1,0 +1,110 @@
+:root {
+  color-scheme: dark;
+  font-family: "Barlow Condensed", sans-serif;
+  background: #09080c;
+  color: #f3eee6;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at 50% -10%, rgba(143, 58, 74, .25), transparent 55%), #09080c;
+}
+
+.scores-shell {
+  width: min(100%, 1180px);
+  margin: 0 auto;
+  padding: max(28px, env(safe-area-inset-top)) 20px 40px;
+}
+
+.scores-header { padding: 12px 2px 26px; }
+
+.eyebrow {
+  color: #b8adb9;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2.4px;
+}
+
+.scores-header h1 {
+  margin: 7px 0 0;
+  color: #fff;
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.scores-header p { margin: 4px 0 0; color: #b8adb9; font-size: 18px; }
+
+.scores-status { padding: 40px 0; color: #b8adb9; font-size: 20px; letter-spacing: 2px; text-align: center; }
+
+.boards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 18px;
+}
+
+.board { overflow: hidden; --ink: color-mix(in srgb, var(--accent) 55%, #fff); }
+.board-head { display: grid; grid-template-columns: auto 1fr; align-items: center; column-gap: 14px; }
+.board-logo { grid-row: span 2; width: 96px; height: 54px; object-fit: contain; }
+.board-title { margin: 0; font-size: 24px; font-weight: 800; line-height: 1; }
+.board-meta { color: #b8adb9; font-size: 14px; letter-spacing: 1.2px; text-transform: uppercase; }
+.board-rows { margin: 0; padding: 0; list-style: none; }
+.row { display: grid; grid-template-columns: 3.2em 1fr 7em 6.5em; align-items: baseline; gap: 8px; }
+.score { text-align: right; font-variant-numeric: tabular-nums; }
+.when { color: #7f7584; text-align: right; }
+
+/* marquee: the game's own attract-mode table */
+[data-style="marquee"] .board {
+  padding: 16px 18px 18px;
+  border: 2px solid var(--accent);
+  border-radius: 6px;
+  background: #000;
+  box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+[data-style="marquee"] .board-head { padding-bottom: 14px; border-bottom: 2px dashed color-mix(in srgb, var(--accent) 60%, transparent); margin-bottom: 12px; }
+[data-style="marquee"] .board-title { color: var(--ink); }
+[data-style="marquee"] .row { font-family: "Press Start 2P", monospace; font-size: 12px; padding: 7px 0; color: #fff; }
+[data-style="marquee"] .row:nth-child(1) { color: #ffd400; }
+[data-style="marquee"] .row:nth-child(2) { color: #ff6ec7; }
+[data-style="marquee"] .row:nth-child(3) { color: #3fe0ff; }
+[data-style="marquee"] .when { font-family: "Barlow Condensed", sans-serif; font-size: 14px; color: #7f7584; }
+
+/* flyer: matches the phone remote's cards */
+[data-style="flyer"] .board {
+  border-radius: 14px;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 26%, #17141c), #121016 55%);
+  border: 1px solid rgba(255, 255, 255, .08);
+}
+[data-style="flyer"] .board-head { padding: 16px 18px; background: rgba(0, 0, 0, .25); }
+[data-style="flyer"] .board-rows { padding: 6px 18px 14px; }
+[data-style="flyer"] .row { padding: 8px 0; font-size: 20px; border-bottom: 1px solid rgba(255, 255, 255, .06); }
+[data-style="flyer"] .row:last-child { border-bottom: 0; }
+[data-style="flyer"] .rank { color: #b8adb9; font-weight: 600; }
+[data-style="flyer"] .score { font-weight: 800; color: #fff; }
+[data-style="flyer"] .name { font-weight: 700; letter-spacing: 1.5px; color: var(--ink); }
+[data-style="flyer"] .row:first-child .score { color: #ffd400; }
+[data-style="flyer"] .when { font-size: 15px; }
+
+/* phosphor: green CRT readout */
+[data-style="phosphor"] { --glow: #6bff8f; }
+[data-style="phosphor"] body { background: #030803; }
+[data-style="phosphor"] .scores-header h1, [data-style="phosphor"] .eyebrow, [data-style="phosphor"] .scores-header p { color: var(--glow); text-shadow: 0 0 8px rgba(107, 255, 143, .6); font-family: "Press Start 2P", monospace; }
+[data-style="phosphor"] .scores-header h1 { font-size: 30px; margin-top: 14px; }
+[data-style="phosphor"] .scores-header p { font-size: 11px; margin-top: 12px; opacity: .7; }
+[data-style="phosphor"] .eyebrow { font-size: 10px; }
+[data-style="phosphor"] .board {
+  padding: 16px 18px;
+  border: 1px solid rgba(107, 255, 143, .35);
+  background: repeating-linear-gradient(0deg, rgba(107, 255, 143, .04) 0 2px, transparent 2px 4px), #041004;
+}
+[data-style="phosphor"] .board-logo { filter: grayscale(1) sepia(1) hue-rotate(70deg) saturate(4) brightness(.9); }
+[data-style="phosphor"] .board-title, [data-style="phosphor"] .board-meta { color: var(--glow); font-family: "Press Start 2P", monospace; }
+[data-style="phosphor"] .board-title { font-size: 13px; line-height: 1.4; }
+[data-style="phosphor"] .board-meta { font-size: 8px; opacity: .6; margin-top: 6px; }
+[data-style="phosphor"] .board-head { margin-bottom: 12px; }
+[data-style="phosphor"] .row { font-family: "Press Start 2P", monospace; font-size: 11px; padding: 6px 0; color: var(--glow); text-shadow: 0 0 6px rgba(107, 255, 143, .55); }
+[data-style="phosphor"] .when { font-size: 8px; opacity: .55; white-space: nowrap; }
+[data-style="phosphor"] .row { grid-template-columns: 3.2em 1fr 4.5em 8.5em; }

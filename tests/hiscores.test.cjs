@@ -69,3 +69,32 @@ test('dkong3 picks up a player row', () => {
   bytes.set([0x50, 0x34, 0x12], 2 + 27);
   assert.deepEqual(decode('dkong3', bytes), [{ initials: 'RYAN', score: 123450 }]);
 });
+
+const hex = h => Uint8Array.from(Buffer.from(h, 'hex'));
+
+test('qix nvram factory table decodes to nothing new, real score comes through', () => {
+  const bytes = new Uint8Array(1024);
+  for (let i = 0; i < 10; i++) bytes.set([3, 0, 0, 0x51, 0x49, 0x58], 0x2c4 + i * 6);
+  assert.deepEqual(decode('qix', bytes), []);
+  bytes.set([0x12, 0x34, 0x50, 0x52, 0x59, 0x50], 0x2c4);
+  assert.deepEqual(decode('qix', bytes), [{ initials: 'RYP', score: 123450 }]);
+});
+
+const GALAGA_FACTORY = '000000000224000000000224000000000224000000000224000000000224172a170a2a0a162a160c2a0c182a18000000000224';
+
+test('galaga factory table decodes to nothing new, real score comes through', () => {
+  const bytes = hex(GALAGA_FACTORY);
+  assert.deepEqual(decode('galaga', bytes), []);
+  bytes.set([0, 5, 4, 3, 2, 1], 0);
+  bytes.set([0x1b, 0x22, 0x19], 30);
+  assert.deepEqual(decode('galaga', bytes), [{ initials: 'RYP', score: 123450 }]);
+});
+
+const DIGDUG2_FACTORY = '000002000000204b415a5520ffffff050000020000002059414d4120ffffff04000002000000534947455255ffffff030000020000004a554e4b4f20ffffff020000020000004d4959554b49ffffff0100200030000000022020';
+
+test('digdug2 factory table decodes to nothing new, real score comes through', () => {
+  const bytes = hex(DIGDUG2_FACTORY);
+  assert.deepEqual(decode('digdug2', bytes), []);
+  bytes.set([0, 1, 2, 3, 4, 5, 0x52, 0x59, 0x41, 0x4e, 0x20, 0x20], 0);
+  assert.deepEqual(decode('digdug2', bytes), [{ initials: 'RYAN', score: 123450 }]);
+});

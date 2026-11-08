@@ -4,6 +4,8 @@
   const bcd = bytes => Number(Array.from(bytes, b => b.toString(16).padStart(2, '0')).join(''));
   const text = (bytes, map = b => String.fromCharCode(b)) => Array.from(bytes, map).join('').trim();
 
+  const namcoTile = b => b < 10 ? String(b) : b < 0x24 ? String.fromCharCode(55 + b) : b === 0x2a ? '.' : b === 0x24 ? ' ' : '<';
+
   const DECODERS = {
     // 0x6b00: five 34-byte rows of "1ST  012000  NAME........" + 0x7f + score as little-endian BCD.
     dkong3: {
@@ -15,6 +17,33 @@
           initials: text(row.subarray(13, 25), b => b === 0x40 ? ' ' : String.fromCharCode(b)),
           score: bcd(row.slice(27, 30).reverse())
         };
+      })
+    },
+    // nvram 0x2c4: ten rows of BCD score + 3 ASCII initials.
+    qix: {
+      size: 1024,
+      defaults: Array.from({ length: 10 }, () => ['QIX', 30000]),
+      decode: bytes => Array.from({ length: 10 }, (_, i) => {
+        const row = bytes.slice(0x2c4 + i * 6, 0x2ca + i * 6);
+        return { initials: text(row.slice(3)), score: bcd(row.slice(0, 3)) };
+      })
+    },
+    // Five 6-digit scores (one tile per digit, units first), then five 3-tile names.
+    galaga: {
+      size: 51,
+      defaults: ['N.N', 'A.A', 'M.M', 'C.C', 'O.O'].map(name => [name, 20000]),
+      decode: bytes => Array.from({ length: 5 }, (_, i) => ({
+        initials: text(bytes.slice(30 + i * 3, 33 + i * 3), namcoTile),
+        score: Number(Array.from(bytes.slice(i * 6, i * 6 + 6)).reverse().map(d => d === 0x24 ? 0 : d).join(''))
+      }))
+    },
+    // Five 16-byte rows: six score digits (tens), six ASCII name chars, 3 x 0xff, round.
+    digdug2: {
+      size: 90,
+      defaults: ['KAZU', 'YAMA', 'SIGERU', 'JUNKO', 'MIYUKI'].map(name => [name, 20000]),
+      decode: bytes => Array.from({ length: 5 }, (_, i) => {
+        const row = bytes.slice(i * 16, i * 16 + 16);
+        return { initials: text(row.slice(6, 12)), score: Number(Array.from(row.slice(0, 6)).join('')) * 10 };
       })
     }
   };
