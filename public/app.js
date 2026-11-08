@@ -512,6 +512,7 @@ window.addEventListener('message', event => {
     flashToast(message.message || 'Emulator failed to start');
     exitGame();
   } else if (message.state === 'exit') {
+    if (message.hiscore) window.rycadeHiscores?.submit(message.hiscore.game, message.hiscore.bytes);
     exitGame();
   }
 });

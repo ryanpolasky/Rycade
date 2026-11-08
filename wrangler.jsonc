@@ -12,6 +12,10 @@
       {
         "name": "ROOMS",
         "class_name": "Room"
+      },
+      {
+        "name": "SCORES",
+        "class_name": "Scores"
       }
     ]
   },
@@ -19,6 +23,10 @@
     {
       "tag": "v1",
       "new_sqlite_classes": ["Room"]
+    },
+    {
+      "tag": "v2",
+      "new_sqlite_classes": ["Scores"]
     }
   ],
   "routes": [
@@ -36,6 +44,10 @@
           {
             "name": "ROOMS",
             "class_name": "Room"
+          },
+          {
+            "name": "SCORES",
+            "class_name": "Scores"
           }
         ]
       },
@@ -43,6 +55,10 @@
         {
           "tag": "v1",
           "new_sqlite_classes": ["Room"]
+        },
+        {
+          "tag": "v2",
+          "new_sqlite_classes": ["Scores"]
         }
       ]
     }

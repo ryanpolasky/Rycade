@@ -11,6 +11,25 @@
   const CORE_OPTIONS = {
     qbert: { 'mame2003-plus_four_way_emulation': 'enabled' }
   };
+  const MAME_OPTIONS = { 'mame2003-plus_autosave_hiscore': 'recursively' };
+
+  function findHiscore(fs, name, dir = '/data/saves', depth = 4) {
+    let names;
+    try { names = fs.readdir(dir); } catch { return null; }
+    for (const entry of names) {
+      if (entry === '.' || entry === '..') continue;
+      const path = `${dir}/${entry}`;
+      let stat;
+      try { stat = fs.stat(path); } catch { continue; }
+      if (fs.isDir(stat.mode)) {
+        const found = depth > 0 && findHiscore(fs, name, path, depth - 1);
+        if (found) return found;
+      } else if (entry === name) {
+        return fs.readFile(path);
+      }
+    }
+    return null;
+  }
 
   function buttonDown(button) {
     return typeof button === 'number' ? button > 0.5 : !!button && (button.pressed || button.value > 0.5);
@@ -97,7 +116,7 @@
     return { poll, release };
   }
 
-  const api = { SYSTEM_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, orderPads, createInputMapper };
+  const api = { SYSTEM_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, MAME_OPTIONS, findHiscore, orderPads, createInputMapper };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof window === 'undefined') return;
 
@@ -112,8 +131,13 @@
   let manager = null;
   let mapper = null;
   let timeout;
-  function post(state, message) {
-    parent.postMessage({ type: 'rycade-play', state, ...(message ? { message } : {}) }, location.origin);
+  function post(state, message, extra) {
+    parent.postMessage({ type: 'rycade-play', state, ...(message ? { message } : {}), ...extra }, location.origin);
+  }
+  function hiscore() {
+    if (core !== 'mame2003_plus' || !manager || !manager.FS) return undefined;
+    const bytes = findHiscore(manager.FS, file.split('/').pop().replace(/\.[^.]+$/, '') + '.hi');
+    return bytes ? { hiscore: { game, bytes: Uint8Array.from(bytes) } } : undefined;
   }
   function fail(message) {
     if (started) return;
@@ -123,7 +147,7 @@
     if (event.key === 'F19' || event.key === 'Escape') {
       event.preventDefault();
       event.stopImmediatePropagation();
-      post('exit');
+      post('exit', null, hiscore());
     } else {
       event.preventDefault();
       event.stopImmediatePropagation();
@@ -144,8 +168,8 @@
   window.EJS_startOnLoaded = true;
   window.EJS_fullscreenOnLoaded = false;
   window.EJS_defaultControls = { 0: {}, 1: {}, 2: {}, 3: {} };
-  if (core === 'mame2003_plus' && CORE_OPTIONS[game]) {
-    window.EJS_defaultOptions = CORE_OPTIONS[game];
+  if (core === 'mame2003_plus') {
+    window.EJS_defaultOptions = { ...MAME_OPTIONS, ...CORE_OPTIONS[game] };
   }
   window.EJS_AdUrl = '';
   window.EJS_onGameStart = function () {

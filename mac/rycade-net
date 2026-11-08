@@ -1,11 +1,12 @@
 #!/bin/bash
-# rycade-net: outbound allowlist for the cab. closed = tunnel only, open = + GitHub, full = everything.
+# rycade-net: outbound allowlist for the cab. closed = tunnel + score upload only, open = + GitHub, full = everything.
 set -euo pipefail
 
 STATE=/var/db/rycade-net
 RULES=/etc/rycade/pf.conf
 CF_EDGE="198.41.192.0/24 198.41.200.0/24 198.41.218.0/24 2606:4700:a0::/44 2606:4700:a8::/44"
 GITHUB_HOSTS="github.com api.github.com codeload.github.com raw.githubusercontent.com objects.githubusercontent.com release-assets.githubusercontent.com github-releases.githubusercontent.com"
+SCORES_HOST=arcade.ryanpolasky.com
 LAN="10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 fe80::/10"
 MARK="# rycade-net"
 
@@ -43,6 +44,7 @@ set block-policy drop
 table <cf_edge> const { ${CF_EDGE// /, } }
 table <lan> const { ${LAN// /, } }
 table <github> persist
+table <scores> persist
 block drop all
 pass out quick inet proto udp from any port 68 to any port 67
 pass in quick inet proto udp from any port 67 to any port 68
@@ -54,14 +56,15 @@ pass out quick proto udp to any port 123 keep state
 pass out quick proto { tcp, udp } to <cf_edge> port 7844 keep state
 pass in quick proto tcp from <lan> to any port { 22, 5900 } keep state
 pass out quick proto tcp to <github> port { 22, 443 } keep state
+pass out quick proto tcp to <scores> port 443 keep state
 EOF
   [[ $m == full ]] && echo "pass out quick all keep state"
   return 0
 }
 
-github_ips() {
+resolve() {
   local h
-  for h in $GITHUB_HOSTS; do
+  for h in "$@"; do
     dscacheutil -q host -a name "$h" 2>/dev/null | awk '/^ip(v6)?_address:/ {print $2}'
   done | sort -u
 }
@@ -79,8 +82,10 @@ enforce() {
     pfctl -q -t github -T flush 2>/dev/null || true
   else
     # shellcheck disable=SC2046
-    pfctl -q -t github -T replace $(github_ips) 2>/dev/null || true
+    pfctl -q -t github -T replace $(resolve $GITHUB_HOSTS) 2>/dev/null || true
   fi
+  # shellcheck disable=SC2046
+  pfctl -q -t scores -T replace $(resolve $SCORES_HOST) 2>/dev/null || true
 }
 
 set_mode() {
@@ -96,7 +101,7 @@ status() {
   local m exp
   m=$(mode)
   exp=$(cat "$STATE/expires" 2>/dev/null || echo 0)
-  if [[ $m == closed ]]; then echo "closed (tunnel, DNS, NTP only)"
+  if [[ $m == closed ]]; then echo "closed (tunnel, score upload, DNS, NTP only)"
   else echo "$m until $(date -r "$exp" '+%H:%M') ($(( (exp - $(date +%s)) / 60 ))m left)"; fi
   pfctl -s info 2>/dev/null | grep 'Status:' || true
 }
