@@ -97,7 +97,51 @@
     return { poll, release };
   }
 
-  const api = { SYSTEM_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, orderPads, createInputMapper };
+  const Profiles = typeof module !== 'undefined' && module.exports ? require('./profiles.js') : root.rycadeProfiles;
+
+  function exists(FS, path) {
+    return !!path && FS.analyzePath(path).exists;
+  }
+
+  function makeDirs(FS, dir) {
+    let path = '';
+    for (const part of dir.split('/').filter(Boolean)) {
+      path += `/${part}`;
+      if (!exists(FS, path)) FS.mkdir(path);
+    }
+  }
+
+  function listFiles(FS, dir) {
+    if (!exists(FS, dir)) return [];
+    return FS.readdir(dir).filter(name => name !== '.' && name !== '..').flatMap(name => {
+      const path = `${dir}/${name}`;
+      return FS.isDir(FS.stat(path).mode) ? listFiles(FS, path) : [path];
+    });
+  }
+
+  function copyFile(FS, from, to) {
+    makeDirs(FS, to.slice(0, to.lastIndexOf('/')));
+    FS.writeFile(to, FS.readFile(from));
+  }
+
+  function createProfileSaves(FS, { state, profileId, gameId, sharedPath }) {
+    const own = Profiles.savePath(profileId, gameId);
+    return {
+      restore() {
+        for (const file of Profiles.staleSaves(state, listFiles(FS, Profiles.SAVE_ROOT))) FS.unlink(file);
+        if (!sharedPath) return;
+        if (exists(FS, own)) copyFile(FS, own, sharedPath);
+        else if (exists(FS, sharedPath)) FS.unlink(sharedPath);
+      },
+      keep(path) {
+        if (!exists(FS, path)) return false;
+        copyFile(FS, path, own);
+        return true;
+      }
+    };
+  }
+
+  const api = { SYSTEM_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, orderPads, createInputMapper, createProfileSaves };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof window === 'undefined') return;
 
@@ -106,12 +150,14 @@
   const core = params.get('core') || 'snes9x';
   const system = params.get('sys') || 'SNES';
   const game = params.get('game') || '';
+  const profileId = params.get('profile') || '';
   const pads = navigator.getGamepads.bind(navigator);
   navigator.getGamepads = () => [];
   let started = false;
   let manager = null;
   let mapper = null;
   let timeout;
+  let saves = null;
   function post(state, message) {
     parent.postMessage({ type: 'rycade-play', state, ...(message ? { message } : {}) }, location.origin);
   }
@@ -144,15 +190,57 @@
   window.EJS_startOnLoaded = true;
   window.EJS_fullscreenOnLoaded = false;
   window.EJS_defaultControls = { 0: {}, 1: {}, 2: {}, 3: {} };
-  if (core === 'mame2003_plus' && CORE_OPTIONS[game]) {
-    window.EJS_defaultOptions = CORE_OPTIONS[game];
+  window.EJS_defaultOptions = { 'save-save-interval': '30', ...(core === 'mame2003_plus' && CORE_OPTIONS[game]) };
+  if (profileId && Profiles) {
+    window.EJS_ready = function () {
+      const emulator = window.EJS_emulator;
+      emulator.on('saveDatabaseLoaded', FS => {
+        const paths = Profiles.read(localStorage, Profiles.SAVE_PATHS_KEY, {});
+        saves = createProfileSaves(FS, { state: Profiles.load(), profileId, gameId: game, sharedPath: paths[game] });
+        try {
+          saves.restore();
+        } catch (error) {
+          console.warn('Rycade save restore failed', error);
+        }
+      });
+      emulator.on('saveSaveFiles', () => {
+        try {
+          saves && manager && saves.keep(manager.getSaveFilePath());
+        } catch (error) {
+          console.warn('Rycade save keep failed', error);
+        }
+      });
+    };
   }
+  function flushSaves() {
+    return new Promise(resolve => {
+      if (!manager) return resolve();
+      setTimeout(resolve, 1500);
+      try {
+        manager.saveSaveFiles();
+        manager.FS.syncfs(false, () => resolve());
+      } catch {
+        resolve();
+      }
+    });
+  }
+  window.addEventListener('message', event => {
+    if (event.origin !== location.origin || event.data?.type !== 'rycade-save') return;
+    flushSaves().then(() => post('saved'));
+  });
   window.EJS_AdUrl = '';
   window.EJS_onGameStart = function () {
     started = true;
     clearTimeout(timeout);
     post('started');
     manager = window.EJS_emulator && window.EJS_emulator.gameManager;
+    if (profileId && manager) {
+      try {
+        const paths = Profiles.read(localStorage, Profiles.SAVE_PATHS_KEY, {});
+        paths[game] = manager.getSaveFilePath();
+        localStorage.setItem(Profiles.SAVE_PATHS_KEY, JSON.stringify(paths));
+      } catch {}
+    }
     if (!manager || typeof manager.simulateInput !== 'function') return;
     mapper = createInputMapper((player, id, value) => manager.simulateInput(player, id, value), {
       players: Number(params.get('players')),
