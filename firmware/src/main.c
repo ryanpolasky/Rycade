@@ -10,7 +10,12 @@
 #include "tusb.h"
 
 #if RYCADE_MODE_ENCODER
-#include "hardware/uart.h"
+#include "hardware/clocks.h"
+#include "hardware/irq.h"
+#include "hardware/pio.h"
+#include "hardware/sync.h"
+#include "uart_rx.pio.h"
+#include "uart_tx.pio.h"
 #endif
 
 #if !RYCADE_MODE_ENCODER
@@ -140,48 +145,210 @@ static void update_demo_states(uint32_t now_ms)
 #endif
 
 #if RYCADE_MODE_ENCODER
-static uint8_t encoder_frame[18];
-static uint8_t encoder_frame_length;
+#define ENCODER_RX_RING_SIZE 64u
+#define ENCODER_RX_RING_MASK (ENCODER_RX_RING_SIZE - 1u)
+#define ENCODER_TX_FIFO_DEPTH 8u
+#define ENCODER_BAUD 115200u
 
-static void receive_encoder_byte(uint8_t byte)
+struct encoder_link_pins {
+    uint tx;
+    uint rx;
+};
+
+struct encoder_rx_ring {
+    uint8_t bytes[ENCODER_RX_RING_SIZE];
+    volatile uint32_t head;
+    volatile uint32_t tail;
+    volatile bool irq_paused;
+};
+
+static const struct encoder_link_pins encoder_link_pins[RYCADE_LINK_COUNT] = {
+    {6u, 7u},
+    {4u, 3u}
+};
+static const pio_interrupt_source_t encoder_rx_irq_sources[4] = {
+    pis_sm0_rx_fifo_not_empty,
+    pis_sm1_rx_fifo_not_empty,
+    pis_sm2_rx_fifo_not_empty,
+    pis_sm3_rx_fifo_not_empty
+};
+static struct encoder_rx_ring encoder_rx_rings[RYCADE_LINK_COUNT];
+static struct encoder_framer encoder_framers[RYCADE_LINK_COUNT];
+static uint encoder_rx_sms[RYCADE_LINK_COUNT];
+static uint encoder_tx_sms[RYCADE_LINK_COUNT];
+
+static bool encoder_ring_has_space(const struct encoder_rx_ring *ring)
 {
-    if (encoder_frame_length == 0u) {
-        if (byte == 0xA7u) {
-            encoder_frame[encoder_frame_length++] = byte;
-        }
-        return;
-    }
+    return (uint32_t)(ring->head - ring->tail) < ENCODER_RX_RING_SIZE;
+}
 
-    if (encoder_frame_length == 1u && byte != 0x10u) {
-        encoder_frame_length = byte == 0xA7u ? 1u : 0u;
-        if (encoder_frame_length == 1u) {
-            encoder_frame[0] = byte;
-        }
-        return;
-    }
+static void encoder_ring_push(struct encoder_rx_ring *ring, uint8_t byte)
+{
+    const uint32_t head = ring->head;
 
-    encoder_frame[encoder_frame_length++] = byte;
-    if (encoder_frame_length == sizeof(encoder_frame)) {
-        struct player_state parsed[RYCADE_PLAYER_COUNT];
-        if (encoder_parse(encoder_frame, sizeof(encoder_frame), parsed)) {
-            memcpy(player_states, parsed, sizeof(player_states));
+    ring->bytes[head & ENCODER_RX_RING_MASK] = byte;
+    __dmb();
+    ring->head = head + 1u;
+}
+
+static bool encoder_ring_pop(struct encoder_rx_ring *ring, uint8_t *byte)
+{
+    const uint32_t tail = ring->tail;
+    const uint32_t head = ring->head;
+
+    if (tail == head) {
+        return false;
+    }
+    __dmb();
+    *byte = ring->bytes[tail & ENCODER_RX_RING_MASK];
+    ring->tail = tail + 1u;
+    __dmb();
+    return true;
+}
+
+static void pio0_rx_irq_handler(void)
+{
+    for (uint8_t link = 0u; link < RYCADE_LINK_COUNT; ++link) {
+        struct encoder_rx_ring *ring = &encoder_rx_rings[link];
+        const uint sm = encoder_rx_sms[link];
+
+        while (!pio_sm_is_rx_fifo_empty(pio0, sm)) {
+            if (!encoder_ring_has_space(ring)) {
+                ring->irq_paused = true;
+                pio_set_irq0_source_enabled(pio0, encoder_rx_irq_sources[sm], false);
+                break;
+            }
+
+            const uint8_t byte = (uint8_t)(pio_sm_get(pio0, sm) >> 24);
+            encoder_ring_push(ring, byte);
         }
-        encoder_frame_length = 0u;
     }
 }
 
-static void update_encoder(uint32_t now_us)
+static void encoder_rx_sm_init(uint sm, uint offset, uint pin)
+{
+    pio_sm_config config = uart_rx_program_get_default_config(offset);
+
+    gpio_init(pin);
+    gpio_disable_pulls(pin);
+    gpio_set_dir(pin, GPIO_IN);
+    pio_gpio_init(pio0, pin);
+    sm_config_set_in_pins(&config, pin);
+    sm_config_set_jmp_pin(&config, pin);
+    sm_config_set_in_shift(&config, true, false, 32u);
+    sm_config_set_fifo_join(&config, PIO_FIFO_JOIN_RX);
+    sm_config_set_clkdiv(&config,
+                         (float)clock_get_hz(clk_sys) / (8.0f * (float)ENCODER_BAUD));
+    pio_sm_init(pio0, sm, offset, &config);
+    pio_sm_set_consecutive_pindirs(pio0, sm, pin, 1u, false);
+}
+
+static void encoder_tx_sm_init(uint sm, uint offset, uint pin)
+{
+    const uint64_t pin_mask = 1ull << pin;
+    pio_sm_config config = uart_tx_program_get_default_config(offset);
+
+    gpio_disable_pulls(pin);
+    pio_sm_set_pins_with_mask64(pio0, sm, pin_mask, pin_mask);
+    pio_sm_set_pindirs_with_mask64(pio0, sm, pin_mask, pin_mask);
+    pio_gpio_init(pio0, pin);
+    sm_config_set_out_shift(&config, true, false, 32u);
+    sm_config_set_out_pins(&config, pin, 1u);
+    sm_config_set_sideset_pins(&config, pin);
+    sm_config_set_fifo_join(&config, PIO_FIFO_JOIN_TX);
+    sm_config_set_clkdiv(&config,
+                         (float)clock_get_hz(clk_sys) / (8.0f * (float)ENCODER_BAUD));
+    pio_sm_init(pio0, sm, offset, &config);
+}
+
+static void encoder_pio_init(void)
+{
+    const uint rx_offset = pio_add_program(pio0, &uart_rx_program);
+    const uint tx_offset = pio_add_program(pio0, &uart_tx_program);
+
+    for (uint8_t link = 0u; link < RYCADE_LINK_COUNT; ++link) {
+        encoder_rx_sms[link] = pio_claim_unused_sm(pio0, true);
+    }
+    for (uint8_t link = 0u; link < RYCADE_LINK_COUNT; ++link) {
+        encoder_tx_sms[link] = pio_claim_unused_sm(pio0, true);
+    }
+
+    for (uint8_t link = 0u; link < RYCADE_LINK_COUNT; ++link) {
+        encoder_rx_sm_init(encoder_rx_sms[link], rx_offset, encoder_link_pins[link].rx);
+        encoder_tx_sm_init(encoder_tx_sms[link], tx_offset, encoder_link_pins[link].tx);
+    }
+
+    irq_set_exclusive_handler(PIO0_IRQ_0, pio0_rx_irq_handler);
+    for (uint8_t link = 0u; link < RYCADE_LINK_COUNT; ++link) {
+        pio_set_irq0_source_enabled(
+            pio0, encoder_rx_irq_sources[encoder_rx_sms[link]], true);
+    }
+    irq_set_enabled(PIO0_IRQ_0, true);
+
+    for (uint8_t link = 0u; link < RYCADE_LINK_COUNT; ++link) {
+        pio_sm_set_enabled(pio0, encoder_tx_sms[link], true);
+        pio_sm_set_enabled(pio0, encoder_rx_sms[link], true);
+    }
+}
+
+static void drain_encoder_rings(uint32_t now_ms)
+{
+    static uint32_t last_valid_ms[RYCADE_LINK_COUNT];
+    static bool link_has_valid_frame[RYCADE_LINK_COUNT];
+
+    for (uint8_t link = 0u; link < RYCADE_LINK_COUNT; ++link) {
+        struct encoder_rx_ring *ring = &encoder_rx_rings[link];
+        uint8_t byte;
+
+        while (encoder_ring_pop(ring, &byte)) {
+            if (encoder_framer_push(&encoder_framers[link], byte) &&
+                encoder_parse(encoder_framers[link].frame,
+                              RYCADE_ENCODER_FRAME_LENGTH, link, player_states)) {
+                last_valid_ms[link] = now_ms;
+                link_has_valid_frame[link] = true;
+            }
+        }
+
+        if (ring->irq_paused) {
+            ring->irq_paused = false;
+            pio_set_irq0_source_enabled(
+                pio0, encoder_rx_irq_sources[encoder_rx_sms[link]], true);
+        }
+
+        if (link_has_valid_frame[link] &&
+            (uint32_t)(now_ms - last_valid_ms[link]) >= 100u) {
+            memset(&player_states[(size_t)link * 2u], 0,
+                   2u * sizeof(player_states[0]));
+            link_has_valid_frame[link] = false;
+        }
+    }
+}
+
+static void send_encoder_requests(uint32_t now_us)
 {
     static const uint8_t request[] = {0xA6u, 0x01u, 0x00u};
-    static uint32_t next_request;
+    static uint32_t next_request_us;
 
-    if ((int32_t)(now_us - next_request) >= 0) {
-        uart_write_blocking(uart0, request, sizeof(request));
-        next_request = now_us + 4000u;
+    if ((int32_t)(now_us - next_request_us) < 0) {
+        return;
     }
-    while (uart_is_readable(uart0)) {
-        receive_encoder_byte((uint8_t)uart_getc(uart0));
+
+    for (uint8_t link = 0u; link < RYCADE_LINK_COUNT; ++link) {
+        const uint sm = encoder_tx_sms[link];
+        if (pio_sm_get_tx_fifo_level(pio0, sm) <=
+            ENCODER_TX_FIFO_DEPTH - (uint)sizeof(request)) {
+            for (size_t i = 0u; i < sizeof(request); ++i) {
+                pio_sm_put(pio0, sm, request[i]);
+            }
+        }
     }
+    next_request_us = now_us + 4000u;
+}
+
+static void update_encoder(uint32_t now_us, uint32_t now_ms)
+{
+    drain_encoder_rings(now_ms);
+    send_encoder_requests(now_us);
 }
 #endif
 
@@ -191,9 +358,7 @@ int main(void)
     gpio_set_dir(PICO_DEFAULT_LED_PIN, GPIO_OUT);
 
 #if RYCADE_MODE_ENCODER
-    uart_init(uart0, 115200u);
-    gpio_set_function(0u, GPIO_FUNC_UART);
-    gpio_set_function(1u, GPIO_FUNC_UART);
+    encoder_pio_init();
 #endif
 
     tusb_init();
@@ -203,7 +368,7 @@ int main(void)
         tud_task();
 
 #if RYCADE_MODE_ENCODER
-        update_encoder(time_us_32());
+        update_encoder(time_us_32(), now_ms);
 #else
         update_demo_states(now_ms);
 #endif

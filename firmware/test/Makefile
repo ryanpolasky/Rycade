@@ -11,8 +11,8 @@ test: test_encoder test_sniff_logic dump_descriptors
 	./test_sniff_logic
 	./dump_descriptors
 
-test_encoder: test_encoder.c $(ROOT)/src/encoder.c $(ROOT)/src/gamepad.c
-	$(CC) $(CFLAGS) -I$(ROOT)/src -o $@ $^
+test_encoder: test_encoder.c $(ROOT)/src/encoder.c $(ROOT)/src/gamepad.c $(ROOT)/src/encoder.h $(ROOT)/src/gamepad.h
+	$(CC) $(CFLAGS) -I$(ROOT)/src -o $@ test_encoder.c $(ROOT)/src/encoder.c $(ROOT)/src/gamepad.c
 
 test_sniff_logic: test_sniff_logic.c $(ROOT)/src/sniff_logic.c
 	$(CC) $(CFLAGS) -I$(ROOT)/src -o $@ $^
