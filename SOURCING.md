@@ -202,6 +202,7 @@ All rows use digital controls; 0–3 independent action buttons except retained-
 | Tecmo Bowl | 2 | `Tecmo Bowl (USA).nes` | B: Pass / Tackle; A: Change player; SEL: unused. Digital D-pad and the listed face actions; no multitap needed. |
 | Dr. Mario | 2 | `Dr. Mario (Japan, USA) (En).nes` | B: Rotate left; A: Rotate right; SEL: unused. Digital D-pad and the listed face actions; no multitap needed. |
 | Bubble Bobble | 2 | `Bubble Bobble (USA).nes` | B: Bubble; A: Jump; SEL: unused. Digital D-pad and the listed face actions; no multitap needed. |
+| Marralhinha Blitz | 4 | `Marralhinha Blitz.nes` | B: Cycle move; A: Roll / confirm; SEL: unused. Homebrew from ryanpolasky/MarralhinhaBlitz: download `blitz.nes` and rename it. Four players need the NES Four Score, which cab mode turns on for this game. |
 
 ## New additions not retained
 

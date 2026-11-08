@@ -1187,7 +1187,7 @@
   "mblitz": {
     "sys": "NES",
     "dir": "nes",
-    "expected": null,
+    "expected": "Marralhinha Blitz.nes",
     "core": "fceumm",
     "parent": null
   }
