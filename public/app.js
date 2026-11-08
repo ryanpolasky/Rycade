@@ -374,7 +374,7 @@ function openDemo() {
   const sound = window.rycadeFeatures?.settings.sound;
   demoVideo.muted = Boolean(sound?.muted);
   demoVideo.volume = (sound?.master ?? 70) / 100;
-  demoVideo.src = game.video || `/videos/${game.id}.mp4`;
+  demoVideo.src = window.rycadeCab?.clip(game) || game.video || `/videos/${game.id}.mp4`;
   demoVideo.play().catch(unavailable);
 }
 

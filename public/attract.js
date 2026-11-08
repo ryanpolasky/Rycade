@@ -79,7 +79,7 @@
       if (active && session === clipSession) next();
     };
     video.muted = true;
-    video.src = current.video || `/videos/${current.id}.mp4`;
+    video.src = window.rycadeCab?.clip(current) || current.video || `/videos/${current.id}.mp4`;
     loadTimer = setTimeout(skip, 12000);
     video.play().catch(skip);
   }
@@ -126,7 +126,7 @@
           activity(Boolean(pad.buttons[9]?.pressed));
         }
       }
-      const blocked = settingsOpen || searchOpen || demoGame || launched || bootOpen || document.hidden;
+      const blocked = settingsOpen || searchOpen || demoGame || launched || bootOpen || document.hidden || window.rycadeCab?.asleep;
       if (blocked) return reset();
       const minutes = settings.attractMinutes;
       if (!active && minutes > 0 && performance.now() - lastInput >= minutes * 60000) {
