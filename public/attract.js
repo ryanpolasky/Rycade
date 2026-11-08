@@ -59,7 +59,8 @@
     }
     current = queue.pop();
     if (!current) return stop();
-    overlay.querySelector('.attract-cover').src = current.box;
+    overlay.querySelector('.attract-logo').src = current.logo || '';
+    overlay.dataset.logo = current.logo ? 'true' : 'false';
     overlay.querySelector('.attract-still').src = current.snap;
     overlay.querySelector('.attract-title').textContent = current.title;
     overlay.querySelector('.attract-players').textContent = current.players === 1 ? '1 PLAYER' : `1–${current.players} PLAYERS`;
