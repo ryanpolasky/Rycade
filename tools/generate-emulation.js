@@ -13,14 +13,16 @@ const sectionSystems = {
   'ARCADE (MAME)': 'ARCADE',
   GENESIS: 'GENESIS',
   SNES: 'SNES',
-  NES: 'NES'
+  NES: 'NES',
+  GBA: 'GBA'
 };
-const directories = { ARCADE: 'arcade', GENESIS: 'genesis', SNES: 'snes', NES: 'nes' };
+const directories = { ARCADE: 'arcade', GENESIS: 'genesis', SNES: 'snes', NES: 'nes', GBA: 'gba' };
 const cores = {
   ARCADE: 'mame2003_plus',
   GENESIS: 'genesis_plus_gx',
   SNES: 'snes9x',
-  NES: 'fceumm'
+  NES: 'fceumm',
+  GBA: 'mgba'
 };
 
 function normalizeTitle(value) {

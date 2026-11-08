@@ -16,7 +16,7 @@ PORT=8787
 SCORES_HOST=arcade.ryanpolasky.com
 CAB_MODE=1280x960
 RESTART="U 04:00:00"
-CORES="genesis_plus_gx snes9x mesen fbneo mame"
+CORES="genesis_plus_gx snes9x mesen fbneo mame mgba"
 AGENTS=$HOME/Library/LaunchAgents
 
 ACTION=all
@@ -134,7 +134,7 @@ base() {
     [[ $(scutil --get $k 2>/dev/null) == rycade ]] || srun scutil --set $k rycade
   done
   ok "hostname rycade"
-  mkdir -p "$BIN" "$HOME_DIR"/{logs,bios,saves,states,cores} "$HOME_DIR"/roms/{arcade,genesis,snes,nes}
+  mkdir -p "$BIN" "$HOME_DIR"/{logs,bios,saves,states,cores} "$HOME_DIR"/roms/{arcade,genesis,snes,nes,gba}
 }
 
 repo() {

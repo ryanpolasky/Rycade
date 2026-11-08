@@ -12,7 +12,7 @@ function fakeFetch(listing, overrides = {}, missingOverrides = false) {
     if (url.endsWith('/overrides.json')) {
       return { ok: !missingOverrides, json: async () => overrides };
     }
-    assert.match(url, /^\/roms\/(arcade|genesis|snes|nes)\/$/);
+    assert.match(url, /^\/roms\/(arcade|genesis|snes|nes|gba)\/$/);
     assert.equal(options.headers.Accept, 'application/json');
     return { ok: true, json: async () => listing };
   };
@@ -22,12 +22,13 @@ async function resolve(id, title, listing, overrides) {
   return resolveRom({ id, title }, { fetch: fakeFetch(listing, overrides) });
 }
 
-test('catalog maps every sourced title, including Marralhinha Blitz', () => {
-  assert.equal(Object.keys(ROM_CATALOG).length, 170);
+test('catalog maps every sourced title, including Marralhinha Blitz and Balatro', () => {
+  assert.equal(Object.keys(ROM_CATALOG).length, 171);
   assert.equal(ROM_CATALOG.yoshi.expected, "Super Mario World 2 - Yoshi's Island (USA).sfc");
   assert.equal(ROM_CATALOG.sonic2.expected, 'Sonic The Hedgehog 2 (World).md');
   assert.equal(ROM_CATALOG.crimfghtu.parent, 'crimfght.zip');
   assert.equal(ROM_CATALOG.mblitz.expected, 'Marralhinha Blitz.nes');
+  assert.deepEqual(ROM_CATALOG.balatro, { sys: 'GBA', dir: 'gba', expected: 'Balatro.gba', core: 'mgba', parent: null });
 });
 
 test('exact and case-insensitive filename matching', async () => {

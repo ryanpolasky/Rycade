@@ -2,6 +2,7 @@ const assert = require('node:assert/strict');
 const { test } = require('node:test');
 const {
   SYSTEM_BUTTONS,
+  START_BUTTONS,
   INPUT_LAYOUTS,
   CORE_OPTIONS,
   BOOT_FRAMES,
@@ -163,12 +164,25 @@ test('physical face buttons map to libretro ids for each system', () => {
     ARCADE: [0, 8, 1],
     GENESIS: [1, 0, 8],
     SNES: [1, 0, 8],
-    NES: [0, 8, null]
+    NES: [0, 8, null],
+    GBA: [8, 10, 11]
   });
   for (const [system, expected] of Object.entries(SYSTEM_BUTTONS)) {
     const inputs = [];
     createInputMapper((...input) => inputs.push(input)).poll([pad([0, 1, 3])], system, 0);
     assert.deepEqual(inputs.map(input => input[1]).sort((a, b) => a - b), expected.filter(id => id !== null).sort((a, b) => a - b));
+  }
+});
+
+test('GBA Start is held as B while console systems keep Start', () => {
+  assert.deepEqual(START_BUTTONS, { GBA: 0 });
+  for (const [system, id] of [['GBA', 0], ['SNES', 3]]) {
+    const inputs = [];
+    const mapper = createInputMapper((...input) => inputs.push(input));
+    mapper.poll([pad([6])], system, 0);
+    mapper.poll([pad([6])], system, 500);
+    mapper.poll([pad()], system, 1000);
+    assert.deepEqual(inputs, [[0, id, 1], [0, id, 0]], system);
   }
 });
 
