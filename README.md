@@ -68,7 +68,7 @@ Leave the cab alone for a couple of minutes and it starts cycling full-screen ga
 - **Hold to skim.** Hold the stick and the list speeds up and jumps by letter.
 - **Player profiles.** Pick your initials before games with battery saves (Super Metroid, Zelda, Yoshi's Island), and every player keeps their own save file.
 - **High scores.** Arcade high-score tables are read from each game's own save data and posted to [arcade.ryanpolasky.com/scores](https://arcade.ryanpolasky.com/scores). Only the game, initials and score leave the cab.
-- **Flexible seats.** In a 1–2 player game, the seat that pressed START becomes Player 1, so you can play solo from either middle stick.
+- **Flexible seats.** In 1–3 player games, players join in the order they press START, from any seat.
 - **Synthesized sounds.** Every blip and confirm is generated with the Web Audio API, in three sound sets (Cabinet, Chip, Neo).
 - **Offline by default.** The cab runs a local copy of the frontend behind a firewall that blocks the internet. The only exceptions are score uploads and its remote-access tunnel.
 
