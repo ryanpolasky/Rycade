@@ -43,6 +43,7 @@
   window.rycadeCab = cab;
 
   function sleep() {
+    window.rycadePlay?.exit();
     cab.asleep = true;
     window.rycadeAttract?.activity();
     window.rycadeFeatures?.closeBoot();

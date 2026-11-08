@@ -301,9 +301,13 @@ runtime() {
 :$PORT {
 	bind 127.0.0.1
 	root * $APP/public
-	@media path /art/* /videos/* /boot/* /vendor/*
+	@media path /art/* /videos/* /boot/* /vendor/fonts/*
 	header @media Cache-Control "public, max-age=31536000, immutable"
 	header -Server
+	handle_path /roms/* {
+		root * $HOME_DIR/roms
+		file_server browse
+	}
 	reverse_proxy /power/* 127.0.0.1:8788 {
 		flush_interval -1
 	}
