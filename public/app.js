@@ -70,9 +70,15 @@ function inSystem(game, system) {
   return game.sys === system;
 }
 
-function flashToast(text) {
+function favStar() {
+  const star = document.createElement('i');
+  star.className = 'fav-star';
+  return star;
+}
+
+function flashToast(text, starred = false) {
   const toast = document.querySelector('#remote-toast');
-  toast.textContent = text;
+  toast.replaceChildren(...(starred ? [favStar()] : []), text);
   toast.classList.add('visible');
   clearTimeout(flashToast.timer);
   flashToast.timer = setTimeout(() => toast.classList.remove('visible'), 1800);
@@ -87,7 +93,7 @@ function toggleFavorite() {
     localStorage.setItem(FAVORITES_KEY, JSON.stringify([...favorites]));
   } catch {}
   window.rycadeAudio?.play('toggle');
-  flashToast(`${favorites.has(game.id) ? '★ ADDED TO' : 'REMOVED FROM'} FAVORITES · ${game.title.toUpperCase()}`);
+  flashToast(`${favorites.has(game.id) ? 'ADDED TO' : 'REMOVED FROM'} FAVORITES · ${game.title.toUpperCase()}`, favorites.has(game.id));
   if (stage.dataset.detailId === game.id) stage.classList.toggle('is-fav', favorites.has(game.id));
   if (SYSTEMS[tab] === 'FAVORITES') {
     const neighbour = view[index + 1] || view[index - 1];
@@ -109,7 +115,7 @@ function renderTabs() {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = `${systemIndex === tab ? 'on' : ''}${system === 'FAVORITES' ? ' fav-tab' : ''}`;
-    button.innerHTML = `${system === 'FAVORITES' ? '★ FAVORITES' : system}<sup>${count}</sup>`;
+    button.innerHTML = `${system === 'FAVORITES' ? '<i class="fav-star"></i>FAVORITES' : system}<sup>${count}</sup>`;
     button.setAttribute('aria-label', `${system} ${count}`);
     button.addEventListener('click', () => changeTab(systemIndex));
     return button;
@@ -643,7 +649,7 @@ window.addEventListener('keydown', event => {
     launch();
     return;
   }
-  if (pressed === 'f') {
+  if (pressed === 'f' || event.key === CABINET_KEYS.pass) {
     event.preventDefault();
     toggleFavorite();
     return;

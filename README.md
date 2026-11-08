@@ -13,7 +13,7 @@ A static, playable game-library frontend for a four-player arcade cabinet. The l
 - In cab mode, the seat that starts a 1–2-player game becomes P1; the next different seat to press START joins as P2. Games with 3+ players or unknown player counts keep fixed seats.
 - In cab mode, Smash TV pairs seats 1/2 and 3/4 as each player's twin sticks (Robotron's alternating turns both use seats 1/2), with START on either stick of a pair; Q*bert's diagonal four-way rotation is automatic.
 - 1 / 2 / 3: SHOOT / PASS / TURBO. SHOOT (1) opens the selected game's video demo; SHOOT again or Escape returns to the menu.
-- F: favorite or unfavorite the selected game. Favorites live in the ★ FAVORITES tab and persist in the browser.
+- PASS (2) or F: favorite or unfavorite the selected game. Favorites live in the ★ FAVORITES tab and persist in the browser.
 - Click or tap a flyer to select it, tap it again or the game screen to launch, and tap while launched to exit.
 - `/` or `S`: search the library; `M`: open settings. Settings persist in the browser.
 - Use the Phone Remote section in settings to scan the pairing QR code and send a game selection from your phone.
