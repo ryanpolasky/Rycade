@@ -18,7 +18,7 @@ After that it's installed as `rycade`:
 | --- | --- |
 | `rycade` | re-run the whole setup (idempotent) |
 | `rycade doctor` | health check |
-| `rycade update` | pull through GitHub-only mode, then `refresh` with the new script |
+| `rycade update` | pull through GitHub-only mode, then `refresh` with the new script. The GitHub token is saved to `~/.git-credentials` (0600), so it never prompts over SSH |
 | `rycade refresh` | reinstall `rycade-net`, rebuild `rycade-power` if its source changed, restart what changed, reload the kiosk |
 | `rycade --dry-run` | print what would change |
 

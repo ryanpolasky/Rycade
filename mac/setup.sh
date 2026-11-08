@@ -142,10 +142,22 @@ repo() {
     gh auth status >/dev/null 2>&1 || run gh auth login --hostname github.com --git-protocol https --web
     run gh auth setup-git
     run gh repo clone "$REPO" "$APP"
+    git_creds
   else
+    git_creds
     run git -C "$APP" pull --ff-only
   fi
   ok "$APP"
+}
+
+git_creds() {
+  [[ -d $APP/.git ]] || return 0
+  run git -C "$APP" config credential.helper store
+  [[ -s $HOME/.git-credentials ]] && return
+  local token
+  token=$(gh auth token 2>/dev/null) || return 0
+  (( DRY )) && return
+  (umask 077; printf 'https://%s:%s@github.com\n' "${REPO%%/*}" "$token" > "$HOME/.git-credentials")
 }
 
 never_down() {
@@ -407,6 +419,7 @@ doctor() {
 update() {
   step "Update frontend from GitHub"
   srun rycade-net open 10m >/dev/null
+  git_creds
   run git -C "$APP" pull --ff-only
   srun rycade-net close >/dev/null
   ok "pulled"
