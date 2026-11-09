@@ -2,6 +2,7 @@ const SYSTEMS = ['ALL', 'FAVORITES', '2P+', '4P', 'ARCADE', 'GENESIS', 'SNES', '
 const FAVORITES_KEY = 'rycade.favorites';
 const LAST_PLAYED_KEY = 'rycade.lastPlayed';
 const CONTROL_COLORS = ['#ffd21f', '#ff2a2a', '#2a7bff'];
+const START_COLOR = '#e8e4ec';
 const CABINET_KEYS = { start: 'Enter', shoot: '1', pass: '2', turbo: '3' };
 const keyFor = title => title.replace(/^the /i, '').toUpperCase();
 const letterOf = game => {
@@ -196,6 +197,17 @@ function renderControls(game) {
       item.append(dot, label, document.createTextNode(' '), hint);
       return item;
     }));
+  if (game.start) {
+    const item = document.createElement('span');
+    const dot = document.createElement('i');
+    dot.style.background = START_COLOR;
+    const label = document.createElement('span');
+    label.textContent = 'START';
+    const hint = document.createElement('em');
+    hint.textContent = game.start.toLowerCase();
+    item.append(dot, label, document.createTextNode(' '), hint);
+    controls.append(item);
+  }
 }
 
 function place(instant = false) {
