@@ -124,6 +124,13 @@ body[data-theme="shelf"] .tabs button.fav-tab {
   color: var(--pa);
 }
 
+body[data-theme="shelf"] .tabs .fav-star {
+  width: .9em;
+  height: .9em;
+  margin-right: .3em;
+  vertical-align: calc(.5cap - .45em + 1px);
+}
+
 body[data-theme="shelf"] .tabs button.on {
   border-color: var(--pa);
   background: var(--pa);
