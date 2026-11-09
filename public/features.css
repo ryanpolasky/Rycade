@@ -1331,3 +1331,151 @@ body[data-theme="cover-flow"] #attract-overlay::after {
 #tabs-prev i {
   transform: scaleX(-1);
 }
+
+.roulette {
+  position: absolute;
+  z-index: 45;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 34px;
+  background: rgba(4, 3, 6, .82);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity .18s;
+}
+
+.roulette.visible {
+  opacity: 1;
+}
+
+.roulette-sub {
+  color: rgba(243, 238, 230, .55);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: .14em;
+}
+
+.roulette-window {
+  position: relative;
+  width: 100%;
+  height: 252px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, .03);
+  border-block: 1px solid rgba(255, 255, 255, .08);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+}
+
+.roulette-strip {
+  position: absolute;
+  top: 18px;
+  left: 0;
+  display: flex;
+  will-change: transform;
+}
+
+.roulette-card {
+  flex: 0 0 176px;
+  height: 216px;
+  padding: 0 8px;
+}
+
+.roulette-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .5);
+  transition: transform .3s, filter .3s;
+}
+
+.roulette.landed .roulette-card img {
+  filter: brightness(.35) saturate(.6);
+}
+
+.roulette.landed .roulette-card.win img {
+  filter: none;
+  transform: scale(1.06);
+  box-shadow: 0 0 0 3px var(--sp, #ffd400), 0 0 36px var(--sp, #ffd400);
+}
+
+.roulette-marker {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  margin-left: -1.5px;
+  background: var(--sp, #ffd400);
+  box-shadow: 0 0 14px var(--sp, #ffd400);
+}
+
+.roulette-marker::before,
+.roulette-marker::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 18px;
+  height: 12px;
+  margin-left: -9px;
+  background: inherit;
+}
+
+.roulette-marker::before {
+  top: 0;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.roulette-marker::after {
+  bottom: 0;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.roulette-result {
+  min-height: 150px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .25s, transform .25s;
+}
+
+.roulette.landed .roulette-result {
+  opacity: 1;
+  transform: none;
+}
+
+.roulette-name {
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.roulette-meta {
+  margin-top: 8px;
+  color: rgba(243, 238, 230, .6);
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: .1em;
+}
+
+.roulette-keys {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 28px;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: .08em;
+}
+
+.roulette-keys b {
+  margin-right: 8px;
+  padding: 2px 8px;
+  border-radius: 3px;
+  background: #f3eee6;
+  color: #121016;
+}

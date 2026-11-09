@@ -654,6 +654,26 @@ function pressBar() {
   setBarFocus(false);
 }
 
+function openRoulette() {
+  if (barFocus) setBarFocus(false);
+  release();
+  const opened = window.rycadeRoulette?.open({
+    games: view,
+    label: SYSTEMS[tab],
+    onLand: game => {
+      index = view.indexOf(game);
+      place(true);
+      settleNow();
+    },
+    onPlay: launch,
+    onClose: () => monitor.focus()
+  });
+  if (opened === false) {
+    window.rycadeAudio?.play('error');
+    flashToast('NOTHING TO SPIN');
+  }
+}
+
 function settleNow() {
   if (!view[index]) return;
   clearTimeout(settleTimer);
@@ -705,6 +725,11 @@ window.addEventListener('keydown', event => {
   if (pressed === 'f' || event.key === CABINET_KEYS.pass) {
     event.preventDefault();
     toggleFavorite();
+    return;
+  }
+  if (pressed === 'r' || event.key === CABINET_KEYS.turbo) {
+    event.preventDefault();
+    openRoulette();
     return;
   }
   if (barFocus) {
