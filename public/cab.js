@@ -1,6 +1,6 @@
 (() => {
   if (!new URLSearchParams(location.search).has('cab')) return;
-  document.documentElement.style.cursor = 'none';
+  document.head.insertAdjacentHTML('beforeend', '<style>*, ::before, ::after { cursor: none !important; }</style>');
   const pinned = [];
   const clips = new Map();
   const clipUrl = game => game.video || `/videos/${game.id}.mp4`;
