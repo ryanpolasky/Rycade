@@ -34,6 +34,7 @@ How Rycade is put together, how to run it, and how to drive it. For the showcase
 - In cab mode, Smash TV pairs seats 1/2 and 3/4 as each player's twin sticks (Robotron's alternating turns both use seats 1/2), with START on either stick of a pair; Q*bert's diagonal four-way rotation is automatic.
 - 1 / 2 / 3: SHOOT / PASS / TURBO. SHOOT (1) opens the selected game's video demo; SHOOT again or Escape returns to the menu.
 - PASS (2) or F: favorite or unfavorite the selected game. Favorites live in the ★ FAVORITES tab and persist in the browser.
+- TURBO (3) or R: spin a reel of the current tab's box art that lands on a random game. START plays it, TURBO spins again, PASS or Escape backs out.
 - Click or tap a flyer to select it, tap it again or the game screen to launch, and tap while launched to exit.
 - `/` or `S`: search the library; `M`: open settings. Settings persist in the browser.
 - Use the Phone Remote section in settings to scan the pairing QR code and send a game selection from your phone.

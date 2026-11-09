@@ -133,7 +133,7 @@
           activity(Boolean(pad.buttons[9]?.pressed));
         }
       }
-      const blocked = settingsOpen || searchOpen || demoGame || launched || window.rycadeSavePick?.active() || bootOpen || document.hidden || window.rycadeCab?.asleep;
+      const blocked = settingsOpen || searchOpen || demoGame || launched || window.rycadeSavePick?.active() || window.rycadeRoulette?.active() || bootOpen || document.hidden || window.rycadeCab?.asleep;
       if (blocked) return reset();
       const nap = settings.sleepMinutes;
       if (window.rycadeCab && nap > 0 && performance.now() - lastInput >= nap * 60000) {
