@@ -7,9 +7,17 @@
     GENESIS: [1, 0, 8],
     SNES: [1, 0, 8],
     NES: [0, 8, null],
-    GBA: [8, 10, 11]
+    GBA: [0, 8, 11]
   };
-  const START_BUTTONS = { GBA: 0 };
+  const GAME_BUTTONS = {
+    balatro: { buttons: [8, 10, 11], start: 0 },
+    mzm: { start: 2 },
+    kirbynidl: { buttons: [0, 8, 2] },
+    kss: { buttons: [1, 0, 9], start: 10 },
+    tattack: { buttons: [8, 1, 11] },
+    pocky: { buttons: [1, 0, 9], start: 10 },
+    smk: { buttons: [0, 11, 8] }
+  };
   const PHYSICAL_BUTTONS = [0, 3, 1];
   const DIRECTION_IDS = { up: 4, down: 5, left: 6, right: 7 };
   const INPUT_LAYOUTS = { smashtv: 'twin', robotron: 'twin' };
@@ -55,7 +63,8 @@
   }
 
   const RETRO_REMAPS = {
-    mblitz: ['input_libretro_device_p3 = "513"', 'input_libretro_device_p4 = "513"']
+    mblitz: ['input_libretro_device_p3 = "513"', 'input_libretro_device_p4 = "513"'],
+    bomber2: ['input_libretro_device_p3 = "513"', 'input_libretro_device_p4 = "513"']
   };
 
   function buttonDown(button) {
@@ -79,7 +88,7 @@
     return players.map(pad => pad || unassigned[next++] || null);
   }
 
-  function createInputMapper(simulateInput, { players, seat, layout } = {}) {
+  function createInputMapper(simulateInput, { players, seat, layout, buttons, start: startId } = {}) {
     const flexible = layout !== 'twin' && Number.isInteger(players) && players >= 1 && players <= 3;
     const capacity = Math.max(2, players);
     const seats = flexible
@@ -89,7 +98,7 @@
     const previous = Array.from({ length: 4 }, () => new Map());
     const starts = Array.from({ length: 4 }, () => ({ held: false, at: null }));
     function poll(pads, system, now) {
-      const actions = SYSTEM_BUTTONS[system] || SYSTEM_BUTTONS.ARCADE;
+      const actions = buttons || SYSTEM_BUTTONS[system] || SYSTEM_BUTTONS.ARCADE;
       const playerPads = orderPads(pads);
       if (flexible) {
         for (let physicalSeat = 0; physicalSeat < 4; physicalSeat++) {
@@ -127,7 +136,7 @@
           startState.held = start;
           if (startState.at !== null && now < startState.at + 120) wanted.set(2, 1);
           if (startState.at !== null && now >= startState.at + 250 && now < startState.at + 370) wanted.set(3, 1);
-        } else if (start) wanted.set(START_BUTTONS[system] ?? 3, 1);
+        } else if (start) wanted.set(startId ?? 3, 1);
         const old = previous[player];
         for (const id of new Set([...old.keys(), ...wanted.keys()])) {
           const value = wanted.get(id) || 0;
@@ -188,7 +197,7 @@
     };
   }
 
-  const api = { SYSTEM_BUTTONS, START_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, BOOT_FRAMES, bootSkipFrames, clearSavedMute, MAME_OPTIONS, RETRO_REMAPS, findHiscore, orderPads, createInputMapper, createProfileSaves };
+  const api = { SYSTEM_BUTTONS, GAME_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, BOOT_FRAMES, bootSkipFrames, clearSavedMute, MAME_OPTIONS, RETRO_REMAPS, findHiscore, orderPads, createInputMapper, createProfileSaves };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof window === 'undefined') return;
 
@@ -245,7 +254,8 @@
     }, {
       players: Number(params.get('players')),
       seat: Number(params.get('seat')),
-      layout: INPUT_LAYOUTS[game]
+      layout: INPUT_LAYOUTS[game],
+      ...GAME_BUTTONS[game]
     });
     const dlairScript = document.createElement('script');
     dlairScript.src = '/dlair.js';
@@ -366,7 +376,8 @@
       mapper = createInputMapper((player, id, value) => manager.simulateInput(player, id, value), {
         players: Number(params.get('players')),
         seat: Number(params.get('seat')),
-        layout: INPUT_LAYOUTS[game]
+        layout: INPUT_LAYOUTS[game],
+        ...GAME_BUTTONS[game]
       });
       const poll = now => {
         if (!manager) return;

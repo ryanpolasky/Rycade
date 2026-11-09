@@ -2,7 +2,7 @@ const assert = require('node:assert/strict');
 const { test } = require('node:test');
 const {
   SYSTEM_BUTTONS,
-  START_BUTTONS,
+  GAME_BUTTONS,
   INPUT_LAYOUTS,
   CORE_OPTIONS,
   BOOT_FRAMES,
@@ -226,7 +226,7 @@ test('physical face buttons map to libretro ids for each system', () => {
     GENESIS: [1, 0, 8],
     SNES: [1, 0, 8],
     NES: [0, 8, null],
-    GBA: [8, 10, 11]
+    GBA: [0, 8, 11]
   });
   for (const [system, expected] of Object.entries(SYSTEM_BUTTONS)) {
     const inputs = [];
@@ -235,15 +235,25 @@ test('physical face buttons map to libretro ids for each system', () => {
   }
 });
 
-test('GBA Start is held as B while console systems keep Start', () => {
-  assert.deepEqual(START_BUTTONS, { GBA: 0 });
-  for (const [system, id] of [['GBA', 0], ['SNES', 3]]) {
+test('per-game overrides replace face buttons and Start; other games keep system defaults', () => {
+  assert.deepEqual(GAME_BUTTONS.balatro, { buttons: [8, 10, 11], start: 0 });
+  assert.deepEqual(GAME_BUTTONS.kss, { buttons: [1, 0, 9], start: 10 });
+  for (const [game, system, faces, startId] of [
+    ['balatro', 'GBA', [8, 10, 11], 0],
+    ['mzm', 'GBA', [0, 8, 11], 2],
+    ['aos', 'GBA', [0, 8, 11], 3],
+    ['kss', 'SNES', [1, 0, 9], 10],
+    ['smk', 'SNES', [0, 11, 8], 3],
+    ['smw', 'SNES', [1, 0, 8], 3]
+  ]) {
     const inputs = [];
-    const mapper = createInputMapper((...input) => inputs.push(input));
-    mapper.poll([pad([6])], system, 0);
-    mapper.poll([pad([6])], system, 500);
-    mapper.poll([pad()], system, 1000);
-    assert.deepEqual(inputs, [[0, id, 1], [0, id, 0]], system);
+    const mapper = createInputMapper((...input) => inputs.push(input), GAME_BUTTONS[game]);
+    mapper.poll([pad([0, 3, 1])], system, 0);
+    assert.deepEqual(inputs.map(input => input[1]), faces, game);
+    inputs.length = 0;
+    mapper.poll([pad([6])], system, 100);
+    mapper.poll([pad()], system, 200);
+    assert.deepEqual(inputs.filter(input => input[1] === startId), [[0, startId, 1], [0, startId, 0]], game);
   }
 });
 
@@ -399,12 +409,14 @@ test('clearSavedMute ignores storage read errors', () => {
   }));
 });
 
-test('Marralhinha Blitz configures Four Score gamepads in the FCEUmm core remap', () => {
-  assert.deepEqual(RETRO_REMAPS.mblitz, [
-    'input_libretro_device_p3 = "513"',
-    'input_libretro_device_p4 = "513"'
-  ]);
-  assert.deepEqual(Object.keys(RETRO_REMAPS), ['mblitz']);
+test('Marralhinha Blitz and Bomberman II configure Four Score gamepads in the FCEUmm core remap', () => {
+  for (const game of ['mblitz', 'bomber2']) {
+    assert.deepEqual(RETRO_REMAPS[game], [
+      'input_libretro_device_p3 = "513"',
+      'input_libretro_device_p4 = "513"'
+    ]);
+  }
+  assert.deepEqual(Object.keys(RETRO_REMAPS), ['mblitz', 'bomber2']);
 });
 
 test("Dragon's Lair DirkSimple engine runs attract mode, starts game, and processes rooms", () => {

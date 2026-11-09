@@ -1539,6 +1539,123 @@
       "start_seconds": 15.07,
       "duration_seconds": 25,
       "encoding": "H.264 yuv420p / AAC stereo; 30fps; 720x480 (nearest-neighbor 3x of the 240x160 GBA screen); 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "wario",
+      "url": "https://archive.org/download/nintendo-game-boy-advance-video-sanps-sq/WarioWare%2C%20Inc.%20-%20Mega%20Microgame%24%21%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-game-boy-advance-video-sanps-sq",
+      "source_file": "WarioWare, Inc. - Mega Microgame$! (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; native snap size; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "mzm",
+      "url": "https://archive.org/download/nintendo-game-boy-advance-video-sanps-sq/Metroid%20-%20Zero%20Mission%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-game-boy-advance-video-sanps-sq",
+      "source_file": "Metroid - Zero Mission (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; native snap size; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "aos",
+      "url": "https://archive.org/download/nintendo-game-boy-advance-video-sanps-sq/Castlevania%20-%20Aria%20of%20Sorrow%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-game-boy-advance-video-sanps-sq",
+      "source_file": "Castlevania - Aria of Sorrow (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; native snap size; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "kirbynidl",
+      "url": "https://archive.org/download/nintendo-game-boy-advance-video-sanps-sq/Kirby%20-%20Nightmare%20in%20Dream%20Land%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-game-boy-advance-video-sanps-sq",
+      "source_file": "Kirby - Nightmare in Dream Land (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; native snap size; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "kss",
+      "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/Kirby%20Super%20Star%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
+      "source_file": "Kirby Super Star (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; native snap size; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "tattack",
+      "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/Tetris%20Attack%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
+      "source_file": "Tetris Attack (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; native snap size; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "pocky",
+      "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/Pocky%20%26%20Rocky%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
+      "source_file": "Pocky & Rocky (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; native snap size; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "smk",
+      "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/Super%20Mario%20Kart%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
+      "source_file": "Super Mario Kart (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; native snap size; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "superc",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Super%20C%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Super C (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; native snap size; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "chipdale",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Chip%20%27n%20Dale%20-%20Rescue%20Rangers%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Chip 'n Dale - Rescue Rangers (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; native snap size; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "blades",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Blades%20of%20Steel%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Blades of Steel (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; native snap size; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "icehockey",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Ice%20Hockey%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Ice Hockey (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; native snap size; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "bomber2",
+      "url": "https://archive.org/download/nintendo-entertainment-system-video-snaps/Bomberman%20II%20%28USA%29.mp4",
+      "collection": "https://archive.org/details/nintendo-entertainment-system-video-snaps",
+      "source_file": "Bomberman II (USA).mp4",
+      "start_seconds": 0.5,
+      "duration_seconds": 25,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; native snap size; 250ms fade through black at loop boundary"
     }
   ]
 }
