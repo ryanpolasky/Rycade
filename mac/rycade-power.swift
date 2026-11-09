@@ -1,4 +1,4 @@
-// rycade-power: Rycade Cabinet F17/F18 -> display wake/sleep, streamed to the frontend over SSE on 127.0.0.1:8788.
+// rycade-power: Rycade Cabinet F17/F18 (or POST /power/sleep) -> display wake/sleep, streamed to the frontend over SSE on 127.0.0.1:8788.
 import Foundation
 import IOKit.hid
 import Network
@@ -60,7 +60,12 @@ params.requiredLocalEndpoint = .hostPort(host: "127.0.0.1", port: 8788)
 let listener = try! NWListener(using: params)
 listener.newConnectionHandler = { c in
     c.start(queue: .main)
-    c.receive(minimumIncompleteLength: 1, maximumLength: 4096) { _, _, _, _ in
+    c.receive(minimumIncompleteLength: 1, maximumLength: 4096) { data, _, _, _ in
+        if let data = data, String(decoding: data, as: UTF8.self).hasPrefix("POST /power/sleep") {
+            sleepCab()
+            c.send(content: "HTTP/1.1 204 No Content\r\nConnection: close\r\n\r\n".data(using: .utf8), completion: .contentProcessed { _ in c.cancel() })
+            return
+        }
         let head = "HTTP/1.1 200 OK\r\nContent-Type: text/event-stream\r\nCache-Control: no-cache\r\nConnection: keep-alive\r\n\r\nretry: 2000\n\ndata: \(asleep ? "sleep" : "wake")\n\n"
         c.send(content: head.data(using: .utf8), completion: .contentProcessed { _ in })
         clients.append(c)

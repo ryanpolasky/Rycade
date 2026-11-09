@@ -140,3 +140,25 @@ test('empty clip candidates return safely to browsing', () => {
   c.advance(120000);
   assert.equal(c.overlay.hidden, true);
 });
+
+test('cab sleeps after the idle setting, never mid-game or while asleep', () => {
+  const c = cabinet();
+  let naps = 0;
+  c.state.window.rycadeCab = { asleep: false, sleep: () => naps++, clip() {} };
+  c.state.settings.sleepMinutes = 15;
+  c.state.launched = true;
+  c.advance(3600000);
+  assert.equal(naps, 0);
+  c.state.launched = false;
+  c.advance(899999);
+  assert.equal(naps, 0);
+  c.advance(1);
+  assert.equal(naps, 1);
+  c.state.window.rycadeCab.asleep = true;
+  c.advance(3600000);
+  assert.equal(naps, 1);
+  c.state.window.rycadeCab.asleep = false;
+  c.state.settings.sleepMinutes = 0;
+  c.advance(3600000);
+  assert.equal(naps, 1);
+});
