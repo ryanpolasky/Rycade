@@ -336,7 +336,6 @@ sign_identity() {
   run chmod 700 "$SIGN" || return 1
   if [[ -s $kc && -s $SIGN/id ]]; then
     SIGN_HASH=$(cat "$SIGN/id") || return 1
-    printf '%s\n' "$SIGN_HASH"
     return 0
   fi
   if (( DRY )); then
@@ -350,7 +349,6 @@ sign_identity() {
     run security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "" "$kc"
     run rm -f "$SIGN/<temporary>/k.pem" "$SIGN/<temporary>/c.pem" "$SIGN/<temporary>/id.p12"
     SIGN_HASH=DRY-RUN
-    printf '%s\n' "$SIGN_HASH"
     return 0
   fi
   tmp=$(mktemp -d) || return 1
@@ -373,14 +371,14 @@ CONF
   if ! run security create-keychain -p "" "$kc" ||
       ! run security unlock-keychain -p "" "$kc" ||
       ! run security set-keychain-settings "$kc" ||
-      ! run openssl req -x509 -newkey rsa:2048 -nodes -days 36500 -config "$tmp/openssl.cnf" -keyout "$tmp/k.pem" -out "$tmp/c.pem" ||
+      ! run openssl req -x509 -newkey rsa:2048 -nodes -days 36500 -config "$tmp/openssl.cnf" -keyout "$tmp/k.pem" -out "$tmp/c.pem" 2>/dev/null ||
       ! run openssl pkcs12 -export -inkey "$tmp/k.pem" -in "$tmp/c.pem" -out "$tmp/id.p12" -passout "pass:$pass"; then
     rm -rf "$tmp"
     return 1
   fi
   hash=$(openssl x509 -in "$tmp/c.pem" -noout -fingerprint -sha1 | cut -d= -f2 | tr -d ':') || { rm -rf "$tmp"; return 1; }
-  if ! run security import "$tmp/id.p12" -k "$kc" -P "$pass" -T /usr/bin/codesign ||
-      ! run security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "" "$kc"; then
+  if ! run security import "$tmp/id.p12" -k "$kc" -P "$pass" -T /usr/bin/codesign >/dev/null ||
+      ! run security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "" "$kc" >/dev/null; then
     rm -rf "$tmp"
     return 1
   fi
@@ -388,7 +386,6 @@ CONF
   run chmod 600 "$SIGN/id" || { rm -rf "$tmp"; return 1; }
   rm -rf "$tmp" || return 1
   SIGN_HASH=$hash
-  printf '%s\n' "$SIGN_HASH"
 }
 
 sign_power() {
