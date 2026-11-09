@@ -12,6 +12,7 @@ REPO=ryanpolasky/Rycade
 HOME_DIR=$HOME/Rycade
 APP=$HOME_DIR/app
 BIN=$HOME_DIR/bin
+SIGN=$HOME_DIR/sign
 PORT=8787
 SCORES_HOST=arcade.ryanpolasky.com
 CAB_MODE=1280x960
@@ -328,6 +329,96 @@ display() {
   fi
 }
 
+sign_identity() {
+  local kc=$SIGN/rycade-sign.keychain-db
+  local tmp pass hash
+  run mkdir -p "$SIGN" || return 1
+  run chmod 700 "$SIGN" || return 1
+  if [[ -s $kc && -s $SIGN/id ]]; then
+    SIGN_HASH=$(cat "$SIGN/id") || return 1
+    printf '%s\n' "$SIGN_HASH"
+    return 0
+  fi
+  if (( DRY )); then
+    note "would create the cab signing identity in $kc"
+    run security create-keychain -p "" "$kc"
+    run security unlock-keychain -p "" "$kc"
+    run security set-keychain-settings "$kc"
+    run openssl req -x509 -newkey rsa:2048 -nodes -days 36500 -config "$SIGN/<temporary>/openssl.cnf" -keyout "$SIGN/<temporary>/k.pem" -out "$SIGN/<temporary>/c.pem"
+    run openssl pkcs12 -export -inkey "$SIGN/<temporary>/k.pem" -in "$SIGN/<temporary>/c.pem" -out "$SIGN/<temporary>/id.p12" -passout 'pass:<temporary>'
+    run security import "$SIGN/<temporary>/id.p12" -k "$kc" -P '<temporary>' -T /usr/bin/codesign
+    run security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "" "$kc"
+    run rm -f "$SIGN/<temporary>/k.pem" "$SIGN/<temporary>/c.pem" "$SIGN/<temporary>/id.p12"
+    SIGN_HASH=DRY-RUN
+    printf '%s\n' "$SIGN_HASH"
+    return 0
+  fi
+  tmp=$(mktemp -d) || return 1
+  cat > "$tmp/openssl.cnf" <<'CONF'
+[req]
+prompt = no
+distinguished_name = subject
+x509_extensions = extensions
+[subject]
+CN = Rycade Cab Code Signing
+[extensions]
+basicConstraints = critical,CA:false
+keyUsage = critical,digitalSignature
+extendedKeyUsage = critical,codeSigning
+CONF
+  pass=$(openssl rand -hex 24) || { rm -rf "$tmp"; return 1; }
+  if [[ -e $kc ]]; then
+    run security delete-keychain "$kc" || run rm -f "$kc" || { rm -rf "$tmp"; return 1; }
+  fi
+  if ! run security create-keychain -p "" "$kc" ||
+      ! run security unlock-keychain -p "" "$kc" ||
+      ! run security set-keychain-settings "$kc" ||
+      ! run openssl req -x509 -newkey rsa:2048 -nodes -days 36500 -config "$tmp/openssl.cnf" -keyout "$tmp/k.pem" -out "$tmp/c.pem" ||
+      ! run openssl pkcs12 -export -inkey "$tmp/k.pem" -in "$tmp/c.pem" -out "$tmp/id.p12" -passout "pass:$pass"; then
+    rm -rf "$tmp"
+    return 1
+  fi
+  hash=$(openssl x509 -in "$tmp/c.pem" -noout -fingerprint -sha1 | cut -d= -f2 | tr -d ':') || { rm -rf "$tmp"; return 1; }
+  if ! run security import "$tmp/id.p12" -k "$kc" -P "$pass" -T /usr/bin/codesign ||
+      ! run security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "" "$kc"; then
+    rm -rf "$tmp"
+    return 1
+  fi
+  printf '%s\n' "$hash" > "$SIGN/id" || { rm -rf "$tmp"; return 1; }
+  run chmod 600 "$SIGN/id" || { rm -rf "$tmp"; return 1; }
+  rm -rf "$tmp" || return 1
+  SIGN_HASH=$hash
+  printf '%s\n' "$SIGN_HASH"
+}
+
+sign_power() {
+  local kc=$SIGN/rycade-sign.keychain-db
+  local hash=${SIGN_HASH:-}
+  local keychains keychain rc=0
+  local -a old_keychains=() new_keychains=()
+  if [[ -z $hash ]]; then hash=$(cat "$SIGN/id") || return 1; fi
+  run security unlock-keychain -p "" "$kc" || return $?
+  keychains=$(security list-keychains -d user) || return $?
+  while IFS= read -r keychain; do
+    old_keychains[${#old_keychains[@]}]=$keychain
+  done < <(printf '%s\n' "$keychains" | sed -n 's/^[[:space:]]*"\(.*\)"[[:space:]]*$/\1/p')
+  new_keychains=("${old_keychains[@]}" "$kc")
+  run security list-keychains -d user -s "${new_keychains[@]}" || return $?
+  run codesign --force -s "$hash" -i com.rycade.power "$BIN/rycade-power" || rc=$?
+  if ! run security list-keychains -d user -s "${old_keychains[@]}"; then
+    note "couldn't restore the user keychain search list"
+  fi
+  return "$rc"
+}
+
+power_signed() {
+  local hash
+  [[ -x $BIN/rycade-power && -s $SIGN/id ]] || return 1
+  hash=$(cat "$SIGN/id") || return 1
+  [[ -n $hash ]] || return 1
+  codesign -d -r- "$BIN/rycade-power" 2>&1 | grep -Fqi "certificate leaf = H\"$hash\""
+}
+
 runtime() {
   step "Rycade runtime: local server, kiosk, power slider"
   local restart=()
@@ -400,11 +491,24 @@ K
   agent com.rycade.kiosk "$BIN/rycade-kiosk"
 
   local src=$APP/mac/rycade-power.swift stamp=$BIN/.rycade-power.sha
+  local was_signed=0 rebuilt=0
+  [[ -x $BIN/rycade-power ]] && power_signed && was_signed=1
   if [[ ! -x $BIN/rycade-power ]] || [[ $(shasum "$src" | cut -d' ' -f1) != $(cat "$stamp" 2>/dev/null) ]]; then
     if run swiftc -O -o "$BIN/rycade-power" "$src"; then
       shasum "$src" | cut -d' ' -f1 > "$stamp"
       restart+=(com.rycade.power)
+      rebuilt=1
     else note "rycade-power failed to compile, power slider won't sleep/wake"; fi
+  fi
+  if [[ -x $BIN/rycade-power ]] && { (( rebuilt )) || ! power_signed; }; then
+    if sign_identity && sign_power; then
+      (( rebuilt )) || restart+=(com.rycade.power)
+      if (( ! was_signed && ! DRY )); then
+        note "rycade-power is now signed with the cab cert: re-add it once in Input Monitoring (− then +), later updates keep the permission"
+      fi
+    else
+      note "couldn't sign rycade-power, Input Monitoring will need re-adding after each rebuild"
+    fi
   fi
   [[ -x $BIN/rycade-power ]] && agent com.rycade.power "$BIN/rycade-power"
   local label
@@ -455,6 +559,7 @@ doctor() {
   check "local server serving" 'curl -fs --max-time 3 -o /dev/null http://127.0.0.1:'"$PORT"'/'
   check "kiosk running" 'launchctl print gui/$(id -u)/com.rycade.kiosk | grep -q "state = running"'
   check "power helper running" 'launchctl print gui/$(id -u)/com.rycade.power | grep -q "state = running"'
+  check "power helper signed with cab cert" 'power_signed'
   check "pf enabled" 'sudo pfctl -s info | grep -q "Status: Enabled"'
   check "score key set" '[[ -s '"$HOME_DIR"'/score.key ]]'
   check "score host allowed" 'sudo pfctl -t scores -T show | grep -q .'
