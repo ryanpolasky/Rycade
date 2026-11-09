@@ -18,6 +18,7 @@ const DEFAULT_SETTINGS = {
   boot: 'Insert Coin',
   loading: 'Credit',
   attractMinutes: 2,
+  sleepMinutes: 60,
   controls: { skimSpeed: 'Normal', letterJump: true },
   sound: { master: 70, navigation: 50, confirm: 60, notifications: 60, muted: false },
   soundSet: 'cabinet',
@@ -39,6 +40,7 @@ function readSettings() {
     boot: saved.boot || DEFAULT_SETTINGS.boot,
     loading: LOADING_STYLES.includes(saved.loading) ? saved.loading : DEFAULT_SETTINGS.loading,
     attractMinutes: [0, 1, 2, 5].includes(saved.attractMinutes) ? saved.attractMinutes : DEFAULT_SETTINGS.attractMinutes,
+    sleepMinutes: [15, 30, 60, 120, 0].includes(saved.sleepMinutes) ? saved.sleepMinutes : DEFAULT_SETTINGS.sleepMinutes,
     controls: { ...DEFAULT_SETTINGS.controls, ...(saved.controls || {}) },
     sound: soundSettingsCurrent
       ? { ...DEFAULT_SETTINGS.sound, ...(saved.sound || {}) }
@@ -398,6 +400,12 @@ function renderDisplaySettings() {
     saveSettings();
     renderSettings();
   }, 'Cycle game demos after no input. START selects the game on screen.'));
+  if (window.rycadeCab) settingsContent.append(settingRow('Sleep', settings.sleepMinutes ? (settings.sleepMinutes < 60 ? `${settings.sleepMinutes} MIN` : `${settings.sleepMinutes / 60} HR`) : 'NEVER', () => {
+    const options = [15, 30, 60, 120, 0];
+    settings.sleepMinutes = options[(options.indexOf(settings.sleepMinutes) + 1) % options.length];
+    saveSettings();
+    renderSettings();
+  }, 'Turn the screen off after no input in the menu. Any button wakes it.'));
   [
     ['CRT filter', 'scanlines', settings.theme === 'Cover Flow'
       ? 'Scanlines and a soft glass vignette across the whole screen.'

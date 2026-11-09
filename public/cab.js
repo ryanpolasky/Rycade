@@ -38,6 +38,7 @@
   const cab = {
     asleep: false,
     ready,
+    sleep: () => fetch('/power/sleep', { method: 'POST' }).catch(() => {}),
     clip: game => clips.get(clipUrl(game))
   };
   window.rycadeCab = cab;
