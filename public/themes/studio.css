@@ -76,6 +76,7 @@ body[data-theme="studio"] #tabs {
 }
 
 body[data-theme="studio"] .tabs button {
+  min-width: 124px;
   height: 36px;
   padding: 0 11px;
   border: 0;
@@ -579,4 +580,8 @@ body[data-theme="studio"] .letter small {
     transition: none !important;
     animation: none !important;
   }
+}
+
+body[data-theme="studio"] .tab-more {
+  color: #b5b5bb;
 }

@@ -13,6 +13,9 @@ const stage = document.querySelector('#stage');
 const roster = document.querySelector('#roster');
 const list = document.querySelector('#list');
 const tabs = document.querySelector('#tabs');
+const tabsPrev = document.querySelector('#tabs-prev');
+const tabsNext = document.querySelector('#tabs-next');
+const TABS_SHOWN = 3;
 const monitor = document.querySelector('#monitor');
 const nowPlaying = document.querySelector('#now-playing');
 const letterOverlay = document.querySelector('#letter');
@@ -39,6 +42,8 @@ let settleTimer = 0;
 let collapseTimer = 0;
 let barFocus = false;
 let barIndex = 0;
+let tabStart = 0;
+let tabRevealed = -1;
 const favorites = new Set(readFavorites());
 
 function readFavorites() {
@@ -600,6 +605,26 @@ function barItems() {
 
 function paintBar() {
   barItems().forEach((item, itemIndex) => item.classList.toggle('bar-focus', barFocus && itemIndex === barIndex));
+  const focusTab = barFocus && barIndex >= 1 && barIndex <= SYSTEMS.length ? barIndex - 1 : tab;
+  if (focusTab !== tabRevealed) {
+    tabRevealed = focusTab;
+    tabStart = Math.min(Math.max(tabStart, focusTab - TABS_SHOWN + 1), focusTab);
+  }
+  showTabWindow();
+}
+
+function showTabWindow() {
+  tabStart = Math.max(0, Math.min(tabStart, SYSTEMS.length - TABS_SHOWN));
+  [...tabs.children].forEach((button, buttonIndex) => {
+    button.hidden = buttonIndex < tabStart || buttonIndex >= tabStart + TABS_SHOWN;
+  });
+  tabsPrev.classList.toggle('shown', tabStart > 0);
+  tabsNext.classList.toggle('shown', tabStart + TABS_SHOWN < SYSTEMS.length);
+}
+
+function pageTabs(direction) {
+  tabStart += direction;
+  showTabWindow();
 }
 
 function setBarFocus(on) {
@@ -643,6 +668,8 @@ function moveByGesture(delta) {
 }
 
 window.addEventListener('resize', fit);
+tabsPrev.addEventListener('click', () => pageTabs(-1));
+tabsNext.addEventListener('click', () => pageTabs(1));
 document.addEventListener('rycade-theme-change', () => place(true));
 window.addEventListener('keydown', event => {
   if (event.repeat) return;

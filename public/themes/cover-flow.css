@@ -106,6 +106,7 @@ body[data-theme="cover-flow"] #search-open {
 }
 
 body[data-theme="cover-flow"] .tabs button {
+  min-width: 160px;
   padding: 0 10px;
   font-family: var(--px);
   font-size: 10px;

@@ -1294,3 +1294,40 @@ body[data-theme="cover-flow"] #attract-overlay::after {
   from { opacity: 0; transform: translateY(-32px); }
   to { opacity: 1; transform: none; }
 }
+
+.tabs button {
+  flex: none;
+  white-space: nowrap;
+}
+
+.tabs button[hidden] {
+  display: none;
+}
+
+.tab-more {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--pa, #f3eee6);
+  cursor: pointer;
+  visibility: hidden;
+}
+
+.tab-more.shown {
+  visibility: visible;
+}
+
+.tab-more i {
+  width: 10px;
+  height: 16px;
+  background: currentColor;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+#tabs-prev i {
+  transform: scaleX(-1);
+}
