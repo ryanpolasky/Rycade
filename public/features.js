@@ -901,7 +901,7 @@ function handleSettingsKey(event) {
     input.closest('.sound-row').querySelector('.mixer-value').textContent = `${next}%`;
     return;
   }
-  if (key === 'Escape') {
+  if (key === 'Escape' || (key === 'F19' && !event.repeat)) {
     event.preventDefault();
     closeSettings();
   } else if (key === 'ArrowUp' || key === 'ArrowDown') {
@@ -958,6 +958,7 @@ window.addEventListener('keyup', event => {
   }
 });
 
+document.fonts.forEach(face => face.load().catch(() => {}));
 applyRycadeTheme(settings.theme);
 applyRycadePalette(settings.palette);
 
@@ -987,7 +988,7 @@ window.addEventListener('keydown', event => {
     event.preventDefault();
     event.stopPropagation();
     openSearch();
-  } else if (key === 'm') {
+  } else if (key === 'm' || event.key === 'F19') {
     event.preventDefault();
     event.stopPropagation();
     openSettings();

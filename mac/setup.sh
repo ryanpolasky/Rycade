@@ -268,6 +268,24 @@ S
   daemon com.rycade.cloudflared "" "$(command -v cloudflared)" tunnel --no-autoupdate --metrics 127.0.0.1:20241 run --token-file /etc/cloudflared/rycade.token
 }
 
+quiet_notifications() {
+  local f i=0 id flags
+  f=$(mktemp)
+  defaults export com.apple.ncprefs "$f" 2>/dev/null || { rm -f "$f"; return; }
+  while id=$(plutil -extract "apps.$i.bundle-id" raw "$f" 2>/dev/null); do
+    if [[ $id == com.apple.BTMNotificationAgent ]]; then
+      flags=$(plutil -extract "apps.$i.flags" raw "$f")
+      if (( flags & 1 << 25 )); then
+        run plutil -replace "apps.$i.flags" -integer $(( flags & ~(1 << 25) )) "$f"
+        run defaults import com.apple.ncprefs "$f"
+      fi
+    fi
+    i=$((i + 1))
+  done
+  rm -f "$f"
+  run killall usernoted NotificationCenter 2>/dev/null || true
+}
+
 polish() {
   step "Cab polish"
   srun nvram StartupMute=%01
@@ -290,7 +308,8 @@ polish() {
   dw /Library/Preferences/com.apple.Bluetooth BluetoothAutoSeekPointingDevice -bool false
   srun mdutil -a -i off >/dev/null 2>&1 || true
   run killall Dock 2>/dev/null || true
-  ok "no chime, screensaver, hot corners, Siri, Handoff, AirDrop, Spotlight indexing, keyboard-setup popup"
+  quiet_notifications
+  ok "no chime, screensaver, hot corners, Siri, Handoff, AirDrop, Spotlight indexing, keyboard-setup popup, login-item alerts"
 }
 
 display() {
@@ -360,6 +379,7 @@ C
 for _ in \$(seq 60); do nc -z 127.0.0.1 $PORT && break; sleep 1; done
 id=\$(displayplacer list 2>/dev/null | awk '/^Persistent screen id:/ {print \$4; exit}')
 displayplacer list 2>/dev/null | grep -q "res:$CAB_MODE" && displayplacer "id:\$id res:$CAB_MODE scaling:off origin:(0,0) degree:0"
+osascript -l JavaScript -e 'ObjC.import("CoreGraphics"); var b = \$.CGDisplayBounds(\$.CGMainDisplayID()); \$.CGWarpMouseCursorPosition({x: b.size.width - 1, y: b.size.height - 1})' >/dev/null 2>&1
 exec "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \\
   --user-data-dir="$HOME_DIR/chrome" --kiosk --no-first-run --no-default-browser-check \\
   --autoplay-policy=no-user-gesture-required --noerrdialogs --disable-session-crashed-bubble --hide-crash-restore-bubble \\
@@ -462,6 +482,7 @@ refresh() {
   srun rycade-net enforce >/dev/null
   command -v caddy >/dev/null || for b in /usr/local/bin/brew /opt/homebrew/bin/brew; do [[ -x $b ]] && eval "$($b shellenv)"; done
   runtime
+  quiet_notifications
   run launchctl kickstart -k "gui/$(id -u)/com.rycade.kiosk"
   ok "updated and reloaded"
 }
