@@ -105,6 +105,7 @@ body[data-theme="shelf"] #search-open {
 }
 
 body[data-theme="shelf"] .tabs button {
+  min-width: 176px;
   padding: 0 12px;
   font-size: 20px;
   font-weight: 700;
