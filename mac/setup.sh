@@ -161,6 +161,15 @@ git_creds() {
   (umask 077; printf 'https://%s:%s@github.com\n' "${REPO%%/*}" "$token" > "$HOME/.git-credentials")
 }
 
+no_auto_updates() {
+  local k
+  srun softwareupdate --schedule off >/dev/null 2>&1 || true
+  for k in AutomaticCheckEnabled AutomaticDownload AutomaticallyInstallMacOSUpdates CriticalUpdateInstall ConfigDataInstall; do
+    dw /Library/Preferences/com.apple.SoftwareUpdate "$k" -bool false
+  done
+  dw /Library/Preferences/com.apple.commerce AutoUpdate -bool false
+}
+
 never_down() {
   step "Never down: power, restarts, updates, login"
   local k v
@@ -171,11 +180,7 @@ never_down() {
   # shellcheck disable=SC2086
   srun pmset repeat restart $RESTART
   ok "no sleep, restart after power loss, weekly restart ($RESTART)"
-  srun softwareupdate --schedule off >/dev/null 2>&1 || true
-  for k in AutomaticCheckEnabled AutomaticDownload AutomaticallyInstallMacOSUpdates CriticalUpdateInstall ConfigDataInstall; do
-    dw /Library/Preferences/com.apple.SoftwareUpdate "$k" -bool false
-  done
-  dw /Library/Preferences/com.apple.commerce AutoUpdate -bool false
+  no_auto_updates
   dw "/Library/Application Support/CrashReporter/DiagnosticMessagesHistory.plist" AutoSubmit -bool false
   dw "/Library/Application Support/CrashReporter/DiagnosticMessagesHistory.plist" ThirdPartyDataSubmit -bool false
   srun tmutil disable 2>/dev/null || true
@@ -273,7 +278,7 @@ quiet_notifications() {
   f=$(mktemp)
   defaults export com.apple.ncprefs "$f" 2>/dev/null || { rm -f "$f"; return; }
   while id=$(plutil -extract "apps.$i.bundle-id" raw "$f" 2>/dev/null); do
-    if [[ $id == com.apple.BTMNotificationAgent ]]; then
+    if [[ $id == com.apple.BTMNotificationAgent || $id == _SYSTEM_CENTER_:com.apple.SoftwareUpdateNotification ]]; then
       flags=$(plutil -extract "apps.$i.flags" raw "$f")
       if (( flags & 1 << 25 )); then
         run plutil -replace "apps.$i.flags" -integer $(( flags & ~(1 << 25) )) "$f"
@@ -309,7 +314,7 @@ polish() {
   srun mdutil -a -i off >/dev/null 2>&1 || true
   run killall Dock 2>/dev/null || true
   quiet_notifications
-  ok "no chime, screensaver, hot corners, Siri, Handoff, AirDrop, Spotlight indexing, keyboard-setup popup, login-item alerts"
+  ok "no chime, screensaver, hot corners, Siri, Handoff, AirDrop, Spotlight indexing, keyboard-setup popup, login-item and update alerts"
 }
 
 display() {
@@ -482,6 +487,7 @@ refresh() {
   srun rycade-net enforce >/dev/null
   command -v caddy >/dev/null || for b in /usr/local/bin/brew /opt/homebrew/bin/brew; do [[ -x $b ]] && eval "$($b shellenv)"; done
   runtime
+  no_auto_updates
   quiet_notifications
   run launchctl kickstart -k "gui/$(id -u)/com.rycade.kiosk"
   ok "updated and reloaded"
