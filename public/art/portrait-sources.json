@@ -279,13 +279,6 @@
       "note": "Named_Boxarts/Mega Bomberman (USA).png"
     },
     {
-      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/NBA%20Jam%20-%20Tournament%20Edition%20%28World%29.png",
-      "files": {
-        "con_jamtegen_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/NBA%20Jam%20-%20Tournament%20Edition%20%28World%29.png"
-      },
-      "note": "Named_Boxarts/NBA Jam - Tournament Edition (World).png"
-    },
-    {
       "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Micro%20Machines%202%20-%20Turbo%20Tournament%20%28Europe%29.png",
       "files": {
         "con_mm2gen_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/Micro%20Machines%202%20-%20Turbo%20Tournament%20%28Europe%29.png"
@@ -396,13 +389,6 @@
         "con_sbomber3_Portrait.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Super%20Bomberman%203%20%28Japan%29.png"
       },
       "note": "Named_Boxarts/Super Bomberman 3 (Japan).png"
-    },
-    {
-      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/NBA%20Jam%20-%20Tournament%20Edition%20%28Japan%29%20%28En%29.png",
-      "files": {
-        "con_jamtesnes_Portrait.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/NBA%20Jam%20-%20Tournament%20Edition%20%28Japan%29%20%28En%29.png"
-      },
-      "note": "Named_Boxarts/NBA Jam - Tournament Edition (Japan) (En).png"
     },
     {
       "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/Muscle%20Bomber%20-%20The%20Body%20Explosion%20%28Japan%29.png",

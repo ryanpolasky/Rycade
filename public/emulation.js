@@ -183,13 +183,6 @@
     "core": "genesis_plus_gx",
     "parent": null
   },
-  "nbajamgen": {
-    "sys": "GENESIS",
-    "dir": "genesis",
-    "expected": "NBA Jam (USA, Europe).md",
-    "core": "genesis_plus_gx",
-    "parent": null
-  },
   "contrahc": {
     "sys": "GENESIS",
     "dir": "genesis",
@@ -547,13 +540,6 @@
     "core": "genesis_plus_gx",
     "parent": null
   },
-  "jamtegen": {
-    "sys": "GENESIS",
-    "dir": "genesis",
-    "expected": "NBA Jam - Tournament Edition (World).md",
-    "core": "genesis_plus_gx",
-    "parent": null
-  },
   "mm2gen": {
     "sys": "GENESIS",
     "dir": "genesis",
@@ -663,13 +649,6 @@
     "sys": "SNES",
     "dir": "snes",
     "expected": "Super Bomberman 3 (Japan).sfc",
-    "core": "snes9x",
-    "parent": null
-  },
-  "jamtesnes": {
-    "sys": "SNES",
-    "dir": "snes",
-    "expected": "NBA Jam - Tournament Edition (USA).sfc",
     "core": "snes9x",
     "parent": null
   },
