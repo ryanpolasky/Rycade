@@ -17,7 +17,7 @@ Rycade lives inside an Arcade1Up NBA Jam cabinet with the stock Android board pu
 ## The library
 
 <p align="center">
-  <img src="docs/media/library.jpg" alt="Box art and flyers for all 170 games in the library">
+  <img src="docs/media/library.jpg" alt="Box art and flyers for all 168 games in the library">
 </p>
 
 **Way too many games across arcade, Genesis, SNES, NES, and GBA**, chosen to fit four players who each have an 8-way stick, three buttons and START. There are plenty of couch-wreckers (Turtles in Time, The Simpsons, X-Men, Gauntlet, NBA Jam T.E., Bomberman, Micro Machines) next to the classics that come down to who has the high score (Donkey Kong 3, Galaga, Dig Dug, Qix, BurgerTime).
