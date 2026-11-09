@@ -23,7 +23,7 @@ async function resolve(id, title, listing, overrides) {
 }
 
 test('catalog maps every sourced title, including Marralhinha Blitz and Balatro', () => {
-  assert.equal(Object.keys(ROM_CATALOG).length, 184);
+  assert.equal(Object.keys(ROM_CATALOG).length, 181);
   assert.equal(ROM_CATALOG.yoshi.expected, "Super Mario World 2 - Yoshi's Island (USA).sfc");
   assert.equal(ROM_CATALOG.sonic2.expected, 'Sonic The Hedgehog 2 (World).md');
   assert.equal(ROM_CATALOG.crimfghtu.parent, 'crimfght.zip');

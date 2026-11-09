@@ -192,18 +192,6 @@
       }
     },
     {
-      "id": "nbajamgen",
-      "logo": {
-        "path": "art/con_nbajamgen_Logos.png",
-        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Logos/NBA%20Jam%20%28Japan%29.png",
-        "upstream": "Named_Logos/NBA Jam (USA, Europe).png",
-        "size": [
-          512,
-          256
-        ]
-      }
-    },
-    {
       "id": "contrahc",
       "logo": {
         "path": "art/con_contrahc_Logos.png",
@@ -1452,36 +1440,6 @@
       }
     },
     {
-      "id": "jamtegen",
-      "snap": {
-        "path": "art/con_jamtegen_Snaps.png",
-        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Snaps/NBA%20Jam%20-%20Tournament%20Edition%20%28World%29.png",
-        "upstream": "Named_Snaps/NBA Jam - Tournament Edition (World).png",
-        "size": [
-          320,
-          224
-        ]
-      },
-      "box": {
-        "path": "art/con_jamtegen_Boxarts.png",
-        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Boxarts/NBA%20Jam%20-%20Tournament%20Edition%20%28World%29.png",
-        "upstream": "Named_Boxarts/NBA Jam - Tournament Edition (World).png",
-        "size": [
-          479,
-          680
-        ]
-      },
-      "logo": {
-        "path": "art/con_jamtegen_Logos.png",
-        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Sega_-_Mega_Drive_-_Genesis/master/Named_Logos/NBA%20Jam%20-%20Tournament%20Edition%20%28World%29.png",
-        "upstream": "Named_Logos/NBA Jam - Tournament Edition (World).png",
-        "size": [
-          512,
-          256
-        ]
-      }
-    },
-    {
       "id": "mm2gen",
       "snap": {
         "path": "art/con_mm2gen_Snaps.png",
@@ -1958,36 +1916,6 @@
         "size": [
           512,
           283
-        ]
-      }
-    },
-    {
-      "id": "jamtesnes",
-      "snap": {
-        "path": "art/con_jamtesnes_Snaps.png",
-        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Snaps/NBA%20Jam%20-%20Tournament%20Edition%20%28USA%29.png",
-        "upstream": "Named_Snaps/NBA Jam - Tournament Edition (USA).png",
-        "size": [
-          256,
-          224
-        ]
-      },
-      "box": {
-        "path": "art/con_jamtesnes_Portrait.png",
-        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Boxarts/NBA%20Jam%20-%20Tournament%20Edition%20%28Japan%29%20%28En%29.png",
-        "upstream": "Named_Boxarts/NBA Jam - Tournament Edition (Japan) (En).png",
-        "size": [
-          423,
-          768
-        ]
-      },
-      "logo": {
-        "path": "art/con_jamtesnes_Logos.png",
-        "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Super_Nintendo_Entertainment_System/master/Named_Logos/NBA%20Jam%20-%20Tournament%20Edition%20%28Europe%29.png",
-        "upstream": "Named_Logos/NBA Jam - Tournament Edition (USA).png",
-        "size": [
-          406,
-          480
         ]
       }
     },

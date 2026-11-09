@@ -218,15 +218,6 @@
       "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
     },
     {
-      "id": "nbajamgen",
-      "url": "https://archive.org/download/sega-genesis-video-snaps/NBA%20Jam%20%28USA%2C%20Europe%29.mp4",
-      "collection": "https://archive.org/details/sega-genesis-video-snaps",
-      "source_file": "NBA Jam (USA, Europe).mp4",
-      "start_seconds": 0.5,
-      "duration_seconds": 25,
-      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
-    },
-    {
       "id": "contrahc",
       "url": "https://archive.org/download/sega-genesis-video-snaps/Contra%20-%20Hard%20Corps%20%28USA%2C%20Korea%29.mp4",
       "collection": "https://archive.org/details/sega-genesis-video-snaps",
@@ -695,15 +686,6 @@
       "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
     },
     {
-      "id": "jamtegen",
-      "url": "https://archive.org/download/sega-genesis-video-snaps/NBA%20Jam%20Tournament%20Edition%20%28World%29.mp4",
-      "collection": "https://archive.org/details/sega-genesis-video-snaps",
-      "source_file": "NBA Jam Tournament Edition (World).mp4",
-      "start_seconds": 0.5,
-      "duration_seconds": 25,
-      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
-    },
-    {
       "id": "mm2gen",
       "url": "https://archive.org/download/sega-genesis-video-snaps/Micro%20Machines%202%20-%20Turbo%20Tournament%20%28Europe%29.mp4",
       "collection": "https://archive.org/details/sega-genesis-video-snaps",
@@ -843,15 +825,6 @@
       "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/Super%20Bomberman%203%20%28Europe%29.mp4",
       "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
       "source_file": "Super Bomberman 3 (Europe).mp4",
-      "start_seconds": 0.5,
-      "duration_seconds": 25,
-      "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
-    },
-    {
-      "id": "jamtesnes",
-      "url": "https://archive.org/download/super-nintendo-entertainment-system-video-snaps/NBA%20Jam%20-%20Tournament%20Edition%20%28USA%29.mp4",
-      "collection": "https://archive.org/details/super-nintendo-entertainment-system-video-snaps",
-      "source_file": "NBA Jam - Tournament Edition (USA).mp4",
       "start_seconds": 0.5,
       "duration_seconds": 25,
       "encoding": "H.264 yuv420p / AAC stereo; 30fps; width <=480; 250ms fade through black at loop boundary"
