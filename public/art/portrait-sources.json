@@ -10,7 +10,11 @@
         "con_alttp_Portrait.png": "Zelda no Densetsu - Kamigami no Triforce (Japan).png",
         "con_sbomber_Portrait.png": "Super Bomberman (Japan).png",
         "con_contra3_Portrait.png": "Contra Spirits (Japan).png",
-        "con_tmnt4_Portrait.png": "Teenage Mutant Ninja Turtles - Turtles in Time (Japan).png"
+        "con_tmnt4_Portrait.png": "Teenage Mutant Ninja Turtles - Turtles in Time (Japan).png",
+        "con_kss_Portrait.png": "Hoshi no Kirby Super Deluxe (Japan).png",
+        "con_tattack_Portrait.png": "Panel de Pon (Japan).png",
+        "con_pocky_Portrait.png": "Kiki Kaikai - Nazo no Kuro Manteau (Japan).png",
+        "con_smk_Portrait.png": "Super Mario Kart (Japan).png"
       }
     },
     {
@@ -922,6 +926,69 @@
         "con_balatro_Logos.png": "https://shared.steamstatic.com/store_item_assets/steam/apps/2379780/logo.png"
       },
       "note": "Official Steam library capsule and logo for Balatro (LocalThunk / Playstack); the GBA demake has no box. Capsule cropped y 24-876 of 600x900 to 1.42 h/w and resized to 512x727; logo trimmed to its alpha bounds and resized to 512 wide. Snap is the demake's own title screen."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy_Advance/master/Named_Boxarts/WarioWare%2C%20Inc.%20-%20Mega%20Microgame%24%21%20%28USA%29.png",
+      "files": {
+        "con_wario_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy_Advance/master/Named_Boxarts/WarioWare%2C%20Inc.%20-%20Mega%20Microgame%24%21%20%28USA%29.png"
+      },
+      "note": "Original US front cover; square GBA box cropped past the spine to a 1.42 h/w front panel and scaled to 512x727"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy_Advance/master/Named_Boxarts/Metroid%20-%20Zero%20Mission%20%28USA%29.png",
+      "files": {
+        "con_mzm_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy_Advance/master/Named_Boxarts/Metroid%20-%20Zero%20Mission%20%28USA%29.png"
+      },
+      "note": "Original US front cover; square GBA box cropped past the spine to a 1.42 h/w front panel and scaled to 512x727"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy_Advance/master/Named_Boxarts/Castlevania%20-%20Aria%20of%20Sorrow%20%28USA%29.png",
+      "files": {
+        "con_aos_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy_Advance/master/Named_Boxarts/Castlevania%20-%20Aria%20of%20Sorrow%20%28USA%29.png"
+      },
+      "note": "Original US front cover; square GBA box cropped past the spine to a 1.42 h/w front panel and scaled to 512x727"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy_Advance/master/Named_Boxarts/Kirby%20-%20Nightmare%20in%20Dream%20Land%20%28USA%29.png",
+      "files": {
+        "con_kirbynidl_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Game_Boy_Advance/master/Named_Boxarts/Kirby%20-%20Nightmare%20in%20Dream%20Land%20%28USA%29.png"
+      },
+      "note": "Original US front cover; square GBA box cropped past the spine to a 1.42 h/w front panel and scaled to 512x727"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Super%20C%20%28USA%29.png",
+      "files": {
+        "con_superc_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Super%20C%20%28USA%29.png"
+      },
+      "note": "Original US front cover, uncropped"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Chip%20%27n%20Dale%20-%20Rescue%20Rangers%20%28USA%29.png",
+      "files": {
+        "con_chipdale_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Chip%20%27n%20Dale%20-%20Rescue%20Rangers%20%28USA%29.png"
+      },
+      "note": "Original US front cover, uncropped"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Blades%20of%20Steel%20%28USA%29.png",
+      "files": {
+        "con_blades_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Blades%20of%20Steel%20%28USA%29.png"
+      },
+      "note": "Original US front cover, uncropped"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Ice%20Hockey%20%28USA%29.png",
+      "files": {
+        "con_icehockey_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Ice%20Hockey%20%28USA%29.png"
+      },
+      "note": "Original US front cover, uncropped"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Bomberman%20II%20%28USA%29.png",
+      "files": {
+        "con_bomber2_Boxarts.png": "https://raw.githubusercontent.com/libretro-thumbnails/Nintendo_-_Nintendo_Entertainment_System/master/Named_Boxarts/Bomberman%20II%20%28USA%29.png"
+      },
+      "note": "Original US front cover, uncropped"
     }
   ],
   "crops": "Super Famicom covers (1.81 h/w) are cropped to 1.42 h/w to match the other systems' boxes and flyers: full width, vertical cut placed 60% of the way down the excess. scv4 and sunsetsnes are uncropped."

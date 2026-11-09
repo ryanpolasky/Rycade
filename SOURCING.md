@@ -166,6 +166,10 @@ All rows use digital controls; 0–3 independent action buttons except retained-
 | Final Fight 3 | 2 | `Final Fight 3 (USA).sfc` | Y: Attack; B: Jump; A: Special. Y attack, B jump, A special. Automatic/manual special setting changes combinations, not the three-button budget. |
 | Sunset Riders | 2 | `Sunset Riders (USA).sfc` | Y: Shoot; B: Jump; A: Slide. Y fire, B jump, A slide. START joins; the original Select pause function is not a required action. SNES port is two-player, not the arcade four-player game. |
 | Super Ghouls 'n Ghosts | 1 | `Super Ghouls 'N Ghosts (USA).sfc` | Y: Attack / Charge magic; B: Jump / Double jump; A: unused. Y attack/charge magic, B jump/double jump; third action unused. |
+| Kirby Super Star | 2 | `Kirby Super Star (USA).sfc` | Y: Inhale / attack; B: Jump; X: Make helper / drop ability. START sends L to guard, so there is no pause (pausing only shows move lists). Player 2 controls the helper. |
+| Tetris Attack | 2 | `Tetris Attack (USA) (En,Ja).sfc` | A: Swap; B: Swap / menu back; R: Raise stack. START pauses. Box art is the Japanese Panel de Pon cover of the same game. |
+| Pocky & Rocky | 2 | `Pocky & Rocky (USA).sfc` | Y: Rapid throw; B: Swat; X: Slide. START sends L to drop a bomb, so there is no pause. A (single throw) is covered by Y. Box art is the Japanese Kiki Kaikai cover. |
+| Super Mario Kart | 2 | `Super Mario Kart (USA).sfc` | B: Gas; R: Hop / power slide; A: Use item. Brake (Y) is dropped: let go of gas to slow down. START pauses. |
 
 ## NES
 
@@ -201,17 +205,25 @@ All rows use digital controls; 0–3 independent action buttons except retained-
 | Dr. Mario | 2 | `Dr. Mario (Japan, USA) (En).nes` | B: Rotate left; A: Rotate right; SEL: unused. Digital D-pad and the listed face actions; no multitap needed. |
 | Bubble Bobble | 2 | `Bubble Bobble (USA).nes` | B: Bubble; A: Jump; SEL: unused. Digital D-pad and the listed face actions; no multitap needed. |
 | Marralhinha Blitz | 4 | `Marralhinha Blitz.nes` | B: Cycle move; A: Roll / confirm; SEL: unused. Homebrew from ryanpolasky/MarralhinhaBlitz: download `blitz.nes` and rename it. Four players need the NES Four Score, which cab mode turns on for this game. |
+| Super C | 2 | `Super C (USA).nes` | B: Fire; A: Jump; SEL: unused. Digital D-pad and the listed face actions; no multitap needed. |
+| Chip 'n Dale Rescue Rangers | 2 | `Chip 'n Dale - Rescue Rangers (USA).nes` | B: Pick up / throw; A: Jump; SEL: unused. No multitap needed. |
+| Blades of Steel | 2 | `Blades of Steel (USA).nes` | B: Shoot / punch in fights; A: Pass / guard; SEL: unused (menus use SELECT; START advances). No multitap needed. |
+| Ice Hockey | 2 | `Ice Hockey (USA).nes` | B: Shoot (hold for power) / tap to pass; A: Check / fight; SEL: menu select. No multitap needed. |
+| Bomberman II | 3 | `Bomberman II (USA).nes` | B: Remote detonate; A: Bomb; SEL: unused. Three-player Battle Mode needs the NES Four Score, which cab mode turns on for this game. |
 
 ## GBA
 
 | Title | Players | Exact No-Intro filename | Controls / multiplayer notes |
 | --- | ---: | --- | --- |
 | Balatro | 1 | `Balatro.gba` | A: Pick card / confirm (hold + stick moves cards and jokers); L: Play hand / Sell joker; R: Discard. START sends B: deselect all, hold in the shop for joker descriptions. Free fan demake by GBALATRO: download `balatro-gba-v<version>.gba` from https://github.com/GBALATRO/balatro-gba/releases and save it as `Balatro.gba`. |
+| WarioWare, Inc. | 1 | `WarioWare, Inc. - Mega Microgame$! (USA).gba` | A: Action; B: Back; R: unused. Microgames only use the stick and A; START pauses. |
+| Metroid: Zero Mission | 1 | `Metroid - Zero Mission (USA).gba` | B: Shoot / charge (B in morph ball lays bombs); A: Jump; R: Hold to arm missiles (R + B in morph ball: power bomb). START sends Select to switch missiles / super missiles, so there is no pause map; L diagonal aim is dropped (aim with the stick while running). |
+| Castlevania: Aria of Sorrow | 1 | `Castlevania - Aria of Sorrow (USA).gba` | B: Attack (up + B: bullet soul); A: Jump; R: Guardian soul. START opens the status / soul menu. Select (map) and the few L ability souls are not mapped. |
+| Kirby: Nightmare in Dream Land | 1 | `Kirby - Nightmare in Dream Land (USA).gba` | B: Inhale / attack; A: Jump / float; button 3 sends Select to drop an ability. START pauses. L/R are unused in the main game. |
 
 ## New additions not retained
 
 - **Donkey Kong Country 2 (SNES)**: A team-up/split, B jump, Y run/attack/pick-up, X dismount, plus Select switching. Too many independent actions to preserve its full normal controls with this cabinet. The original Donkey Kong Country entry remains, as requested.
-- **Pocky & Rocky (SNES)**: projectile, melee, slide and bomb are four distinct actions (A/B/X plus L/R; Y also supplies rapid fire). It cannot fit all normal actions on three buttons without combos/macros, so it is omitted.
 - **Arch Rivals (arcade)**: the original `archrivl` uses 49-way sticks represented by analog X/Y inputs in [MAME's driver](https://github.com/mamedev/mame/blob/master/src/mame/bally/mcr68.cpp). This cabinet only has eight-way digital sticks. The eight-way bootleg is not substituted for the requested original.
 - All retained games have a real portrait and video. Super Bomberman 2/3 remain playable with an explicit **optional kick-stop limitation**, not advertised as having all SNES shortcuts. See their rows. No new analog, wheel, gun or trackball title was added.
 

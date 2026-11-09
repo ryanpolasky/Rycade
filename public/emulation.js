@@ -1176,6 +1176,97 @@
     "expected": "Balatro.gba",
     "core": "mgba",
     "parent": null
+  },
+  "wario": {
+    "sys": "GBA",
+    "dir": "gba",
+    "expected": "WarioWare, Inc. - Mega Microgame$! (USA).gba",
+    "core": "mgba",
+    "parent": null
+  },
+  "mzm": {
+    "sys": "GBA",
+    "dir": "gba",
+    "expected": "Metroid - Zero Mission (USA).gba",
+    "core": "mgba",
+    "parent": null
+  },
+  "aos": {
+    "sys": "GBA",
+    "dir": "gba",
+    "expected": "Castlevania - Aria of Sorrow (USA).gba",
+    "core": "mgba",
+    "parent": null
+  },
+  "kirbynidl": {
+    "sys": "GBA",
+    "dir": "gba",
+    "expected": "Kirby - Nightmare in Dream Land (USA).gba",
+    "core": "mgba",
+    "parent": null
+  },
+  "kss": {
+    "sys": "SNES",
+    "dir": "snes",
+    "expected": "Kirby Super Star (USA).sfc",
+    "core": "snes9x",
+    "parent": null
+  },
+  "tattack": {
+    "sys": "SNES",
+    "dir": "snes",
+    "expected": "Tetris Attack (USA) (En,Ja).sfc",
+    "core": "snes9x",
+    "parent": null
+  },
+  "pocky": {
+    "sys": "SNES",
+    "dir": "snes",
+    "expected": "Pocky & Rocky (USA).sfc",
+    "core": "snes9x",
+    "parent": null
+  },
+  "smk": {
+    "sys": "SNES",
+    "dir": "snes",
+    "expected": "Super Mario Kart (USA).sfc",
+    "core": "snes9x",
+    "parent": null
+  },
+  "superc": {
+    "sys": "NES",
+    "dir": "nes",
+    "expected": "Super C (USA).nes",
+    "core": "fceumm",
+    "parent": null
+  },
+  "chipdale": {
+    "sys": "NES",
+    "dir": "nes",
+    "expected": "Chip 'n Dale - Rescue Rangers (USA).nes",
+    "core": "fceumm",
+    "parent": null
+  },
+  "blades": {
+    "sys": "NES",
+    "dir": "nes",
+    "expected": "Blades of Steel (USA).nes",
+    "core": "fceumm",
+    "parent": null
+  },
+  "icehockey": {
+    "sys": "NES",
+    "dir": "nes",
+    "expected": "Ice Hockey (USA).nes",
+    "core": "fceumm",
+    "parent": null
+  },
+  "bomber2": {
+    "sys": "NES",
+    "dir": "nes",
+    "expected": "Bomberman II (USA).nes",
+    "core": "fceumm",
+    "parent": null
   }
 };
   const DEFAULT_CORES = {"ARCADE":"mame2003_plus","GENESIS":"genesis_plus_gx","SNES":"snes9x","NES":"fceumm","GBA":"mgba"};

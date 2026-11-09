@@ -23,12 +23,15 @@ async function resolve(id, title, listing, overrides) {
 }
 
 test('catalog maps every sourced title, including Marralhinha Blitz and Balatro', () => {
-  assert.equal(Object.keys(ROM_CATALOG).length, 168);
+  assert.equal(Object.keys(ROM_CATALOG).length, 181);
   assert.equal(ROM_CATALOG.yoshi.expected, "Super Mario World 2 - Yoshi's Island (USA).sfc");
   assert.equal(ROM_CATALOG.sonic2.expected, 'Sonic The Hedgehog 2 (World).md');
   assert.equal(ROM_CATALOG.crimfghtu.parent, 'crimfght.zip');
   assert.equal(ROM_CATALOG.mblitz.expected, 'Marralhinha Blitz.nes');
   assert.deepEqual(ROM_CATALOG.balatro, { sys: 'GBA', dir: 'gba', expected: 'Balatro.gba', core: 'mgba', parent: null });
+  assert.equal(ROM_CATALOG.wario.expected, 'WarioWare, Inc. - Mega Microgame$! (USA).gba');
+  assert.equal(ROM_CATALOG.kss.expected, 'Kirby Super Star (USA).sfc');
+  assert.equal(ROM_CATALOG.bomber2.expected, 'Bomberman II (USA).nes');
 });
 
 test('exact and case-insensitive filename matching', async () => {
