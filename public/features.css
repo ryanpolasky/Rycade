@@ -1347,6 +1347,10 @@ body[data-theme="cover-flow"] #attract-overlay::after {
   transition: opacity .18s;
 }
 
+.roulette[hidden] {
+  display: none;
+}
+
 .roulette.visible {
   opacity: 1;
 }
