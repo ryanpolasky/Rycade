@@ -7,6 +7,7 @@ const {
   CORE_OPTIONS,
   BOOT_FRAMES,
   bootSkipFrames,
+  shaderOption,
   clearSavedMute,
   RETRO_REMAPS,
   orderPads,
@@ -441,4 +442,9 @@ test("Dragon's Lair DirkSimple engine runs attract mode, starts game, and proces
   assert.equal(engine.getState().sceneName, 'introduction');
   assert.equal(engine.getState().lives, 5);
   assert.ok(sounds.includes('coinslot'));
+});
+
+test('game CRT uses the bundled easymode shader and can be switched off', () => {
+  assert.equal(shaderOption(true), 'crt-easymode.glslp');
+  assert.equal(shaderOption(false), 'disabled');
 });

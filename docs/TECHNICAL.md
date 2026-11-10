@@ -57,6 +57,7 @@ Games run inside the page with a vendored [EmulatorJS](https://emulatorjs.org) 4
 ROMs are not in this repo. The player looks for them under `/roms/<arcade|genesis|snes|nes|gba>/` (it reads a JSON directory listing for each system), plus an optional `/roms/overrides.json` that maps a ROM filename to a different core. Name files by the MAME set or No-Intro name in [SOURCING.md](../SOURCING.md).
 
 - **Boot skip.** MAME games that show their own boot test or warning screen are fast-forwarded muted behind the loading cover (`bootSkipFrames`, 900 frames by default, per-game `BOOT_FRAMES`, 15 s cap).
+- **Game CRT.** Every game gets EmulatorJS's bundled `crt-easymode.glslp` shader, set in `EJS_onGameStart` so it overrides any per-game EmulatorJS settings saved earlier. Settings > Display > CRT in games turns it off (the menu passes `crt=0` to `play.html`).
 - **Input layouts.** `INPUT_LAYOUTS` / `CORE_OPTIONS` / `RETRO_REMAPS` in `public/play.js` handle twin-stick games, Q*bert's four-way rotation and NES Four Score titles.
 - **Profiles and saves.** Before a battery-save game (`SAVE_GAMES` in `public/profiles.js`), players pick initials, and each profile's SRAM is swapped in and out of `/data/saves/rycade/<profileId>/<gameId>.srm`.
 - **High scores.** `public/hiscores.js` decodes `.hi` / NVRAM tables for supported arcade games and queues new entries. Uploads carry only `{game, entries: [{initials, score}]}`.
