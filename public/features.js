@@ -12,7 +12,7 @@ const SEARCH_KEYS = [
 const SETTINGS_TABS = ['Display', 'Themes', 'Boot', 'Loading', 'Controls', 'Sound', 'Profiles', 'Remote', 'About'];
 const LOADING_STYLES = ['Credit', 'Channel', 'Self Test', 'Demo'];
 const DEFAULT_SETTINGS = {
-  display: { scanlines: true, backgroundArt: true, controls: true, clock: false },
+  display: { scanlines: true, gameCrt: true, backgroundArt: true, controls: true, clock: false },
   theme: 'Cover Flow',
   palette: 'Classic',
   boot: 'Insert Coin',
@@ -410,6 +410,7 @@ function renderDisplaySettings() {
     ['CRT filter', 'scanlines', settings.theme === 'Cover Flow'
       ? 'Scanlines and a soft glass vignette across the whole screen.'
       : 'Adds a soft raster to the snap monitor.'],
+    ...(window.rycadeCab ? [['CRT in games', 'gameCrt', 'Scanlines and a shadow mask over the game itself.']] : []),
     ['Background art', 'backgroundArt', 'Use the selected game flyer behind the cabinet.'],
     ['Show controls row', 'controls', 'Show controls available for the selected game.'],
     ['Clock in header', 'clock', 'Display the local time beside the wordmark.']

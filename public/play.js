@@ -25,6 +25,7 @@
     qbert: { 'mame2003-plus_four_way_emulation': 'enabled' }
   };
   const BOOT_FRAMES = {};
+  const GAME_SHADER = 'crt-easymode.glslp';
   const MAME_OPTIONS = {
     'mame2003-plus_autosave_hiscore': 'recursively',
     'mame2003-plus_skip_disclaimer': 'enabled',
@@ -33,6 +34,10 @@
 
   function bootSkipFrames(core, game) {
     return BOOT_FRAMES[game] ?? (core === 'mame2003_plus' ? 900 : 0);
+  }
+
+  function shaderOption(enabled) {
+    return enabled ? GAME_SHADER : 'disabled';
   }
 
   function clearSavedMute(storage) {
@@ -197,7 +202,7 @@
     };
   }
 
-  const api = { SYSTEM_BUTTONS, GAME_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, BOOT_FRAMES, bootSkipFrames, clearSavedMute, MAME_OPTIONS, RETRO_REMAPS, findHiscore, orderPads, createInputMapper, createProfileSaves };
+  const api = { SYSTEM_BUTTONS, GAME_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, BOOT_FRAMES, bootSkipFrames, shaderOption, clearSavedMute, MAME_OPTIONS, RETRO_REMAPS, findHiscore, orderPads, createInputMapper, createProfileSaves };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof window === 'undefined') return;
 
@@ -363,6 +368,13 @@
     clearTimeout(timeout);
     const emulator = window.EJS_emulator;
     manager = emulator && emulator.gameManager;
+    if (emulator) {
+      const shader = shaderOption(params.get('crt') !== '0');
+      try {
+        emulator.changeSettingOption('shader', shader);
+        emulator.enableShader(shader);
+      } catch {}
+    }
     if (profileId && manager) {
       try {
         const paths = Profiles.read(localStorage, Profiles.SAVE_PATHS_KEY, {});

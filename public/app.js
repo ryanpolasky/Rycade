@@ -521,7 +521,8 @@ async function launchCabGame(game, profile) {
       sys: rom.sys,
       game: game.id,
       players: String(game.players),
-      seat: String(window.rycadeMenuPads?.lastSeat() ?? 0)
+      seat: String(window.rycadeMenuPads?.lastSeat() ?? 0),
+      crt: window.rycadeFeatures?.settings.display.gameCrt === false ? '0' : '1'
     });
     if (profile) params.set('profile', profile.id);
     playFrame = document.createElement('iframe');
