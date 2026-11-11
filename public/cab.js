@@ -47,6 +47,7 @@
   function sleep() {
     window.rycadePlay?.exit();
     cab.asleep = true;
+    volumeBar.classList.remove('visible');
     window.rycadeAttract?.activity();
     window.rycadeFeatures?.closeBoot();
     window.rycadeFeatures?.closeOverlays();
@@ -98,8 +99,29 @@
   addEventListener('blur', () => clearTimeout(liveHold));
   addEventListener('resize', () => heal(3000));
 
+  const volumeBar = document.createElement('div');
+  volumeBar.className = 'cab-volume';
+  volumeBar.innerHTML = '<b>VOL</b><span></span><i></i>';
+  volumeBar.querySelector('span').append(...Array.from({ length: 16 }, () => document.createElement('u')));
+  let volumeTimer = null;
+
+  function showVolume(value) {
+    const level = value === 'none' ? null : Number(value);
+    volumeBar.style.setProperty('--sp', getComputedStyle(document.querySelector('#stage') || document.body).getPropertyValue('--sp') || '#f3eee6');
+    volumeBar.querySelectorAll('u').forEach((tick, index) => tick.classList.toggle('on', level !== null && index < level));
+    volumeBar.querySelector('i').textContent = level === null ? 'FIXED' : level ? String(level) : 'MUTE';
+    if (!volumeBar.isConnected) document.body.append(volumeBar);
+    volumeBar.classList.add('visible');
+    clearTimeout(volumeTimer);
+    volumeTimer = setTimeout(() => volumeBar.classList.remove('visible'), 1600);
+  }
+
   const power = new EventSource('/power/events');
   power.onmessage = event => {
+    if (event.data.startsWith('volume:')) {
+      if (!cab.asleep) showVolume(event.data.slice(7));
+      return;
+    }
     known = true;
     if (event.data === 'sleep') sleep();
     else if (event.data === 'wake') wake();

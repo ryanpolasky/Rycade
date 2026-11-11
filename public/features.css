@@ -465,6 +465,59 @@
   display: block;
 }
 
+.cab-volume {
+  position: fixed;
+  z-index: 1100;
+  bottom: 56px;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 24px;
+  transform: translate(-50%, 16px);
+  border: 2px solid var(--sp);
+  color: #fff;
+  background: rgba(10, 8, 13, .95);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, .6);
+  font: 800 25px/1 "Barlow Condensed", sans-serif;
+  letter-spacing: 1px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.cab-volume.visible {
+  transform: translate(-50%, 0);
+  opacity: 1;
+}
+
+.cab-volume b {
+  color: var(--sp);
+}
+
+.cab-volume span {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 28px;
+}
+
+.cab-volume u {
+  width: 10px;
+  height: 100%;
+  background: rgba(255, 255, 255, .14);
+}
+
+.cab-volume u.on {
+  background: var(--sp);
+}
+
+.cab-volume i {
+  min-width: 2.6em;
+  font-style: normal;
+  text-align: right;
+}
+
 :root {
   --fav-star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='1 1 22 21.1'%3E%3Cpath d='M12 1l3.4 7 7.6 1.1-5.5 5.4 1.3 7.6L12 18.5 5.2 22.1l1.3-7.6L1 9.1 8.6 8z'/%3E%3C/svg%3E");
 }

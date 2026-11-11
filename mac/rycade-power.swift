@@ -1,6 +1,8 @@
 // rycade-power: Rycade Cabinet F17/F18 (or POST /power/sleep) -> display wake/sleep, streamed to the frontend over SSE on 127.0.0.1:8788.
-// Also keeps a black backdrop over the desktop so a kiosk restart never shows the wallpaper.
+// Also keeps a black backdrop over the desktop so a kiosk restart never shows the wallpaper, and takes the
+// volume keys (with Accessibility) so the menu draws its own volume bar instead of the macOS one.
 import AppKit
+import CoreAudio
 import CoreGraphics
 import Foundation
 import IOKit.hid
@@ -51,7 +53,51 @@ func tidyKiosk(restart: Bool, auto: Bool) {
     run("/bin/launchctl", "kickstart", "-k", "gui/\(getuid())/com.rycade.kiosk")
 }
 
+func outputVolume(_ device: AudioObjectID, _ channel: UInt32, _ set: Float32? = nil) -> Float32? {
+    var address = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyVolumeScalar, mScope: kAudioDevicePropertyScopeOutput, mElement: channel)
+    var value = set ?? 0, size = UInt32(MemoryLayout<Float32>.size)
+    if set == nil { return AudioObjectGetPropertyData(device, &address, 0, nil, &size, &value) == noErr ? value : nil }
+    var settable: DarwinBoolean = false
+    guard AudioObjectIsPropertySettable(device, &address, &settable) == noErr, settable.boolValue else { return nil }
+    return AudioObjectSetPropertyData(device, &address, 0, nil, size, &value) == noErr ? value : nil
+}
+
+func stepVolume(_ delta: Int) {
+    var address = AudioObjectPropertyAddress(mSelector: kAudioHardwarePropertyDefaultOutputDevice, mScope: kAudioObjectPropertyScopeGlobal, mElement: kAudioObjectPropertyElementMain)
+    var device = AudioObjectID(0), size = UInt32(MemoryLayout<AudioObjectID>.size)
+    guard AudioObjectGetPropertyData(AudioObjectID(kAudioObjectSystemObject), &address, 0, nil, &size, &device) == noErr else { return }
+    let channels: [UInt32] = outputVolume(device, kAudioObjectPropertyElementMain) != nil ? [kAudioObjectPropertyElementMain] : [1, 2]
+    guard let current = outputVolume(device, channels[0]) else { return broadcast("volume:none") }
+    let level = max(0, min(16, Int((current * 16).rounded()) + delta))
+    for channel in channels { _ = outputVolume(device, channel, Float32(level) / 16) }
+    if level > 0 {
+        var mute = UInt32(0)
+        address = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyMute, mScope: kAudioDevicePropertyScopeOutput, mElement: kAudioObjectPropertyElementMain)
+        AudioObjectSetPropertyData(device, &address, 0, nil, UInt32(MemoryLayout<UInt32>.size), &mute)
+    }
+    broadcast("volume:\(level)")
+}
+
 if FileManager.default.fileExists(atPath: offFile) { sleepCab() }
+
+// NX_SYSDEFINED (14) subtype 8 carries media keys; NX_KEYTYPE_SOUND_UP/DOWN are 0/1. Swallowing them stops the macOS bezel.
+var volumeTap: CFMachPort?
+volumeTap = CGEvent.tapCreate(tap: .cgSessionEventTap, place: .headInsertEventTap, options: .defaultTap, eventsOfInterest: CGEventMask(1 << 14), callback: { _, type, event, _ in
+    if type == .tapDisabledByTimeout || type == .tapDisabledByUserInput {
+        if let tap = volumeTap { CGEvent.tapEnable(tap: tap, enable: true) }
+        return Unmanaged.passUnretained(event)
+    }
+    guard let media = NSEvent(cgEvent: event), media.subtype.rawValue == 8 else { return Unmanaged.passUnretained(event) }
+    let key = (media.data1 & 0xFFFF0000) >> 16, down = (media.data1 & 0xFF00) >> 8 == 0xA
+    guard key == 0 || key == 1 else { return Unmanaged.passUnretained(event) }
+    if down && !asleep { stepVolume(key == 0 ? 1 : -1) }
+    return nil
+}, userInfo: nil)
+if let tap = volumeTap {
+    CFRunLoopAddSource(CFRunLoopGetMain(), CFMachPortCreateRunLoopSource(kCFAllocatorDefault, tap, 0), .commonModes)
+} else {
+    FileHandle.standardError.write("rycade-power: no Accessibility permission, volume keys stay with macOS\n".data(using: .utf8)!)
+}
 
 let manager = IOHIDManagerCreate(kCFAllocatorDefault, IOOptionBits(kIOHIDOptionsTypeNone))
 IOHIDManagerSetDeviceMatchingMultiple(manager, [0x4004, 0x4005, 0x4006, 0x4007].map {
