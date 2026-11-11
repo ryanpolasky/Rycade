@@ -23,15 +23,35 @@ function setStatus(message, success = false) {
   status.classList.toggle('success', success);
 }
 
-function normalizeTitle(title) {
-  return title.replace(/^the\s+/i, '').toLowerCase();
+function normalizeSearch(value) {
+  const spaced = value.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  const withAnd = value.toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').trim();
+  return {
+    spaced,
+    withAnd,
+    compact: spaced.replace(/ /g, ''),
+    sortKey: spaced.replace(/^the /, '')
+  };
+}
+
+function matchesSearch(game, rawQuery) {
+  if (!rawQuery.trim()) return true;
+  const query = normalizeSearch(rawQuery);
+  if (!query.compact) return false;
+  const title = normalizeSearch(game.title);
+  const sys = game.sys.toLowerCase();
+  return title.spaced.includes(query.spaced) ||
+    title.withAnd.includes(query.withAnd) ||
+    title.sortKey.includes(query.sortKey || query.spaced) ||
+    title.compact.includes(query.compact) ||
+    sys.includes(query.spaced);
 }
 
 function renderGames() {
-  const query = searchInput.value.trim().toLowerCase();
+  const rawQuery = searchInput.value;
   const matches = GAMES
-    .filter(game => normalizeTitle(game.title).includes(query) || game.sys.toLowerCase().includes(query))
-    .sort((a, b) => normalizeTitle(a.title).localeCompare(normalizeTitle(b.title)));
+    .filter(game => matchesSearch(game, rawQuery))
+    .sort((a, b) => normalizeSearch(a.title).sortKey.localeCompare(normalizeSearch(b.title).sortKey));
   results.replaceChildren();
   if (!matches.length) {
     const empty = document.createElement('div');
@@ -44,7 +64,7 @@ function renderGames() {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'remote-game';
-    button.innerHTML = `<img src="/${game.box}" alt=""><span class="game-copy"><strong></strong><small></small></span><span class="send-mark" aria-hidden="true">›</span>`;
+    button.innerHTML = `<img src="/${game.box}" alt="" loading="lazy" decoding="async"><span class="game-copy"><strong></strong><small></small></span><span class="send-mark" aria-hidden="true">›</span>`;
     button.querySelector('strong').textContent = game.title;
     button.querySelector('small').textContent = game.sys;
     button.addEventListener('click', () => sendGame(game));

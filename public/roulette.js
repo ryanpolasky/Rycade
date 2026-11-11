@@ -113,5 +113,14 @@
     else if (key === '3' || key === 'r') spin();
   }, true);
 
-  window.rycadeRoulette = { open, active: () => !!run, tick: frame };
+  function dismiss() {
+    if (!run) return;
+    cancelAnimationFrame(run.raf);
+    run = null;
+    root.classList.remove('visible', 'landed');
+    root.hidden = true;
+    strip.replaceChildren();
+  }
+
+  window.rycadeRoulette = { open, close: dismiss, active: () => !!run, tick: frame };
 })();

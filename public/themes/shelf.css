@@ -191,6 +191,14 @@ body[data-theme="shelf"] #stage.is-empty .sh-browse {
   top: 260px;
 }
 
+body[data-theme="shelf"] #stage.is-empty .bg {
+  opacity: 0;
+}
+
+body[data-theme="shelf"] #stage.is-empty .sh-ledge > * {
+  visibility: hidden;
+}
+
 body[data-theme="shelf"] #stage.cf-collapsing .sh-browse {
   transition-delay: 220ms;
 }
@@ -565,10 +573,18 @@ body[data-theme="shelf"] .mq img {
   object-fit: contain;
 }
 
+body[data-theme="shelf"] #stage.is-fav .mq img {
+  max-width: 392px;
+}
+
 body[data-theme="shelf"] #mtext {
   max-width: 100%;
   padding: 0 0 4px;
   font-size: 50px;
+}
+
+body[data-theme="shelf"] #stage.is-fav #mtext {
+  max-width: calc(100% - 228px);
 }
 
 body[data-theme="shelf"] .cap {
@@ -723,7 +739,7 @@ body[data-theme="shelf"] .ctl > span {
   border: 2px solid var(--line);
   border-radius: 8px;
   background: rgba(4, 7, 22, .6);
-  grid-template-columns: 24px 1fr;
+  grid-template-columns: 24px minmax(0, 1fr);
 }
 
 body[data-theme="shelf"] .ctl i {

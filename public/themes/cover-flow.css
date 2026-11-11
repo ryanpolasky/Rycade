@@ -179,7 +179,8 @@ body[data-theme="cover-flow"] .cf-screen::after {
   transition: opacity 500ms ease;
 }
 
-body[data-theme="cover-flow"] #stage.cf-settled .cf-screen::after {
+body[data-theme="cover-flow"] #stage.cf-settled .cf-screen::after,
+body[data-theme="cover-flow"] #stage.is-empty .cf-screen::after {
   opacity: 0;
 }
 
@@ -358,9 +359,12 @@ body[data-theme="cover-flow"] .cf-reflect {
 }
 
 body[data-theme="cover-flow"] .cf-reflect img {
-  width: 100%;
-  height: 372px;
-  object-fit: cover;
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  width: calc(100% - 16px);
+  height: 356px;
+  object-fit: contain;
   filter: blur(2px);
 }
 
@@ -380,6 +384,10 @@ body[data-theme="cover-flow"] .cf-browse-meta {
 
 body[data-theme="cover-flow"] #stage.is-empty .cf-browse-meta {
   top: 330px;
+}
+
+body[data-theme="cover-flow"] #stage.is-empty .cf-scrollbar {
+  display: none;
 }
 
 body[data-theme="cover-flow"] #stage.cf-collapsing .cf-browse-meta {
@@ -577,10 +585,18 @@ body[data-theme="cover-flow"] .mq img {
   object-fit: contain;
 }
 
+body[data-theme="cover-flow"] #stage.is-fav .mq img {
+  max-width: 496px;
+}
+
 body[data-theme="cover-flow"] #mtext {
   max-width: 100%;
   padding: 0 0 6px;
   font-size: 24px;
+}
+
+body[data-theme="cover-flow"] #stage.is-fav #mtext {
+  max-width: calc(100% - 260px);
 }
 
 body[data-theme="cover-flow"] .cap {
@@ -663,6 +679,10 @@ body[data-theme="cover-flow"] #monitor {
   box-shadow: 0 0 0 4px #3a383f, 0 0 0 8px #000, 0 20px 50px rgba(0, 0, 0, .7);
 }
 
+body[data-theme="cover-flow"] #stage.hide-controls #monitor:not(.live) {
+  left: 568px;
+}
+
 body[data-theme="cover-flow"] #stage[data-has-logo="false"] #monitor,
 body[data-theme="cover-flow"] #stage[data-has-logo="false"] .ctl {
   top: 284px;
@@ -718,7 +738,7 @@ body[data-theme="cover-flow"] .ctl > span {
   column-gap: 12px;
   border: 3px solid #3a383f;
   background: #000;
-  grid-template-columns: 22px 1fr;
+  grid-template-columns: 22px minmax(0, 1fr);
 }
 
 body[data-theme="cover-flow"] .ctl i {
@@ -739,13 +759,12 @@ body[data-theme="cover-flow"] .ctl span > span {
 
 body[data-theme="cover-flow"] .ctl em {
   margin-top: 6px;
-  overflow: hidden;
   color: var(--ink);
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 700;
-  text-overflow: ellipsis;
+  line-height: 1.08;
   text-transform: uppercase;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 body[data-theme="cover-flow"] .letter {
@@ -968,11 +987,11 @@ body[data-theme="cover-flow"] .crt::after {
   }
 }
 
-body[data-theme="cover-flow"] #stage:has(.boot-screen.visible, .feature-overlay.visible .boot-options, .mon.live, .demo-overlay:not([hidden])) .crt-roll {
+body[data-theme="cover-flow"] #stage:has(.boot-screen.visible, .feature-overlay.visible .boot-options, .mon.live, .demo-overlay:not([hidden]), #attract-overlay:not([hidden]), .loading-screen:not([hidden])) .crt-roll {
   display: none;
 }
 
-body[data-theme="cover-flow"] #stage:has(.boot-screen.visible, .feature-overlay.visible .boot-options, .mon.live, .demo-overlay:not([hidden])) .crt::after {
+body[data-theme="cover-flow"] #stage:has(.boot-screen.visible, .feature-overlay.visible .boot-options, .mon.live, .demo-overlay:not([hidden]), #attract-overlay:not([hidden]), .loading-screen:not([hidden])) .crt::after {
   background: radial-gradient(ellipse 130% 140% at 50% 50%, transparent 55%, rgba(0, 0, 0, .22) 78%, rgba(0, 0, 0, .62) 100%);
 }
 

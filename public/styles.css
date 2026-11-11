@@ -1,3 +1,7 @@
+:root {
+  color-scheme: dark;
+}
+
 * {
   margin: 0;
   box-sizing: border-box;
@@ -364,10 +368,8 @@ body {
   .lr.on.is-marquee > .mq-txt,
   #title.is-marquee > .mq-txt,
   #mtext.is-marquee > .mq-txt,
-  .tv-osd-title b.is-marquee > .mq-txt,
   .cf-stage-title.is-marquee > .mq-txt,
-  .sh-title.is-marquee > .mq-txt,
-  .neo-slot.active .is-marquee > .mq-txt {
+  .sh-title.is-marquee > .mq-txt {
     animation: rycade-marquee var(--mq-dur, 6s) ease-in-out infinite;
   }
 }

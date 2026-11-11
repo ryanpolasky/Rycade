@@ -138,9 +138,17 @@ export class Room {
 
   webSocketMessage() {}
 
-  webSocketClose() {}
+  webSocketClose(ws, code, reason) {
+    try {
+      ws.close(code, reason);
+    } catch {}
+  }
 
-  webSocketError() {}
+  webSocketError(ws) {
+    try {
+      ws.close(1011, 'WebSocket error');
+    } catch {}
+  }
 }
 
 export class Scores {

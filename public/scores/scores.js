@@ -73,10 +73,13 @@
     const board = $('board');
     board.style.setProperty('--accent', game.color);
     const head = el('header', 'board-head');
-    const art = el('img', 'board-logo');
-    art.src = '/' + game.logo;
-    art.alt = game.title;
-    head.append(art, el('h1', 'board-title', game.title.toUpperCase()), el('p', 'board-meta', `${game.pub.toUpperCase()} ${game.year}`));
+    if (game.logo) {
+      const art = el('img', 'board-logo');
+      art.src = '/' + game.logo;
+      art.alt = game.title;
+      head.append(art);
+    }
+    head.append(el('h1', 'board-title', game.title.toUpperCase()), el('p', 'board-meta', `${game.pub.toUpperCase()} ${game.year}`));
     const list = el('ol', 'rows');
     if (rows.length) {
       list.append(Object.assign(el('li', 'row row-head'), { ariaHidden: 'true' }));
@@ -120,10 +123,14 @@
     ids.forEach((id, i) => {
       const game = byId.get(id);
       const tile = el('button', 'tile');
-      const art = el('img');
-      art.src = '/' + game.logo;
-      art.alt = game.title;
-      tile.append(art);
+      if (game.logo) {
+        const art = el('img');
+        art.src = '/' + game.logo;
+        art.alt = game.title;
+        tile.append(art);
+      } else {
+        tile.textContent = game.title.toUpperCase();
+      }
       tile.type = 'button';
       tile.dataset.game = id;
       tile.title = game.title;

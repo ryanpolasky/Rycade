@@ -30,8 +30,7 @@
 
   const art = [
     ...GAMES.flatMap(game => [game.box, game.logo, game.snap]),
-    ...['smw', 'dkc', 'smetroid', 'alttp', 'sbomber', 'contra3', 'tmnt4'].map(id => `art/con_${id}_Portrait.png`),
-    'boot/lights_screens.png', 'boot/boot_coin.gif', 'boot/boot_lights.gif', 'boot/boot_crt.gif'
+    'boot/lights_screens.png'
   ].filter(Boolean);
   const ready = pool(art, 6, pin).then(() => pool(GAMES.map(clipUrl), 4, hold));
 
@@ -51,6 +50,7 @@
     window.rycadeAttract?.activity();
     window.rycadeFeatures?.closeBoot();
     window.rycadeFeatures?.closeOverlays();
+    window.rycadeRoulette?.close();
     if (typeof closeDemo === 'function') closeDemo();
   }
 

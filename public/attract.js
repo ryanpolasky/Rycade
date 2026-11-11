@@ -17,7 +17,7 @@
     root.dataset.logo = game.logo ? 'true' : 'false';
     root.style.setProperty('--attract-tint', game.color || '#0c0b10');
     root.querySelector('.attract-title').textContent = game.title;
-    root.querySelector('.attract-players').textContent = game.players === 1 ? '1 PLAYER' : `1–${game.players} PLAYERS`;
+    root.querySelector('.attract-players').textContent = game.players === 1 ? '1 PLAYER' : `1-${game.players} PLAYERS`;
   }
 
   function reset() {
@@ -34,6 +34,7 @@
     video.pause();
     video.removeAttribute('src');
     video.load();
+    overlay.classList?.remove('playing');
     overlay.hidden = true;
     if (select && current) {
       if (barFocus) setBarFocus(false);
@@ -68,6 +69,7 @@
     }
     current = queue.pop();
     if (!current) return stop();
+    overlay.classList?.remove('playing');
     fill(overlay, current);
     overlay.querySelector('.attract-still').src = current.snap;
     const skip = () => {
@@ -79,6 +81,7 @@
       if (session !== clipSession) return;
       clearTimeout(loadTimer);
       failures = 0;
+      overlay.classList?.add('playing');
       loadTimer = setTimeout(skip, (Number.isFinite(video.duration) ? video.duration + 10 : 120) * 1000);
     };
     video.onerror = skip;

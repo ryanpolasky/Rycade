@@ -82,12 +82,12 @@ function favStar() {
   return star;
 }
 
-function flashToast(text, starred = false) {
+function flashToast(text, starred = false, duration = 1800) {
   const toast = document.querySelector('#remote-toast');
   toast.replaceChildren(...(starred ? [favStar()] : []), text);
   toast.classList.add('visible');
   clearTimeout(flashToast.timer);
-  flashToast.timer = setTimeout(() => toast.classList.remove('visible'), 1800);
+  flashToast.timer = setTimeout(() => toast.classList.remove('visible'), duration);
 }
 
 function toggleFavorite() {
@@ -133,7 +133,7 @@ function build(keepId) {
   const system = SYSTEMS[tab];
   view = GAMES
     .filter(game => inSystem(game, system))
-    .sort((a, b) => keyFor(a.title) < keyFor(b.title) ? -1 : 1);
+    .sort((a, b) => keyFor(a.title).localeCompare(keyFor(b.title)));
   const retainedIndex = keepId ? view.findIndex(game => game.id === keepId) : -1;
   index = retainedIndex >= 0 ? retainedIndex : 0;
   list.replaceChildren(...view.map((game, rowIndex) => {
@@ -186,33 +186,30 @@ function tagAspect(pair, img) {
   img.dataset.aspect = kind;
 }
 
+const TWIN_STICK_IDS = new Set(['robotron', 'smashtv']);
+
 function renderControls(game) {
   const controls = document.querySelector('#controls');
-  controls.replaceChildren(...game.ctl
-    .map((action, controlIndex) => action ? { action, controlIndex } : null)
-    .filter(Boolean)
-    .map(({ action, controlIndex }) => {
-      const item = document.createElement('span');
-      const dot = document.createElement('i');
-      dot.style.background = CONTROL_COLORS[controlIndex];
-      const label = document.createElement('span');
-      label.textContent = game.caps[controlIndex];
-      const hint = document.createElement('em');
-      hint.textContent = action.toLowerCase();
-      item.append(dot, label, document.createTextNode(' '), hint);
-      return item;
-    }));
-  if (game.start) {
+  const mapped = game.ctl
+    .map((action, controlIndex) => action ? { action, cap: game.caps[controlIndex], color: CONTROL_COLORS[controlIndex] } : null)
+    .filter(Boolean);
+  if (game.start) mapped.push({ action: game.start, cap: 'START', color: START_COLOR });
+  const entries = mapped.length ? mapped : [{
+    action: TWIN_STICK_IDS.has(game.id) ? 'move + fire' : 'move',
+    cap: TWIN_STICK_IDS.has(game.id) ? 'TWIN STICK' : 'STICK',
+    color: '#9aa0a8'
+  }];
+  controls.replaceChildren(...entries.map(({ action, cap, color }) => {
     const item = document.createElement('span');
     const dot = document.createElement('i');
-    dot.style.background = START_COLOR;
+    dot.style.background = color;
     const label = document.createElement('span');
-    label.textContent = 'START';
+    label.textContent = cap;
     const hint = document.createElement('em');
-    hint.textContent = game.start.toLowerCase();
+    hint.textContent = action.toLowerCase();
     item.append(dot, label, document.createTextNode(' '), hint);
-    controls.append(item);
-  }
+    return item;
+  }));
 }
 
 function place(instant = false) {
@@ -222,6 +219,7 @@ function place(instant = false) {
     stage.classList.remove('cf-settled');
     stage.classList.add('is-empty');
     layout(-1, null, view);
+    requestAnimationFrame(syncMarquees);
     return;
   }
   stage.classList.remove('is-empty');
@@ -412,8 +410,9 @@ function openDemo() {
   };
   demoVideo.onerror = unavailable;
   const sound = window.rycadeFeatures?.settings.sound;
+  const masterVolume = Number(sound?.master ?? 70);
   demoVideo.muted = Boolean(sound?.muted);
-  demoVideo.volume = (sound?.master ?? 70) / 100;
+  demoVideo.volume = Number.isFinite(masterVolume) ? Math.max(0, Math.min(1, masterVolume / 100)) : .7;
   demoVideo.src = window.rycadeCab?.clip(game) || game.video || `/videos/${game.id}.mp4`;
   demoVideo.play().catch(unavailable);
 }
@@ -445,7 +444,7 @@ function launch() {
   } catch {}
   closeDemo();
   release();
-  if (barFocus) setBarFocus(false);
+  if (barFocus) setBarFocus(false, true);
   renderDetail(game);
   if (window.rycadeSavePick && window.rycadeProfiles?.usesSaves(game.id)) {
     window.rycadeAudio?.play('open');
@@ -628,11 +627,12 @@ function pageTabs(direction) {
   showTabWindow();
 }
 
-function setBarFocus(on) {
+function setBarFocus(on, silent = false) {
+  if (on) release();
   barFocus = on;
   if (on) barIndex = tab + 1;
   stage.classList.toggle('bar-active', on);
-  window.rycadeAudio?.play(on ? 'open' : 'close');
+  if (!silent) window.rycadeAudio?.play(on ? 'open' : 'close');
   paintBar();
 }
 
@@ -648,7 +648,9 @@ function moveBar(direction) {
 function pressBar() {
   const tabIndex = barIndex - 1;
   if (tabIndex < 0 || tabIndex >= SYSTEMS.length) {
-    barItems()[barIndex]?.click();
+    const target = barItems()[barIndex];
+    setBarFocus(false, true);
+    target?.click();
     return;
   }
   changeTab(tabIndex);
@@ -656,7 +658,7 @@ function pressBar() {
 }
 
 function openRoulette() {
-  if (barFocus) setBarFocus(false);
+  if (barFocus) setBarFocus(false, true);
   release();
   const opened = window.rycadeRoulette?.open({
     games: view,
@@ -776,6 +778,8 @@ roster.addEventListener('click', event => {
   const rowIndex = Number(row.dataset.index);
   if (rowIndex === index) launch();
   else {
+    if (barFocus) setBarFocus(false, true);
+    window.rycadeAudio?.play('move');
     index = rowIndex;
     place();
   }

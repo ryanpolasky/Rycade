@@ -4,11 +4,6 @@ const THEME_IDS = new Map([
   ['Studio', 'studio']
 ]);
 
-const STUDIO_PORTRAITS = new Map(
-  ['smw', 'dkc', 'smetroid', 'alttp', 'sbomber', 'contra3', 'tmnt4']
-    .map(id => [id, `art/con_${id}_Portrait.png`])
-);
-
 const PALETTES = [
   { label: 'Classic', id: 'classic', colors: ['#ffd400', '#e4202a', '#6e070d'] },
   { label: 'Neon', id: 'neon', colors: ['#39f0ff', '#ff3fa4', '#5a0d3a'] },
@@ -209,7 +204,7 @@ function layout(index, game, games) {
   title.querySelector('.mq-txt > span').textContent = game ? game.title : 'NO FAVORITES YET';
   cf.querySelector('.cf-browse-meta p').textContent = game
     ? `${game.pub.toUpperCase()} · ${game.sys} · ${game.year} · ${playersLabel(game)}`
-    : 'PRESS F ON ANY GAME TO ADD IT HERE';
+    : 'PRESS PASS ON ANY GAME TO ADD IT HERE';
   cf.querySelector('.cf-count').textContent = `ROM ${String(index + 1).padStart(2, '0')}/${String(games.length).padStart(2, '0')}`;
   [...cf.querySelector('.cf-rail').children].forEach((pip, pipIndex) => {
     pip.className = pipIndex === index ? 'on' : pipIndex < index ? 'lit' : '';
@@ -245,7 +240,7 @@ function layoutStudio(surface, index, game, games) {
       card.className = 'st-card';
       card.dataset.id = item.id;
       card.innerHTML = `
-        <span class="st-art"><img src="${STUDIO_PORTRAITS.get(item.id) || item.box}" alt="" loading="lazy"><i aria-hidden="true">&#9829;</i></span>
+        <span class="st-art"><img src="${item.box}" alt=""><i aria-hidden="true">&#9829;</i></span>
         <strong></strong><small>${item.sys} / ${item.year}</small>
       `;
       card.querySelector('strong').textContent = item.title;
@@ -257,7 +252,7 @@ function layoutStudio(surface, index, game, games) {
       return card;
     }));
   }
-  const offset = Math.min(Math.max(0, index * 252 - 252), Math.max(0, games.length * 252 - 1172));
+  const offset = Math.min(Math.max(0, index * 252 - 252), Math.max(0, games.length * 252 - 1180));
   track.style.transform = `translateX(${-offset}px)`;
   [...track.children].forEach((card, cardIndex) => {
     card.classList.toggle('active', cardIndex === index);
@@ -346,6 +341,6 @@ function layoutShelf(surface, index, game, games) {
   title.querySelector('.mq-txt > span').textContent = game ? game.title : 'NO FAVORITES YET';
   wrap.querySelector('.sh-browse p').textContent = game
     ? `${game.pub.toUpperCase()} · ${game.sys} · ${game.year} · ${playersLabel(game)}`
-    : 'PRESS F ON ANY GAME TO ADD IT HERE';
+    : 'PRESS PASS ON ANY GAME TO ADD IT HERE';
   wrap.querySelector('.sh-count').textContent = `${String(index + 1).padStart(2, '0')} / ${String(games.length).padStart(2, '0')}`;
 }

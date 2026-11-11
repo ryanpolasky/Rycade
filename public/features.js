@@ -9,6 +9,13 @@ const SEARCH_KEYS = [
   'DEL',
   'DONE'
 ];
+const SEARCH_GRID = [
+  [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+  [10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+  [20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+  [30, 31, 32, 33, 34, 35, 36, 36, 36, 36],
+  [37, 37, 38, 38]
+];
 const SETTINGS_TABS = ['Display', 'Themes', 'Boot', 'Loading', 'Controls', 'Sound', 'Profiles', 'Remote', 'About'];
 const LOADING_STYLES = ['Credit', 'Channel', 'Self Test', 'Demo'];
 const DEFAULT_SETTINGS = {
@@ -25,6 +32,11 @@ const DEFAULT_SETTINGS = {
   remote: { enabled: true }
 };
 
+function clampPercent(value, fallback) {
+  const num = Number(value);
+  return Number.isFinite(num) ? Math.max(0, Math.min(100, Math.round(num))) : fallback;
+}
+
 function readSettings() {
   let saved = {};
   try {
@@ -32,6 +44,7 @@ function readSettings() {
   } catch {}
   if (!saved || typeof saved !== 'object' || Array.isArray(saved)) saved = {};
   const soundSettingsCurrent = saved.soundVersion === SOUND_SETTINGS_VERSION;
+  const rawSound = soundSettingsCurrent && saved.sound && typeof saved.sound === 'object' ? saved.sound : {};
   const next = {
     ...saved,
     display: { ...DEFAULT_SETTINGS.display, ...(saved.display || {}) },
@@ -42,9 +55,13 @@ function readSettings() {
     attractMinutes: [0, 1, 2, 5].includes(saved.attractMinutes) ? saved.attractMinutes : DEFAULT_SETTINGS.attractMinutes,
     sleepMinutes: [15, 30, 60, 120, 0].includes(saved.sleepMinutes) ? saved.sleepMinutes : DEFAULT_SETTINGS.sleepMinutes,
     controls: { ...DEFAULT_SETTINGS.controls, ...(saved.controls || {}) },
-    sound: soundSettingsCurrent
-      ? { ...DEFAULT_SETTINGS.sound, ...(saved.sound || {}) }
-      : { ...DEFAULT_SETTINGS.sound },
+    sound: {
+      master: clampPercent(rawSound.master, DEFAULT_SETTINGS.sound.master),
+      navigation: clampPercent(rawSound.navigation, DEFAULT_SETTINGS.sound.navigation),
+      confirm: clampPercent(rawSound.confirm, DEFAULT_SETTINGS.sound.confirm),
+      notifications: clampPercent(rawSound.notifications, DEFAULT_SETTINGS.sound.notifications),
+      muted: Boolean(rawSound.muted ?? DEFAULT_SETTINGS.sound.muted)
+    },
     soundSet: ['cabinet', 'chip', 'neo'].includes(saved.soundSet) ? saved.soundSet : DEFAULT_SETTINGS.soundSet,
     soundVersion: SOUND_SETTINGS_VERSION,
     remote: { ...DEFAULT_SETTINGS.remote, ...(saved.remote || {}) }
@@ -65,7 +82,6 @@ const searchResults = document.querySelector('#search-results');
 const settingsOverlay = document.querySelector('#settings-overlay');
 const settingsNav = document.querySelector('#settings-nav');
 const settingsContent = document.querySelector('#settings-content');
-const toast = document.querySelector('#remote-toast');
 const bootScreen = document.querySelector('#boot-screen');
 let searchOpen = false;
 let searchArea = 'results';
@@ -81,7 +97,6 @@ let remoteSocket = null;
 let remoteSocketGeneration = 0;
 let reconnectTimer = 0;
 let reconnectDelay = 1000;
-let toastTimer = 0;
 let bootOpen = false;
 let bootDismissKey = null;
 let bootReturnFocus = null;
@@ -144,6 +159,7 @@ function updateClock() {
 
 function closeOverlays() {
   window.rycadeSavePick?.close();
+  window.rycadeRoulette?.close();
   closeSearch();
   closeSettings();
 }
@@ -151,6 +167,7 @@ function closeOverlays() {
 function openSearch() {
   window.rycadeAttract.reset();
   if (launched || demoGame) return;
+  release();
   window.rycadeAudio?.play('open');
   closeSettings();
   searchOpen = true;
@@ -171,16 +188,34 @@ function closeSearch() {
   searchOverlay.setAttribute('aria-hidden', 'true');
 }
 
-function gameSearchKey(title) {
-  return title.replace(/^the\s+/i, '').toLowerCase();
+function normalizeSearch(value) {
+  const spaced = value.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  const withAnd = value.toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').trim();
+  return {
+    spaced,
+    withAnd,
+    compact: spaced.replace(/ /g, ''),
+    sortKey: spaced.replace(/^the /, '')
+  };
+}
+
+function matchesSearch(game, rawQuery) {
+  if (!rawQuery.trim()) return true;
+  const query = normalizeSearch(rawQuery);
+  if (!query.compact) return false;
+  const title = normalizeSearch(game.title);
+  const sys = game.sys.toLowerCase();
+  return title.spaced.includes(query.spaced) ||
+    title.withAnd.includes(query.withAnd) ||
+    title.sortKey.includes(query.sortKey || query.spaced) ||
+    title.compact.includes(query.compact) ||
+    sys.includes(query.spaced);
 }
 
 function updateSearchResults() {
-  const query = searchInput.value.trim().toLowerCase();
-  searchGames = GAMES.filter(game =>
-    gameSearchKey(game.title).includes(query) ||
-    game.sys.toLowerCase().includes(query)
-  ).sort((a, b) => gameSearchKey(a.title).localeCompare(gameSearchKey(b.title)));
+  const rawQuery = searchInput.value;
+  searchGames = GAMES.filter(game => matchesSearch(game, rawQuery))
+    .sort((a, b) => normalizeSearch(a.title).sortKey.localeCompare(normalizeSearch(b.title).sortKey));
   searchResultIndex = Math.min(searchResultIndex, Math.max(0, searchGames.length - 1));
   searchResults.replaceChildren();
   if (!searchGames.length) {
@@ -226,6 +261,7 @@ function selectGame(gameId) {
   window.rycadeAudio?.play('confirm');
   closeDemo();
   closeOverlays();
+  if (barFocus) setBarFocus(false, true);
   tab = 0;
   build(game.id);
 }
@@ -270,9 +306,8 @@ function moveSearchResult(delta) {
   searchResults.children[searchResultIndex]?.scrollIntoView({ block: 'nearest' });
 }
 
-function moveSearchKey(delta) {
-  const next = searchKeyIndex + delta;
-  if (next < 0 || next >= SEARCH_KEYS.length) return;
+function focusSearchKey(next) {
+  if (next < 0 || next >= SEARCH_KEYS.length || next === searchKeyIndex) return;
   window.rycadeAudio?.play('move');
   searchKeyIndex = next;
   updateSearchFocus();
@@ -282,6 +317,7 @@ function moveSearchKey(delta) {
 function openSettings() {
   window.rycadeAttract.reset();
   if (launched || demoGame) return;
+  release();
   window.rycadeAudio?.play('open');
   closeSearch();
   settingsOpen = true;
@@ -633,7 +669,8 @@ function renderSoundSettings() {
       input.dataset.pending = input.value;
       value.textContent = `${input.value}%`;
     });
-    input.addEventListener('pointerup', () => commitMixer(input));
+    input.addEventListener('change', () => commitMixer(input));
+    input.addEventListener('blur', () => commitMixer(input));
     input.addEventListener('pointercancel', () => {
       delete input.dataset.pending;
       input.value = settings.sound[key];
@@ -688,8 +725,9 @@ function renderRemoteSettings() {
   details.append(note);
   const qrHost = settingsContent.querySelector('#pairing-qr');
   if (settings.remote.enabled && window.qrcode) {
+    const origin = location.origin.startsWith('http') ? location.origin : 'https://arcade.ryanpolasky.com';
     const qr = qrcode(0, 'M');
-    qr.addData(`https://arcade.ryanpolasky.com/remote?code=${encodeURIComponent(getPairingCode())}`);
+    qr.addData(`${origin}/remote?code=${encodeURIComponent(getPairingCode())}`);
     qr.make();
     qrHost.innerHTML = qr.createImgTag(4, 4);
     const image = qrHost.querySelector('img');
@@ -787,11 +825,8 @@ function activateSetting() {
 }
 
 function setToast(game) {
-  clearTimeout(toastTimer);
-  toast.textContent = `FROM YOUR PHONE · ${game.title} · START TO PLAY`;
-  toast.classList.add('visible');
+  flashToast(`FROM YOUR PHONE · ${game.title} · START TO PLAY`, false, 5000);
   window.rycadeAudio?.play('notification');
-  toastTimer = setTimeout(() => toast.classList.remove('visible'), 5000);
 }
 
 function handleRemoteMessage(data) {
@@ -804,9 +839,14 @@ function handleRemoteMessage(data) {
   if (message.type !== 'open') return;
   const game = GAMES.find(item => item.id === message.gameId);
   if (!game) return;
-  if (window.rycadeAttract.activity()) return;
+  if (bootOpen) closeBoot();
+  if (loadingPreview) closeLoading();
+  if (launched) exitGame();
+  window.rycadeAttract.activity();
   closeDemo();
   closeOverlays();
+  release();
+  if (barFocus) setBarFocus(false, true);
   tab = 0;
   build(game.id);
   setToast(game);
@@ -855,13 +895,17 @@ function handleSearchKey(event) {
       searchArea = 'keyboard';
       updateSearchFocus();
       searchKeyboard.children[searchKeyIndex]?.focus();
-    } else if (searchKeyIndex % 10 > 0) {
-      moveSearchKey(-1);
+    } else {
+      const row = SEARCH_GRID.find(cells => cells.includes(searchKeyIndex));
+      const firstCol = row.indexOf(searchKeyIndex);
+      if (firstCol > 0) focusSearchKey(row[firstCol - 1]);
     }
   } else if (key === 'ArrowRight') {
     event.preventDefault();
-    if (searchArea === 'keyboard' && searchKeyIndex % 10 < 9 && searchKeyIndex + 1 < SEARCH_KEYS.length) {
-      moveSearchKey(1);
+    const row = SEARCH_GRID.find(cells => cells.includes(searchKeyIndex));
+    const lastCol = row.lastIndexOf(searchKeyIndex);
+    if (searchArea === 'keyboard' && lastCol + 1 < row.length) {
+      focusSearchKey(row[lastCol + 1]);
     } else {
       searchArea = 'results';
       updateSearchFocus();
@@ -870,7 +914,12 @@ function handleSearchKey(event) {
   } else if (key === 'ArrowUp' || key === 'ArrowDown') {
     event.preventDefault();
     if (searchArea === 'keyboard') {
-      moveSearchKey(key === 'ArrowDown' ? 10 : -10);
+      const rowIndex = SEARCH_GRID.findIndex(cells => cells.includes(searchKeyIndex));
+      const nextRow = SEARCH_GRID[rowIndex + (key === 'ArrowDown' ? 1 : -1)];
+      if (nextRow) {
+        const col = SEARCH_GRID[rowIndex].indexOf(searchKeyIndex);
+        focusSearchKey(nextRow[Math.min(col, nextRow.length - 1)]);
+      }
     } else {
       moveSearchResult(key === 'ArrowDown' ? 1 : -1);
     }
@@ -917,6 +966,7 @@ function handleSettingsKey(event) {
     } else {
       const actions = settingsActions();
       if (actions.length) {
+        window.rycadeAudio?.play('move');
         const step = key === 'ArrowDown' ? 1 : -1;
         settingsActionIndex = (settingsActionIndex + step + actions.length) % actions.length;
         refreshSettingsFocus();
