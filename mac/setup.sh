@@ -470,6 +470,7 @@ C
   cat > "$BIN/rycade-kiosk.tmp" <<K
 #!/bin/bash
 for _ in \$(seq 60); do nc -z 127.0.0.1 $PORT && break; sleep 1; done
+while ioreg -r -d 1 -c IODisplayWrangler 2>/dev/null | grep -q '"CurrentPowerState"=[0-3]'; do sleep 2; done
 modes=\$(displayplacer list 2>/dev/null)
 id=\$(awk '/^Persistent screen id:/ {print \$4; exit}' <<< "\$modes")
 grep -q "res:$CAB_MODE .*current mode" <<< "\$modes" || { grep -q "res:$CAB_MODE" <<< "\$modes" && displayplacer "id:\$id res:$CAB_MODE scaling:off origin:(0,0) degree:0"; }
