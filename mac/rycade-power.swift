@@ -1,4 +1,6 @@
 // rycade-power: Rycade Cabinet F17/F18 (or POST /power/sleep) -> display wake/sleep, streamed to the frontend over SSE on 127.0.0.1:8788.
+// Also keeps a black backdrop over the desktop so a kiosk restart never shows the wallpaper.
+import AppKit
 import CoreGraphics
 import Foundation
 import IOKit.hid
@@ -94,4 +96,15 @@ listener.start(queue: .main)
 Timer.scheduledTimer(withTimeInterval: 15, repeats: true) { _ in
     for c in clients { c.send(content: ": ping\n\n".data(using: .utf8), completion: .contentProcessed { _ in }) }
 }
-RunLoop.main.run()
+let app = NSApplication.shared
+app.setActivationPolicy(.accessory)
+let backdrop = NSWindow(contentRect: NSScreen.main?.frame ?? .zero, styleMask: .borderless, backing: .buffered, defer: false)
+backdrop.backgroundColor = .black
+backdrop.level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.desktopIconWindow)) + 1)
+backdrop.collectionBehavior = [.canJoinAllSpaces, .stationary, .ignoresCycle]
+backdrop.ignoresMouseEvents = true
+backdrop.orderFrontRegardless()
+NotificationCenter.default.addObserver(forName: NSApplication.didChangeScreenParametersNotification, object: nil, queue: .main) { _ in
+    if let frame = NSScreen.main?.frame { backdrop.setFrame(frame, display: true) }
+}
+app.run()
