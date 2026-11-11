@@ -81,6 +81,7 @@ func stepVolume(_ delta: Int) {
 if FileManager.default.fileExists(atPath: offFile) { sleepCab() }
 
 // NX_SYSDEFINED (14) subtype 8 carries media keys; NX_KEYTYPE_SOUND_UP/DOWN are 0/1. Swallowing them stops the macOS bezel.
+// While the cab is off a volume press wakes it like a button would, since the press wakes the display anyway.
 var volumeTap: CFMachPort?
 volumeTap = CGEvent.tapCreate(tap: .cgSessionEventTap, place: .headInsertEventTap, options: .defaultTap, eventsOfInterest: CGEventMask(1 << 14), callback: { _, type, event, _ in
     if type == .tapDisabledByTimeout || type == .tapDisabledByUserInput {
@@ -90,7 +91,7 @@ volumeTap = CGEvent.tapCreate(tap: .cgSessionEventTap, place: .headInsertEventTa
     guard let media = NSEvent(cgEvent: event), media.subtype.rawValue == 8 else { return Unmanaged.passUnretained(event) }
     let key = (media.data1 & 0xFFFF0000) >> 16, down = (media.data1 & 0xFF00) >> 8 == 0xA
     guard key == 0 || key == 1 else { return Unmanaged.passUnretained(event) }
-    if down && !asleep { stepVolume(key == 0 ? 1 : -1) }
+    if down && asleep { wakeCab() } else if down { stepVolume(key == 0 ? 1 : -1) }
     return nil
 }, userInfo: nil)
 if let tap = volumeTap {
