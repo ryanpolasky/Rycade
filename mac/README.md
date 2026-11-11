@@ -50,3 +50,5 @@ The kiosk opens `http://127.0.0.1:8787/?cab=1` (Caddy). `cab.js` then decodes an
 It's signed with a cab-local certificate in `~/Rycade/sign`, so its Input Monitoring permission survives rebuilds.
 
 Put ROMs in `~/Rycade/roms/{arcade,genesis,snes,nes}`; optional `~/Rycade/roms/overrides.json` maps a ROM filename to an EmulatorJS core. LIVE (F19) or Escape exits an in-page game back to the menu.
+
+Kiosk guard: holding LIVE for 1.5s outside a game closes overlays, dismisses on-screen notifications, parks the cursor in the corner, and restarts the kiosk if Chrome isn't fullscreen. The menu also checks fullscreen on its own after load, on wake and on resize, and restarts the kiosk (at most once per 10 minutes) if it's off.

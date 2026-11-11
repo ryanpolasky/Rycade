@@ -470,8 +470,9 @@ C
   cat > "$BIN/rycade-kiosk.tmp" <<K
 #!/bin/bash
 for _ in \$(seq 60); do nc -z 127.0.0.1 $PORT && break; sleep 1; done
-id=\$(displayplacer list 2>/dev/null | awk '/^Persistent screen id:/ {print \$4; exit}')
-displayplacer list 2>/dev/null | grep -q "res:$CAB_MODE" && displayplacer "id:\$id res:$CAB_MODE scaling:off origin:(0,0) degree:0"
+modes=\$(displayplacer list 2>/dev/null)
+id=\$(awk '/^Persistent screen id:/ {print \$4; exit}' <<< "\$modes")
+grep -q "res:$CAB_MODE .*current mode" <<< "\$modes" || { grep -q "res:$CAB_MODE" <<< "\$modes" && displayplacer "id:\$id res:$CAB_MODE scaling:off origin:(0,0) degree:0"; }
 osascript -l JavaScript -e 'ObjC.import("CoreGraphics"); var b = \$.CGDisplayBounds(\$.CGMainDisplayID()); \$.CGWarpMouseCursorPosition({x: b.size.width - 1, y: b.size.height - 1})' >/dev/null 2>&1
 exec "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \\
   --user-data-dir="$HOME_DIR/chrome" --kiosk --no-first-run --no-default-browser-check \\
