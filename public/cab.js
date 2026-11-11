@@ -59,6 +59,7 @@
     cab.asleep = false;
     booted = true;
     window.rycadeFeatures?.playBoot();
+    heal(4000);
   }
 
   function boot() {
@@ -67,6 +68,36 @@
     if (!cab.asleep) window.rycadeFeatures?.playBoot();
   }
 
+  const fullscreen = () => innerWidth >= screen.width && innerHeight >= screen.height;
+  const inGame = () => typeof launched !== 'undefined' && launched;
+  const kiosk = query => fetch(`/power/kiosk${query}`, { method: 'POST' }).catch(() => {});
+  let liveHold = null, healTimer = null;
+
+  function heal(delay) {
+    clearTimeout(healTimer);
+    healTimer = setTimeout(() => {
+      if (!cab.asleep && !inGame() && !fullscreen()) kiosk('?restart&auto');
+    }, delay);
+  }
+
+  function resetKiosk() {
+    window.rycadeFeatures?.closeOverlays();
+    if (typeof closeDemo === 'function') closeDemo();
+    window.rycadeAudio?.play('toggle');
+    kiosk(fullscreen() ? '' : '?restart');
+  }
+
+  addEventListener('keydown', event => {
+    if (event.key !== 'F19' || event.repeat || cab.asleep || inGame()) return;
+    clearTimeout(liveHold);
+    liveHold = setTimeout(resetKiosk, 1500);
+  }, true);
+  addEventListener('keyup', event => {
+    if (event.key === 'F19') clearTimeout(liveHold);
+  }, true);
+  addEventListener('blur', () => clearTimeout(liveHold));
+  addEventListener('resize', () => heal(3000));
+
   const power = new EventSource('/power/events');
   power.onmessage = event => {
     known = true;
@@ -74,5 +105,8 @@
     else if (event.data === 'wake') wake();
     boot();
   };
-  addEventListener('load', () => known ? boot() : setTimeout(boot, 3000), { once: true });
+  addEventListener('load', () => {
+    known ? boot() : setTimeout(boot, 3000);
+    heal(10000);
+  }, { once: true });
 })();
