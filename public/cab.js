@@ -101,8 +101,12 @@
 
   const volumeBar = document.createElement('div');
   volumeBar.className = 'cab-volume';
-  volumeBar.innerHTML = '<b>VOL</b><span></span><i></i>';
-  volumeBar.querySelector('span').append(...Array.from({ length: 16 }, () => document.createElement('u')));
+  volumeBar.innerHTML = '<b>VOLUME</b><span></span><i></i>';
+  volumeBar.querySelector('span').append(...Array.from({ length: 10 }, (_, index) => {
+    const tick = document.createElement('u');
+    tick.style.setProperty('--i', index);
+    return tick;
+  }));
   let volumeTimer = null;
 
   function showVolume(value) {

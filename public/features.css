@@ -468,19 +468,19 @@
 .cab-volume {
   position: fixed;
   z-index: 1100;
-  bottom: 56px;
+  bottom: 104px;
   left: 50%;
   display: flex;
   align-items: center;
-  gap: 18px;
-  padding: 14px 24px;
-  transform: translate(-50%, 16px);
-  border: 2px solid var(--sp);
-  color: #fff;
-  background: rgba(10, 8, 13, .95);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, .6);
-  font: 800 25px/1 "Barlow Condensed", sans-serif;
-  letter-spacing: 1px;
+  gap: 22px;
+  padding: 16px 22px;
+  transform: translate(-50%, 12px);
+  border: 2px solid #2c2933;
+  border-bottom: 3px solid var(--sp);
+  color: #f4f1ea;
+  background: linear-gradient(180deg, rgba(14, 13, 18, .97), rgba(3, 3, 5, .98));
+  box-shadow: 0 16px 50px rgba(0, 0, 0, .7);
+  font: 400 12px/1 "Press Start 2P", monospace;
   opacity: 0;
   pointer-events: none;
   transition: opacity 160ms ease, transform 160ms ease;
@@ -493,29 +493,33 @@
 
 .cab-volume b {
   color: var(--sp);
+  font-weight: 400;
+  letter-spacing: 2px;
 }
 
 .cab-volume span {
   display: flex;
   align-items: flex-end;
-  gap: 4px;
-  height: 28px;
+  gap: 5px;
+  height: 30px;
 }
 
 .cab-volume u {
-  width: 10px;
-  height: 100%;
-  background: rgba(255, 255, 255, .14);
+  width: 14px;
+  height: calc(8px + var(--i) * 2.4px);
+  background: #24212b;
 }
 
 .cab-volume u.on {
   background: var(--sp);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--sp) 45%, transparent);
 }
 
 .cab-volume i {
-  min-width: 2.6em;
+  min-width: 5em;
+  font-size: 14px;
   font-style: normal;
-  text-align: right;
+  text-align: center;
 }
 
 :root {

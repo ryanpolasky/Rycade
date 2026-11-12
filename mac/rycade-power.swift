@@ -68,8 +68,8 @@ func stepVolume(_ delta: Int) {
     guard AudioObjectGetPropertyData(AudioObjectID(kAudioObjectSystemObject), &address, 0, nil, &size, &device) == noErr else { return }
     let channels: [UInt32] = outputVolume(device, kAudioObjectPropertyElementMain) != nil ? [kAudioObjectPropertyElementMain] : [1, 2]
     guard let current = outputVolume(device, channels[0]) else { return broadcast("volume:none") }
-    let level = max(0, min(16, Int((current * 16).rounded()) + delta))
-    for channel in channels { _ = outputVolume(device, channel, Float32(level) / 16) }
+    let level = max(0, min(10, Int((current * 10).rounded()) + delta))
+    for channel in channels { _ = outputVolume(device, channel, Float32(level) / 10) }
     if level > 0 {
         var mute = UInt32(0)
         address = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyMute, mScope: kAudioDevicePropertyScopeOutput, mElement: kAudioObjectPropertyElementMain)
