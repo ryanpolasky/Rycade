@@ -21,6 +21,12 @@
   const PHYSICAL_BUTTONS = [0, 3, 1];
   const DIRECTION_IDS = { up: 4, down: 5, left: 6, right: 7 };
   const INPUT_LAYOUTS = { smashtv: 'twin', robotron: 'twin' };
+  const MAME2003_SETS = {
+    mjmw: 'arcade/moonwalk.zip',
+    moomesa: 'arcade/moo.zip',
+    spidman: 'arcade/spidey.zip',
+    rainbow: 'arcade/rainbow.zip'
+  };
   const CORE_OPTIONS = {
     qbert: { 'mame2003-plus_four_way_emulation': 'enabled' }
   };
@@ -202,7 +208,7 @@
     };
   }
 
-  const api = { SYSTEM_BUTTONS, GAME_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, CORE_OPTIONS, BOOT_FRAMES, bootSkipFrames, shaderOption, clearSavedMute, MAME_OPTIONS, RETRO_REMAPS, findHiscore, orderPads, createInputMapper, createProfileSaves };
+  const api = { SYSTEM_BUTTONS, GAME_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, MAME2003_SETS, CORE_OPTIONS, BOOT_FRAMES, bootSkipFrames, shaderOption, clearSavedMute, MAME_OPTIONS, RETRO_REMAPS, findHiscore, orderPads, createInputMapper, createProfileSaves };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof window === 'undefined') return;
 
@@ -294,9 +300,10 @@
     });
     return;
   }
+  const romFile = (core === 'mame2003_plus' && MAME2003_SETS[game]) || file;
   window.EJS_player = '#game';
-  window.EJS_gameUrl = '/roms/' + file.split('/').map(encodeURIComponent).join('/');
-  window.EJS_gameName = file.split('/').pop();
+  window.EJS_gameUrl = '/roms/' + romFile.split('/').map(encodeURIComponent).join('/');
+  window.EJS_gameName = romFile.split('/').pop();
   window.EJS_core = core;
   window.EJS_pathtodata = '/vendor/emulatorjs/data/';
   window.EJS_startOnLoaded = true;
