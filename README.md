@@ -24,6 +24,8 @@ Rycade lives inside an Arcade1Up NBA Jam cabinet with the stock Android board pu
 
 Every game has its real flyer or box art, its marquee logo, and a gameplay clip pulled from archive.org video-snap sets. Super Famicom covers and Japanese flyers stay in where they're the best art available.
 
+Wellspring, my own portrait well-diver, is the one game that isn't emulated: its web build sits in `public/games/wellspring/` (refresh it with `npm run build:rycade` in the Wellspring repo) and gets the cab sticks as standard gamepads.
+
 ## Three looks
 
 | Cover Flow | Shelf | Studio |

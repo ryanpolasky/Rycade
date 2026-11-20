@@ -171,6 +171,18 @@
     return { poll, release };
   }
 
+  function standardPads(pads) {
+    return expandPads(pads).map(pad => {
+      if (!pad || typeof pad.id !== 'string' || !/Rycade P[1-4]\b/.test(pad.id)) return pad;
+      const buttons = Array.from({ length: 17 }, () => ({ pressed: false, touched: false, value: 0 }));
+      [[3, 0], [1, 1], [0, 2], [6, 9]].forEach(([from, to]) => {
+        const pressed = buttonDown(pad.buttons[from]);
+        buttons[to] = { pressed, touched: pressed, value: pressed ? 1 : 0 };
+      });
+      return { ...pad, mapping: 'standard', axes: [pad.axes[0] || 0, pad.axes[1] || 0, 0, 0], buttons };
+    });
+  }
+
   const Profiles = typeof module !== 'undefined' && module.exports ? require('./profiles.js') : root.rycadeProfiles;
 
   function exists(FS, path) {
@@ -215,7 +227,7 @@
     };
   }
 
-  const api = { SYSTEM_BUTTONS, GAME_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, MAME2003_SETS, CORE_OPTIONS, BOOT_FRAMES, bootSkipFrames, shaderOption, clearSavedMute, restoreVolumeTarget, MAME_OPTIONS, RETRO_REMAPS, findHiscore, orderPads, createInputMapper, createProfileSaves };
+  const api = { SYSTEM_BUTTONS, GAME_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, MAME2003_SETS, CORE_OPTIONS, BOOT_FRAMES, bootSkipFrames, shaderOption, clearSavedMute, restoreVolumeTarget, MAME_OPTIONS, RETRO_REMAPS, findHiscore, orderPads, standardPads, createInputMapper, createProfileSaves };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof window === 'undefined') return;
 
@@ -234,6 +246,7 @@
   let cabVolume = 1;
   let skipActive = false;
   let dlairPlayer = null;
+  let webFrame = null;
   let timeout;
   let saves = null;
   if (cabMode) {
@@ -242,6 +255,7 @@
   function applyCabVolume() {
     if (!cabMode) return;
     try { dlairPlayer?.setVolume(cabVolume); } catch {}
+    try { webFrame?.contentWindow?.postMessage({ type: 'wellspring-volume', volume: cabVolume }, location.origin); } catch {}
     if (skipActive) return;
     const emulator = window.EJS_emulator;
     if (emulator && typeof emulator.setVolume === 'function') {
@@ -284,6 +298,44 @@
   window.addEventListener('error', event => fail(event.message), true);
   window.addEventListener('unhandledrejection', event => fail(String(event.reason || 'Emulator failed')));
   timeout = window.setTimeout(() => fail('Emulator timed out'), 60000);
+  if (core === 'web') {
+    if (!/^\/games\/[\w-]+\/$/.test(file)) {
+      fail('Game not found');
+      return;
+    }
+    webFrame = document.createElement('iframe');
+    webFrame.allow = 'autoplay; gamepad';
+    webFrame.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;border:0;background:#000';
+    webFrame.addEventListener('load', () => {
+      const inner = webFrame.contentWindow;
+      try {
+        inner.navigator.getGamepads = () => standardPads(pads());
+        const style = inner.document.createElement('style');
+        style.textContent = '*,::before,::after{cursor:none!important}';
+        inner.document.head.appendChild(style);
+        inner.addEventListener('keydown', event => {
+          if (event.key !== 'F19') return;
+          event.preventDefault();
+          post('exit');
+        }, true);
+      } catch {
+        fail('Game unavailable');
+        return;
+      }
+      started = true;
+      clearTimeout(timeout);
+      applyCabVolume();
+      post('started');
+    }, { once: true });
+    webFrame.src = file;
+    document.querySelector('#game').appendChild(webFrame);
+    window.addEventListener('message', event => {
+      if (event.origin !== location.origin) return;
+      if (event.data?.type === 'rycade-save') post('saved');
+      if (event.data?.type === 'wellspring-ready' && event.source === webFrame.contentWindow) applyCabVolume();
+    });
+    return;
+  }
   if (game === 'dlair' || core === 'dirksimple' || /\.mp4$/i.test(file)) {
     const videoPath = /\.mp4$/i.test(file) ? file : (file ? file.replace(/\.[^./]+$/, '') + '.mp4' : 'arcade/dlair.mp4');
     const videoUrl = '/roms/' + videoPath.split('/').map(encodeURIComponent).join('/');
