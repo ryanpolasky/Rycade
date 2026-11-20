@@ -120,7 +120,7 @@
   function updateDeckWarning() {
     const pads = typeof navigator.getGamepads === 'function' ? navigator.getGamepads() : [];
     const decision = DeckStatus.deckWarningState(pads, Date.now(), deckStatus);
-    deckStatus = { missingSince: decision.missingSince, noLinksSince: decision.noLinksSince };
+    deckStatus = decision;
     deckWarning.classList.toggle('visible', decision.show);
   }
 

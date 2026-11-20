@@ -95,7 +95,12 @@ uint16_t tud_hid_get_report_cb(uint8_t instance, uint8_t report_id, hid_report_t
         return 0u;
     }
 
-    player_states_to_report(player_states, link_has_valid_frame, &report);
+    const bool phase = ((to_ms_since_boot(get_absolute_time()) / 250u) & 1u) != 0u;
+    bool link_beat[RYCADE_LINK_COUNT];
+    for (uint8_t link = 0u; link < RYCADE_LINK_COUNT; ++link) {
+        link_beat[link] = link_has_valid_frame[link] && phase;
+    }
+    player_states_to_report(player_states, link_beat, &report);
     copy_length = reqlen < sizeof(report) ? reqlen : (uint16_t)sizeof(report);
     memcpy(buffer, &report, copy_length);
     return copy_length;
@@ -116,7 +121,7 @@ static bool states_equal(const struct player_state *left, const struct player_st
     return left->dirs == right->dirs && left->buttons == right->buttons;
 }
 
-static void send_changed_reports(void)
+static void send_changed_reports(uint32_t now_ms)
 {
     if (!usb_mounted) {
         return;
@@ -127,18 +132,21 @@ static void send_changed_reports(void)
         states_changed = states_changed ||
                          !states_equal(&player_states[player], &sent_states[player]);
     }
+    const bool phase = ((now_ms / 250u) & 1u) != 0u;
+    bool link_beat[RYCADE_LINK_COUNT];
     for (uint8_t link = 0u; link < RYCADE_LINK_COUNT; ++link) {
-        states_changed = states_changed || link_has_valid_frame[link] != sent_link_alive[link];
+        link_beat[link] = link_has_valid_frame[link] && phase;
+        states_changed = states_changed || link_beat[link] != sent_link_alive[link];
     }
     if (!states_changed || !tud_hid_n_ready(RYCADE_PLAYERS_HID_INSTANCE)) {
         return;
     }
 
     struct gamepad_report report;
-    player_states_to_report(player_states, link_has_valid_frame, &report);
+    player_states_to_report(player_states, link_beat, &report);
     if (tud_hid_n_report(RYCADE_PLAYERS_HID_INSTANCE, 0u, &report, sizeof(report))) {
         memcpy(sent_states, player_states, sizeof(sent_states));
-        memcpy(sent_link_alive, link_has_valid_frame, sizeof(sent_link_alive));
+        memcpy(sent_link_alive, link_beat, sizeof(sent_link_alive));
         player_report_sent = true;
     }
 }
@@ -532,7 +540,7 @@ int main(void)
         update_demo_states(now_ms);
 #endif
 
-        send_changed_reports();
+        send_changed_reports(now_ms);
         send_cabinet_reports(now_ms);
         gpio_put(PICO_DEFAULT_LED_PIN, usb_mounted || ((now_ms / 100u) & 1u) != 0u);
         sleep_ms(1u);
