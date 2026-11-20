@@ -511,7 +511,7 @@ async function launchCabGame(game, profile) {
   window.rycadeLoading?.show(game, window.rycadeFeatures?.settings.loading);
   try {
     await exiting;
-    const rom = await window.rycadeEmulation.resolveRom(game);
+    const rom = game.web ? { dir: '', filename: game.web, core: 'web', sys: game.sys } : await window.rycadeEmulation.resolveRom(game);
     if (session !== playSession || !launched) return;
     if (!rom || !rom.filename) {
       flashToast(`ROM not found: ${rom?.expected || game.title}`);
@@ -523,7 +523,7 @@ async function launchCabGame(game, profile) {
     }
     const layer = document.querySelector('#play-layer');
     const params = new URLSearchParams({
-      file: `${rom.dir}/${rom.filename}`,
+      file: rom.dir ? `${rom.dir}/${rom.filename}` : rom.filename,
       core: rom.core,
       sys: rom.sys,
       game: game.id,

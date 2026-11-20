@@ -1629,6 +1629,15 @@
       "start_seconds": 0.5,
       "duration_seconds": 25,
       "encoding": "H.264 yuv420p / AAC stereo; 30fps; native snap size; 250ms fade through black at loop boundary"
+    },
+    {
+      "id": "wellspring",
+      "url": "https://ws.ryanpolasky.com",
+      "collection": "https://github.com/ryanpolasky/Wellspring",
+      "source_file": "Real-time capture of the Wellspring renderer (seed 11), 160x288 canvas",
+      "start_seconds": 0,
+      "duration_seconds": 24.4,
+      "encoding": "H.264 yuv420p / AAC stereo; 30fps; 3x nearest-neighbor (480x864); title 0-6s cut to 14.5-33.5s; 250ms fade through black at loop boundary"
     }
   ]
 }

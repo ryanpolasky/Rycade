@@ -12,6 +12,7 @@ const {
   clearSavedMute,
   RETRO_REMAPS,
   orderPads,
+  standardPads,
   createInputMapper
 } = require('../public/play.js');
 
@@ -453,4 +454,12 @@ test("Dragon's Lair DirkSimple engine runs attract mode, starts game, and proces
 test('game CRT uses the bundled easymode shader and can be switched off', () => {
   assert.equal(shaderOption(true), 'crt-easymode.glslp');
   assert.equal(shaderOption(false), 'disabled');
+});
+
+test('cab seats reach web games as standard pads: SHOOT is A, PASS is B, TURBO is X, START is Start', () => {
+  const [p1, other] = standardPads([pad([3, 6], 'Rycade P1 (Vendor: cafe)'), pad([0], 'Xbox')]);
+  assert.equal(p1.mapping, 'standard');
+  assert.deepEqual(p1.buttons.map((b, i) => b.pressed ? i : -1).filter(i => i >= 0), [0, 9]);
+  assert.deepEqual(standardPads([pad([0, 1], 'Rycade P2')])[0].buttons.map((b, i) => b.pressed ? i : -1).filter(i => i >= 0), [1, 2]);
+  assert.equal(other.id, 'Xbox');
 });
