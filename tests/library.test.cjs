@@ -281,3 +281,82 @@ test('phone remote wakes attract mode, closes overlays/roulette, and selects the
   assert.equal(h.ctx.toasts.length, 1);
   assert.match(h.ctx.toasts[0].text, /Balatro/);
 });
+
+test('cab power EventSource reconnects after a 502 close and renders volume events', () => {
+  const sources = [];
+  const timers = new Map();
+  let nextTimer = 0;
+  function FakeEventSource(url) {
+    this.url = url;
+    this.readyState = 0;
+    this.closed = false;
+    sources.push(this);
+  }
+  FakeEventSource.CLOSED = 2;
+  FakeEventSource.prototype.close = function () { this.closed = true; this.readyState = 2; };
+
+  const body = makeElement();
+  body.append = (...items) => {
+    items.forEach(item => { item.isConnected = true; body.children.push(item); });
+  };
+  const stage = makeElement();
+  const created = [];
+  const doc = {
+    readyState: 'complete',
+    head: { insertAdjacentHTML() {} },
+    body,
+    querySelector: selector => selector === '#stage' ? stage : null,
+    createElement(tag) {
+      const el = makeElement();
+      el.tagName = tag.toUpperCase();
+      if (tag === 'div') {
+        const span = makeElement();
+        const label = makeElement();
+        el.querySelector = sel => sel === 'span' ? span : sel === 'i' ? label : makeElement();
+        el.querySelectorAll = sel => sel === 'u' ? span.children : [];
+        el._label = label;
+      }
+      created.push(el);
+      return el;
+    }
+  };
+  const ctx = {
+    GAMES: [],
+    URLSearchParams,
+    location: { search: '?cab=1' },
+    document: doc,
+    window: {},
+    innerWidth: 1280,
+    innerHeight: 960,
+    screen: { width: 1280, height: 960 },
+    Image: function () { this.decode = () => Promise.resolve(); },
+    fetch: () => Promise.resolve({ ok: false }),
+    URL: { createObjectURL: () => 'blob:x' },
+    getComputedStyle: () => ({ getPropertyValue: () => '#ffd21f' }),
+    EventSource: FakeEventSource,
+    addEventListener() {},
+    setTimeout: fn => { const id = ++nextTimer; timers.set(id, fn); return id; },
+    clearTimeout: id => timers.delete(id)
+  };
+  ctx.window = ctx;
+
+  runInNewContext(readFileSync(`${root}/public/cab.js`, 'utf8'), ctx);
+  assert.equal(sources.length, 1);
+
+  sources[0].readyState = FakeEventSource.CLOSED;
+  sources[0].onerror();
+  assert.equal(sources[0].closed, true);
+  assert.equal(timers.size, 1);
+
+  const retry = [...timers.values()][0];
+  timers.clear();
+  retry();
+  assert.equal(sources.length, 2);
+
+  sources[1].onmessage({ data: 'volume:7' });
+  const bar = body.children[0];
+  assert.ok(bar);
+  assert.equal(bar.classList.contains('visible'), true);
+  assert.equal(bar._label.textContent, '7');
+  assert.equal(bar.querySelectorAll('u').filter(u => u.classList.contains('on')).length, 7);
+});

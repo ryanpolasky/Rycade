@@ -120,17 +120,25 @@
     volumeTimer = setTimeout(() => volumeBar.classList.remove('visible'), 1600);
   }
 
-  const power = new EventSource('/power/events');
-  power.onmessage = event => {
-    if (event.data.startsWith('volume:')) {
-      if (!cab.asleep) showVolume(event.data.slice(7));
-      return;
-    }
-    known = true;
-    if (event.data === 'sleep') sleep();
-    else if (event.data === 'wake') wake();
-    boot();
-  };
+  function connectPower() {
+    const power = new EventSource('/power/events');
+    power.onmessage = event => {
+      if (event.data.startsWith('volume:')) {
+        if (!cab.asleep) showVolume(event.data.slice(7));
+        return;
+      }
+      known = true;
+      if (event.data === 'sleep') sleep();
+      else if (event.data === 'wake') wake();
+      boot();
+    };
+    power.onerror = () => {
+      if (power.readyState !== EventSource.CLOSED) return;
+      power.close();
+      setTimeout(connectPower, 2000);
+    };
+  }
+  connectPower();
   addEventListener('load', () => {
     known ? boot() : setTimeout(boot, 3000);
     heal(10000);
