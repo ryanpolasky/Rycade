@@ -1,5 +1,6 @@
 (() => {
   if (!new URLSearchParams(location.search).has('cab')) return;
+  const DeckStatus = window.rycadeDeckStatus;
   document.head.insertAdjacentHTML('beforeend', '<style>*, ::before, ::after { cursor: none !important; }</style>');
   const pinned = [];
   const clips = new Map();
@@ -108,6 +109,23 @@
     return tick;
   }));
   let volumeTimer = null;
+  const deckWarning = document.createElement('div');
+  deckWarning.className = 'cab-deck-warning';
+  deckWarning.setAttribute('role', 'status');
+  deckWarning.setAttribute('aria-live', 'assertive');
+  deckWarning.textContent = 'CONTROLS NOT RESPONDING \u2014 unplug the controller USB, wait 10 sec, plug back in';
+  document.body.append(deckWarning);
+  let deckStatus = {};
+
+  function updateDeckWarning() {
+    const pads = typeof navigator.getGamepads === 'function' ? navigator.getGamepads() : [];
+    const decision = DeckStatus.deckWarningState(pads, Date.now(), deckStatus);
+    deckStatus = { missingSince: decision.missingSince, noLinksSince: decision.noLinksSince };
+    deckWarning.classList.toggle('visible', decision.show);
+  }
+
+  updateDeckWarning();
+  setInterval(updateDeckWarning, 250);
 
   function showVolume(value) {
     const level = value === 'none' ? null : Number(value);

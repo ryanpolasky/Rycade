@@ -110,7 +110,7 @@ IOHIDManagerRegisterInputValueCallback(manager, { _, _, _, value in
     let page = Int(IOHIDElementGetUsagePage(element)), usage = Int(IOHIDElementGetUsage(element))
     if page == kHIDPage_KeyboardOrKeypad && usage == powerOff { sleepCab() }
     else if page == kHIDPage_KeyboardOrKeypad && usage == powerOn { wakeCab() }
-    else if page == kHIDPage_Button && asleep { wakeCab() }
+    else if page == kHIDPage_Button && asleep && usage != 29 && usage != 30 { wakeCab() }
 }, nil)
 IOHIDManagerScheduleWithRunLoop(manager, CFRunLoopGetMain(), CFRunLoopMode.defaultMode.rawValue)
 IOHIDManagerOpen(manager, IOOptionBits(kIOHIDOptionsTypeNone))

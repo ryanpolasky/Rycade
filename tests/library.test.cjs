@@ -285,7 +285,9 @@ test('phone remote wakes attract mode, closes overlays/roulette, and selects the
 test('cab power EventSource reconnects after a 502 close and renders volume events', () => {
   const sources = [];
   const timers = new Map();
+  const intervals = new Map();
   let nextTimer = 0;
+  let nextInterval = 0;
   function FakeEventSource(url) {
     this.url = url;
     this.readyState = 0;
@@ -326,6 +328,9 @@ test('cab power EventSource reconnects after a 502 close and renders volume even
     location: { search: '?cab=1' },
     document: doc,
     window: {},
+    rycadeDeckStatus: require('../public/cab-status.js'),
+    navigator: { getGamepads: () => [] },
+    setInterval: fn => { const id = ++nextInterval; intervals.set(id, fn); return id; },
     innerWidth: 1280,
     innerHeight: 960,
     screen: { width: 1280, height: 960 },
@@ -354,7 +359,7 @@ test('cab power EventSource reconnects after a 502 close and renders volume even
   assert.equal(sources.length, 2);
 
   sources[1].onmessage({ data: 'volume:7' });
-  const bar = body.children[0];
+  const bar = body.children.find(el => el.className === 'cab-volume');
   assert.ok(bar);
   assert.equal(bar.classList.contains('visible'), true);
   assert.equal(bar._label.textContent, '7');

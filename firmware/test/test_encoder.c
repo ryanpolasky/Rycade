@@ -226,7 +226,11 @@ static void test_gamepad_mapping(void)
     };
     struct gamepad_report report;
 
-    player_states_to_report(states, &report);
+    const bool links_down[RYCADE_LINK_COUNT] = {false, false};
+    const bool link_a_alive[RYCADE_LINK_COUNT] = {true, false};
+    const bool links_alive[RYCADE_LINK_COUNT] = {true, true};
+
+    player_states_to_report(states, links_down, &report);
     assert(sizeof(report) == 12u);
     assert(report.axes[0] == 0 && report.axes[1] == 0);
     assert(report.axes[2] == 127 && report.axes[3] == -127);
@@ -236,6 +240,10 @@ static void test_gamepad_mapping(void)
     assert(report.buttons[1] == 0xFFu);
     assert(report.buttons[2] == 0xFFu);
     assert(report.buttons[3] == 0x0Fu);
+    player_states_to_report(states, link_a_alive, &report);
+    assert(report.buttons[3] == 0x1Fu);
+    player_states_to_report(states, links_alive, &report);
+    assert(report.buttons[3] == 0x3Fu);
 }
 
 int main(void)

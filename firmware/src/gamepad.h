@@ -17,6 +17,7 @@ struct gamepad_report {
 void player_state_to_report(const struct player_state *state, uint8_t player,
                             struct gamepad_report *report);
 void player_states_to_report(const struct player_state states[RYCADE_PLAYER_COUNT],
+                             const bool link_alive[RYCADE_LINK_COUNT],
                              struct gamepad_report *report);
 
 #endif

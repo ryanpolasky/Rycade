@@ -44,6 +44,7 @@ void player_state_to_report(const struct player_state *state, uint8_t player,
 }
 
 void player_states_to_report(const struct player_state states[RYCADE_PLAYER_COUNT],
+                             const bool link_alive[RYCADE_LINK_COUNT],
                              struct gamepad_report *report)
 {
     if (states == NULL || report == NULL) {
@@ -53,5 +54,11 @@ void player_states_to_report(const struct player_state states[RYCADE_PLAYER_COUN
     memset(report, 0, sizeof(*report));
     for (uint8_t player = 0u; player < RYCADE_PLAYER_COUNT; ++player) {
         player_state_to_report(&states[player], player, report);
+    }
+    for (uint8_t link = 0u; link < RYCADE_LINK_COUNT; ++link) {
+        if (link_alive != NULL && link_alive[link]) {
+            const uint8_t bit = (uint8_t)(RYCADE_PLAYER_COUNT * 7u + link);
+            report->buttons[bit / 8u] |= (uint8_t)(1u << (bit % 8u));
+        }
     }
 }

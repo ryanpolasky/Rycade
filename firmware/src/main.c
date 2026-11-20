@@ -29,8 +29,14 @@
 
 static struct player_state player_states[RYCADE_PLAYER_COUNT];
 static struct player_state sent_states[RYCADE_PLAYER_COUNT];
+static bool sent_link_alive[RYCADE_LINK_COUNT];
 static bool player_report_sent;
 static bool usb_mounted;
+#if RYCADE_MODE_ENCODER
+static bool link_has_valid_frame[RYCADE_LINK_COUNT];
+#else
+static const bool link_has_valid_frame[RYCADE_LINK_COUNT] = {true, true};
+#endif
 static uint8_t cabinet_bits;
 static uint8_t cabinet_keys_report[3];
 static uint8_t cabinet_volume_report_bits;
@@ -89,7 +95,7 @@ uint16_t tud_hid_get_report_cb(uint8_t instance, uint8_t report_id, hid_report_t
         return 0u;
     }
 
-    player_states_to_report(player_states, &report);
+    player_states_to_report(player_states, link_has_valid_frame, &report);
     copy_length = reqlen < sizeof(report) ? reqlen : (uint16_t)sizeof(report);
     memcpy(buffer, &report, copy_length);
     return copy_length;
@@ -121,14 +127,18 @@ static void send_changed_reports(void)
         states_changed = states_changed ||
                          !states_equal(&player_states[player], &sent_states[player]);
     }
+    for (uint8_t link = 0u; link < RYCADE_LINK_COUNT; ++link) {
+        states_changed = states_changed || link_has_valid_frame[link] != sent_link_alive[link];
+    }
     if (!states_changed || !tud_hid_n_ready(RYCADE_PLAYERS_HID_INSTANCE)) {
         return;
     }
 
     struct gamepad_report report;
-    player_states_to_report(player_states, &report);
+    player_states_to_report(player_states, link_has_valid_frame, &report);
     if (tud_hid_n_report(RYCADE_PLAYERS_HID_INSTANCE, 0u, &report, sizeof(report))) {
         memcpy(sent_states, player_states, sizeof(sent_states));
+        memcpy(sent_link_alive, link_has_valid_frame, sizeof(sent_link_alive));
         player_report_sent = true;
     }
 }
@@ -433,7 +443,6 @@ static void encoder_pio_init(void)
 static void drain_encoder_rings(uint32_t now_ms)
 {
     static uint32_t last_valid_ms[RYCADE_LINK_COUNT];
-    static bool link_has_valid_frame[RYCADE_LINK_COUNT];
 
     for (uint8_t link = 0u; link < RYCADE_LINK_COUNT; ++link) {
         struct encoder_rx_ring *ring = &encoder_rx_rings[link];
