@@ -7,6 +7,7 @@ const {
   CORE_OPTIONS,
   BOOT_FRAMES,
   bootSkipFrames,
+  restoreVolumeTarget,
   shaderOption,
   clearSavedMute,
   RETRO_REMAPS,
@@ -361,6 +362,11 @@ test('MAME games skip boot frames with per-game overrides', () => {
   } finally {
     delete BOOT_FRAMES.galaga;
   }
+});
+
+test('cab volume overrides EmulatorJS volume only in cab mode', () => {
+  assert.equal(restoreVolumeTarget(0.8, true, 0.3), 0.3);
+  assert.equal(restoreVolumeTarget(0.8, false, 0.3), 0.8);
 });
 
 test('clearSavedMute clears only the saved mute flag', () => {

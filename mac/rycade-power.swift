@@ -2,7 +2,6 @@
 // Also keeps a black backdrop over the desktop so a kiosk restart never shows the wallpaper, and takes the
 // volume keys (with Accessibility) so the menu draws its own volume bar instead of the macOS one.
 import AppKit
-import CoreAudio
 import CoreGraphics
 import Foundation
 import IOKit.hid
@@ -11,6 +10,7 @@ import Network
 let powerOn = 0x6C, powerOff = 0x6D
 var asleep = false
 let offFile = NSHomeDirectory() + "/Rycade/off"
+let volumeFile = NSHomeDirectory() + "/Rycade/volume"
 var clients: [NWConnection] = []
 var lastHeal = Date.distantPast
 
@@ -53,28 +53,16 @@ func tidyKiosk(restart: Bool, auto: Bool) {
     run("/bin/launchctl", "kickstart", "-k", "gui/\(getuid())/com.rycade.kiosk")
 }
 
-func outputVolume(_ device: AudioObjectID, _ channel: UInt32, _ set: Float32? = nil) -> Float32? {
-    var address = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyVolumeScalar, mScope: kAudioDevicePropertyScopeOutput, mElement: channel)
-    var value = set ?? 0, size = UInt32(MemoryLayout<Float32>.size)
-    if set == nil { return AudioObjectGetPropertyData(device, &address, 0, nil, &size, &value) == noErr ? value : nil }
-    var settable: DarwinBoolean = false
-    guard AudioObjectIsPropertySettable(device, &address, &settable) == noErr, settable.boolValue else { return nil }
-    return AudioObjectSetPropertyData(device, &address, 0, nil, size, &value) == noErr ? value : nil
+func volumeLevel() -> Int {
+    guard let saved = try? String(contentsOfFile: volumeFile, encoding: .utf8),
+          let level = Int(saved.trimmingCharacters(in: .whitespacesAndNewlines)),
+          (0...10).contains(level) else { return 10 }
+    return level
 }
 
 func stepVolume(_ delta: Int) {
-    var address = AudioObjectPropertyAddress(mSelector: kAudioHardwarePropertyDefaultOutputDevice, mScope: kAudioObjectPropertyScopeGlobal, mElement: kAudioObjectPropertyElementMain)
-    var device = AudioObjectID(0), size = UInt32(MemoryLayout<AudioObjectID>.size)
-    guard AudioObjectGetPropertyData(AudioObjectID(kAudioObjectSystemObject), &address, 0, nil, &size, &device) == noErr else { return }
-    let channels: [UInt32] = outputVolume(device, kAudioObjectPropertyElementMain) != nil ? [kAudioObjectPropertyElementMain] : [1, 2]
-    guard let current = outputVolume(device, channels[0]) else { return broadcast("volume:none") }
-    let level = max(0, min(10, Int((current * 10).rounded()) + delta))
-    for channel in channels { _ = outputVolume(device, channel, Float32(level) / 10) }
-    if level > 0 {
-        var mute = UInt32(0)
-        address = AudioObjectPropertyAddress(mSelector: kAudioDevicePropertyMute, mScope: kAudioDevicePropertyScopeOutput, mElement: kAudioObjectPropertyElementMain)
-        AudioObjectSetPropertyData(device, &address, 0, nil, UInt32(MemoryLayout<UInt32>.size), &mute)
-    }
+    let level = max(0, min(10, volumeLevel() + delta))
+    try? "\(level)\n".write(toFile: volumeFile, atomically: true, encoding: .utf8)
     broadcast("volume:\(level)")
 }
 
@@ -131,6 +119,7 @@ listener.newConnectionHandler = { c in
         let head = "HTTP/1.1 200 OK\r\nContent-Type: text/event-stream\r\nCache-Control: no-cache\r\nConnection: keep-alive\r\n\r\nretry: 2000\n\ndata: \(asleep ? "sleep" : "wake")\n\n"
         c.send(content: head.data(using: .utf8), completion: .contentProcessed { _ in })
         clients.append(c)
+        c.send(content: "data: level:\(volumeLevel())\n\n".data(using: .utf8), completion: .contentProcessed { _ in })
     }
     c.stateUpdateHandler = { state in
         switch state {
