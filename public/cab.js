@@ -104,26 +104,42 @@
   addEventListener('blur', () => clearTimeout(liveHold));
   addEventListener('resize', () => heal(3000));
 
-  const volumeBar = document.createElement('div');
-  volumeBar.className = 'cab-volume';
-  volumeBar.innerHTML = '<b>VOLUME</b><span></span><i></i>';
-  volumeBar.querySelector('span').append(...Array.from({ length: 10 }, (_, index) => {
-    const tick = document.createElement('u');
-    tick.style.setProperty('--i', index);
-    return tick;
-  }));
+  const VOLUME_SPEAKER = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6h3l4-3v10l-4-3H2z"/><path class="wave" d="M11 5.5q2 2.5 0 5"/></svg>';
+
+  function volumeElement(style, level) {
+    const element = document.createElement('div');
+    element.className = 'cab-volume';
+    element.innerHTML = `${VOLUME_SPEAKER}<b>VOLUME</b><i></i><span></span><s><em></em></s>`;
+    element.querySelector('span').append(...Array.from({ length: 10 }, (_, index) => {
+      const tick = document.createElement('u');
+      tick.style.setProperty('--i', index);
+      return tick;
+    }));
+    paintVolume(element, style, level);
+    return element;
+  }
+
+  function paintVolume(element, style, level) {
+    element.dataset.style = String(style || 'Meter').toLowerCase();
+    element.style.setProperty('--sp', getComputedStyle(document.querySelector('#stage') || document.body).getPropertyValue('--sp') || '#f3eee6');
+    element.style.setProperty('--level', level / 10);
+    element.querySelectorAll('u').forEach((tick, index) => tick.classList.toggle('on', index < level));
+    element.querySelector('i').textContent = level ? String(level) : 'MUTE';
+  }
+
+  const volumeBar = volumeElement('Meter', 10);
   let volumeTimer = null;
 
   function showVolume(value) {
-    const level = Volume.parseCabLevel(value);
-    volumeBar.style.setProperty('--sp', getComputedStyle(document.querySelector('#stage') || document.body).getPropertyValue('--sp') || '#f3eee6');
-    volumeBar.querySelectorAll('u').forEach((tick, index) => tick.classList.toggle('on', index < level));
-    volumeBar.querySelector('i').textContent = level ? String(level) : 'MUTE';
+    paintVolume(volumeBar, window.rycadeFeatures?.settings.volumeStyle, Volume.parseCabLevel(value));
     if (!volumeBar.isConnected) document.body.append(volumeBar);
     volumeBar.classList.add('visible');
     clearTimeout(volumeTimer);
     volumeTimer = setTimeout(() => volumeBar.classList.remove('visible'), 1600);
   }
+
+  cab.volumeThumb = style => volumeElement(style, 7);
+  cab.previewVolume = () => showVolume(String(Math.round(cab.volume * 10)));
 
   function setVolumeLevel(value, show) {
     const level = Volume.parseCabLevel(value);
