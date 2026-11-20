@@ -330,7 +330,9 @@
     webFrame.src = file;
     document.querySelector('#game').appendChild(webFrame);
     window.addEventListener('message', event => {
-      if (event.origin === location.origin && event.data?.type === 'rycade-save') post('saved');
+      if (event.origin !== location.origin) return;
+      if (event.data?.type === 'rycade-save') post('saved');
+      if (event.data?.type === 'wellspring-ready' && event.source === webFrame.contentWindow) applyCabVolume();
     });
     return;
   }
