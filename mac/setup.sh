@@ -275,11 +275,13 @@ S
 }
 
 quiet_notifications() {
-  local f i=0 id flags
+  local f i=0 id flags alerts
+  alerts=$(ls -d "/Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/"*/"Helpers/Google Chrome Helper (Aperitif Alerts).app" 2>/dev/null | head -1)
+  [[ -n $alerts ]] && run /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "$alerts"
   f=$(mktemp)
   defaults export com.apple.ncprefs "$f" 2>/dev/null || { rm -f "$f"; return; }
   while id=$(plutil -extract "apps.$i.bundle-id" raw "$f" 2>/dev/null); do
-    if [[ $id == com.apple.BTMNotificationAgent || $id == _SYSTEM_CENTER_:com.apple.SoftwareUpdateNotification ]]; then
+    if [[ $id == com.apple.BTMNotificationAgent || $id == _SYSTEM_CENTER_:com.apple.SoftwareUpdateNotification || $id == com.google.Chrome || $id == com.google.Chrome.framework.AlertNotificationService ]]; then
       flags=$(plutil -extract "apps.$i.flags" raw "$f")
       if (( flags & 1 << 25 )); then
         run plutil -replace "apps.$i.flags" -integer $(( flags & ~(1 << 25) )) "$f"
@@ -389,6 +391,7 @@ CONF
 }
 
 sign_power() {
+  local target=${1:-$BIN/rycade-power}
   local kc=$SIGN/rycade-sign.keychain-db
   local hash=${SIGN_HASH:-}
   local keychains keychain rc=0
@@ -401,7 +404,7 @@ sign_power() {
   done < <(printf '%s\n' "$keychains" | sed -n 's/^[[:space:]]*"\(.*\)"[[:space:]]*$/\1/p')
   new_keychains=("${old_keychains[@]}" "$kc")
   run security list-keychains -d user -s "${new_keychains[@]}" || return $?
-  run codesign --force -s "$hash" -i com.rycade.power "$BIN/rycade-power" || rc=$?
+  run codesign --force -s "$hash" -i com.rycade.power "$target" || rc=$?
   if ! run security list-keychains -d user -s "${old_keychains[@]}"; then
     note "couldn't restore the user keychain search list"
   fi
@@ -470,11 +473,13 @@ C
   cat > "$BIN/rycade-kiosk.tmp" <<K
 #!/bin/bash
 for _ in \$(seq 60); do nc -z 127.0.0.1 $PORT && break; sleep 1; done
+[[ -x "$BIN/rycade-power" ]] && for _ in \$(seq 20); do nc -z 127.0.0.1 8788 && break; sleep 0.5; done
 while ioreg -r -d 1 -c IODisplayWrangler 2>/dev/null | grep -q '"CurrentPowerState"=[0-3]'; do sleep 2; done
 modes=\$(displayplacer list 2>/dev/null)
 id=\$(awk '/^Persistent screen id:/ {print \$4; exit}' <<< "\$modes")
 grep -q "res:$CAB_MODE .*current mode" <<< "\$modes" || { grep -q "res:$CAB_MODE" <<< "\$modes" && displayplacer "id:\$id res:$CAB_MODE scaling:off origin:(0,0) degree:0"; }
 osascript -l JavaScript -e 'ObjC.import("CoreGraphics"); var b = \$.CGDisplayBounds(\$.CGMainDisplayID()); \$.CGWarpMouseCursorPosition({x: b.size.width - 1, y: b.size.height - 1})' >/dev/null 2>&1
+killall NotificationCenter >/dev/null 2>&1
 exec "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \\
   --user-data-dir="$HOME_DIR/chrome" --kiosk --no-first-run --no-default-browser-check \\
   --autoplay-policy=no-user-gesture-required --noerrdialogs --disable-session-crashed-bubble --hide-crash-restore-bubble \\
@@ -489,25 +494,29 @@ K
   else chmod +x "$BIN/rycade-kiosk.tmp"; mv "$BIN/rycade-kiosk.tmp" "$BIN/rycade-kiosk"; fi
   agent com.rycade.kiosk "$BIN/rycade-kiosk"
 
-  local src=$APP/mac/rycade-power.swift stamp=$BIN/.rycade-power.sha
-  local was_signed=0 rebuilt=0
+  local src=$APP/mac/rycade-power.swift stamp=$BIN/.rycade-power.sha tmp=$BIN/rycade-power.tmp
+  local was_signed=0 rebuilt=0 staged=0
   [[ -x $BIN/rycade-power ]] && power_signed && was_signed=1
+  rm -f "$tmp"
   if [[ ! -x $BIN/rycade-power ]] || [[ $(shasum "$src" | cut -d' ' -f1) != $(cat "$stamp" 2>/dev/null) ]]; then
-    if run swiftc -O -o "$BIN/rycade-power" "$src"; then
-      shasum "$src" | cut -d' ' -f1 > "$stamp"
-      restart+=(com.rycade.power)
+    if run swiftc -O -o "$tmp" "$src"; then
       rebuilt=1
+      staged=1
     else note "rycade-power failed to compile, power slider won't sleep/wake"; fi
+  elif [[ -x $BIN/rycade-power ]] && ! power_signed; then
+    run cp "$BIN/rycade-power" "$tmp" && staged=1
   fi
-  if [[ -x $BIN/rycade-power ]] && { (( rebuilt )) || ! power_signed; }; then
-    if sign_identity && sign_power; then
-      (( rebuilt )) || restart+=(com.rycade.power)
+  if (( staged )); then
+    if sign_identity && sign_power "$tmp"; then
       if (( ! was_signed && ! DRY )); then
         note "rycade-power is now signed with the cab cert: re-add it once in Input Monitoring (− then +), later updates keep the permission"
       fi
     else
       note "couldn't sign rycade-power, Input Monitoring will need re-adding after each rebuild"
     fi
+    run mv "$tmp" "$BIN/rycade-power"
+    (( rebuilt && ! DRY )) && shasum "$src" | cut -d' ' -f1 > "$stamp"
+    restart+=(com.rycade.power)
   fi
   [[ -x $BIN/rycade-power ]] && agent com.rycade.power "$BIN/rycade-power"
   local label
