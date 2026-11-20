@@ -301,11 +301,16 @@ test('cab power EventSource reconnects after a 502 close and renders volume even
   };
   const stage = makeElement();
   const created = [];
+  const saved = new Map([['rycade.cabVolume', '3']]);
+  const volumeEvents = [];
+  const volumeMessages = [];
+  const frame = { contentWindow: { postMessage: (...message) => volumeMessages.push(message) } };
   const doc = {
     readyState: 'complete',
     head: { insertAdjacentHTML() {} },
     body,
     querySelector: selector => selector === '#stage' ? stage : null,
+    querySelectorAll: selector => selector === 'iframe' ? [frame] : [],
     createElement(tag) {
       const el = makeElement();
       el.tagName = tag.toUpperCase();
@@ -323,9 +328,16 @@ test('cab power EventSource reconnects after a 502 close and renders volume even
   const ctx = {
     GAMES: [],
     URLSearchParams,
-    location: { search: '?cab=1' },
+    location: { search: '?cab=1', origin: 'http://localhost' },
     document: doc,
     window: {},
+    rycadeVolume: require('../public/cab-volume.js'),
+    localStorage: {
+      getItem: key => saved.get(key) ?? null,
+      setItem: (key, value) => saved.set(key, value)
+    },
+    CustomEvent: function (type, init) { this.type = type; this.detail = init.detail; },
+    dispatchEvent: event => { volumeEvents.push(event); },
     innerWidth: 1280,
     innerHeight: 960,
     screen: { width: 1280, height: 960 },
@@ -342,6 +354,7 @@ test('cab power EventSource reconnects after a 502 close and renders volume even
 
   runInNewContext(readFileSync(`${root}/public/cab.js`, 'utf8'), ctx);
   assert.equal(sources.length, 1);
+  assert.equal(ctx.rycadeCab.volume, 0.3);
 
   sources[0].readyState = FakeEventSource.CLOSED;
   sources[0].onerror();
@@ -353,10 +366,23 @@ test('cab power EventSource reconnects after a 502 close and renders volume even
   retry();
   assert.equal(sources.length, 2);
 
+  sources[1].onmessage({ data: 'level:6' });
+  assert.equal(ctx.rycadeCab.volume, 0.6);
+  assert.equal(saved.get('rycade.cabVolume'), '6');
+  assert.equal(body.children.length, 0);
+  assert.deepEqual(volumeEvents.map(event => [event.type, event.detail]), [['rycade-volume', 0.6]]);
+  assert.equal(volumeMessages[0][0].type, 'rycade-volume');
+  assert.equal(volumeMessages[0][0].volume, 0.6);
+  assert.equal(volumeMessages[0][1], ctx.location.origin);
+
   sources[1].onmessage({ data: 'volume:7' });
   const bar = body.children[0];
   assert.ok(bar);
   assert.equal(bar.classList.contains('visible'), true);
   assert.equal(bar._label.textContent, '7');
   assert.equal(bar.querySelectorAll('u').filter(u => u.classList.contains('on')).length, 7);
+  assert.equal(ctx.rycadeCab.volume, 0.7);
+  assert.equal(saved.get('rycade.cabVolume'), '7');
+  assert.equal(volumeEvents.at(-1).detail, 0.7);
+  assert.equal(volumeMessages.at(-1)[0].volume, 0.7);
 });

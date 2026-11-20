@@ -295,23 +295,28 @@
 
   function createSynthSoundPlayer() {
     let ctx = null;
+    let master = null;
+    let volume = 1;
     function ensureContext() {
       if (!ctx && typeof AudioContext !== 'undefined') {
         ctx = new AudioContext();
+        master = ctx.createGain();
+        master.gain.value = volume;
+        master.connect(ctx.destination);
       }
       if (ctx && ctx.state === 'suspended') {
         ctx.resume().catch(() => {});
       }
       return ctx;
     }
-    return function playSound(name) {
+    function playSound(name) {
       const audio = ensureContext();
       if (!audio) return;
       const now = audio.currentTime;
       const osc = audio.createOscillator();
       const gain = audio.createGain();
       osc.connect(gain);
-      gain.connect(audio.destination);
+      gain.connect(master);
       if (name === 'accept') {
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(880, now);
@@ -337,7 +342,14 @@
         osc.start(now);
         osc.stop(now + 0.22);
       }
+    }
+    playSound.setVolume = value => {
+      const next = Number(value);
+      if (!Number.isFinite(next)) return;
+      volume = Math.max(0, Math.min(1, next));
+      if (ctx) master.gain.setTargetAtTime(volume, ctx.currentTime, .01);
     };
+    return playSound;
   }
 
   function mountDlairPlayer(options = {}) {
@@ -354,6 +366,14 @@
     container.replaceChildren(video, hud);
 
     const playSound = options.playSound || createSynthSoundPlayer();
+    function setVolume(value) {
+      const next = Number(value);
+      if (!Number.isFinite(next)) return;
+      const volume = Math.max(0, Math.min(1, next));
+      video.volume = volume;
+      playSound.setVolume?.(volume);
+    }
+    setVolume(options.volume ?? 1);
     let clipStartMs = 0;
     let clipStartWallMs = 0;
     let isSingleFrame = false;
@@ -495,6 +515,7 @@
 
     return {
       engine,
+      setVolume,
       stop() {
         stopped = true;
         video.pause();

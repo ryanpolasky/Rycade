@@ -1,5 +1,9 @@
 (() => {
   if (!new URLSearchParams(location.search).has('cab')) return;
+  const VOLUME_KEY = 'rycade.cabVolume';
+  const Volume = window.rycadeVolume;
+  let initialVolumeLevel = 10;
+  try { initialVolumeLevel = Volume.parseCabLevel(localStorage.getItem(VOLUME_KEY)); } catch {}
   document.head.insertAdjacentHTML('beforeend', '<style>*, ::before, ::after { cursor: none !important; }</style>');
   const pinned = [];
   const clips = new Map();
@@ -36,6 +40,7 @@
 
   const cab = {
     asleep: false,
+    volume: Volume.cabFactor(initialVolumeLevel),
     ready,
     sleep: () => fetch('/power/sleep', { method: 'POST' }).catch(() => {}),
     clip: game => clips.get(clipUrl(game))
@@ -99,32 +104,64 @@
   addEventListener('blur', () => clearTimeout(liveHold));
   addEventListener('resize', () => heal(3000));
 
-  const volumeBar = document.createElement('div');
-  volumeBar.className = 'cab-volume';
-  volumeBar.innerHTML = '<b>VOLUME</b><span></span><i></i>';
-  volumeBar.querySelector('span').append(...Array.from({ length: 10 }, (_, index) => {
-    const tick = document.createElement('u');
-    tick.style.setProperty('--i', index);
-    return tick;
-  }));
+  const VOLUME_SPEAKER = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6h3l4-3v10l-4-3H2z"/><path class="wave" d="M11 5.5q2 2.5 0 5"/></svg>';
+
+  function volumeElement(style, level) {
+    const element = document.createElement('div');
+    element.className = 'cab-volume';
+    element.innerHTML = `${VOLUME_SPEAKER}<b>VOLUME</b><i></i><span></span><s><em></em></s>`;
+    element.querySelector('span').append(...Array.from({ length: 10 }, (_, index) => {
+      const tick = document.createElement('u');
+      tick.style.setProperty('--i', index);
+      return tick;
+    }));
+    paintVolume(element, style, level);
+    return element;
+  }
+
+  function paintVolume(element, style, level) {
+    element.dataset.style = String(style || 'Meter').toLowerCase();
+    element.style.setProperty('--sp', getComputedStyle(document.querySelector('#stage') || document.body).getPropertyValue('--sp') || '#f3eee6');
+    element.style.setProperty('--level', level / 10);
+    element.querySelectorAll('u').forEach((tick, index) => tick.classList.toggle('on', index < level));
+    element.querySelector('i').textContent = level ? String(level) : 'MUTE';
+  }
+
+  const volumeBar = volumeElement('Meter', 10);
   let volumeTimer = null;
 
   function showVolume(value) {
-    const level = value === 'none' ? null : Number(value);
-    volumeBar.style.setProperty('--sp', getComputedStyle(document.querySelector('#stage') || document.body).getPropertyValue('--sp') || '#f3eee6');
-    volumeBar.querySelectorAll('u').forEach((tick, index) => tick.classList.toggle('on', level !== null && index < level));
-    volumeBar.querySelector('i').textContent = level === null ? 'FIXED' : level ? String(level) : 'MUTE';
+    paintVolume(volumeBar, window.rycadeFeatures?.settings.volumeStyle, Volume.parseCabLevel(value));
     if (!volumeBar.isConnected) document.body.append(volumeBar);
     volumeBar.classList.add('visible');
     clearTimeout(volumeTimer);
     volumeTimer = setTimeout(() => volumeBar.classList.remove('visible'), 1600);
   }
 
+  cab.volumeThumb = style => volumeElement(style, 7);
+  cab.previewVolume = () => showVolume(String(Math.round(cab.volume * 10)));
+
+  function setVolumeLevel(value, show) {
+    const level = Volume.parseCabLevel(value);
+    cab.volume = Volume.cabFactor(level);
+    try { localStorage.setItem(VOLUME_KEY, String(level)); } catch {}
+    window.dispatchEvent(new CustomEvent('rycade-volume', { detail: cab.volume }));
+    const message = { type: 'rycade-volume', volume: cab.volume };
+    document.querySelectorAll('iframe').forEach(frame => {
+      try { frame.contentWindow?.postMessage(message, location.origin); } catch {}
+    });
+    if (show && !cab.asleep) showVolume(level);
+  }
+
   function connectPower() {
     const power = new EventSource('/power/events');
     power.onmessage = event => {
+      if (event.data.startsWith('level:')) {
+        setVolumeLevel(event.data.slice(6), false);
+        return;
+      }
       if (event.data.startsWith('volume:')) {
-        if (!cab.asleep) showVolume(event.data.slice(7));
+        setVolumeLevel(event.data.slice(7), true);
         return;
       }
       known = true;

@@ -2,6 +2,9 @@
   const expandPads = typeof module !== 'undefined' && module.exports
     ? require('./padsplit.js').expandPads
     : root.rycadeExpandPads;
+  const Volume = typeof module !== 'undefined' && module.exports
+    ? require('./cab-volume.js')
+    : root.rycadeVolume;
   const SYSTEM_BUTTONS = {
     ARCADE: [0, 8, 1],
     GENESIS: [1, 0, 8],
@@ -53,6 +56,10 @@
       settings.muted = false;
       storage.setItem('ejs-settings', JSON.stringify(settings));
     } catch {}
+  }
+
+  function restoreVolumeTarget(emulatorVolume, cabMode, cabVolume) {
+    return cabMode ? cabVolume : emulatorVolume;
   }
 
   function findHiscore(fs, name, dir = '/data/saves', depth = 4) {
@@ -208,11 +215,12 @@
     };
   }
 
-  const api = { SYSTEM_BUTTONS, GAME_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, MAME2003_SETS, CORE_OPTIONS, BOOT_FRAMES, bootSkipFrames, shaderOption, clearSavedMute, MAME_OPTIONS, RETRO_REMAPS, findHiscore, orderPads, createInputMapper, createProfileSaves };
+  const api = { SYSTEM_BUTTONS, GAME_BUTTONS, PHYSICAL_BUTTONS, INPUT_LAYOUTS, MAME2003_SETS, CORE_OPTIONS, BOOT_FRAMES, bootSkipFrames, shaderOption, clearSavedMute, restoreVolumeTarget, MAME_OPTIONS, RETRO_REMAPS, findHiscore, orderPads, createInputMapper, createProfileSaves };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof window === 'undefined') return;
 
   const params = new URLSearchParams(location.search);
+  const cabMode = params.get('cab') === '1' || (window.parent !== window && Boolean(window.parent.rycadeCab));
   const file = params.get('file') || '';
   const core = params.get('core') || 'snes9x';
   const system = params.get('sys') || 'SNES';
@@ -223,8 +231,29 @@
   let started = false;
   let manager = null;
   let mapper = null;
+  let cabVolume = 1;
+  let skipActive = false;
+  let dlairPlayer = null;
   let timeout;
   let saves = null;
+  if (cabMode) {
+    try { cabVolume = Volume.cabFactor(Volume.parseCabLevel(localStorage.getItem('rycade.cabVolume'))); } catch {}
+  }
+  function applyCabVolume() {
+    if (!cabMode) return;
+    try { dlairPlayer?.setVolume(cabVolume); } catch {}
+    if (skipActive) return;
+    const emulator = window.EJS_emulator;
+    if (emulator && typeof emulator.setVolume === 'function') {
+      try { emulator.setVolume(cabVolume); } catch {}
+    }
+  }
+  window.addEventListener('message', event => {
+    if (!cabMode || event.source !== window.parent || event.origin !== location.origin ||
+        event.data?.type !== 'rycade-volume') return;
+    cabVolume = Volume.clampCabFactor(event.data.volume);
+    applyCabVolume();
+  });
   function post(state, message, extra) {
     parent.postMessage({ type: 'rycade-play', state, ...(message ? { message } : {}), ...extra }, location.origin);
   }
@@ -258,7 +287,6 @@
   if (game === 'dlair' || core === 'dirksimple' || /\.mp4$/i.test(file)) {
     const videoPath = /\.mp4$/i.test(file) ? file : (file ? file.replace(/\.[^./]+$/, '') + '.mp4' : 'arcade/dlair.mp4');
     const videoUrl = '/roms/' + videoPath.split('/').map(encodeURIComponent).join('/');
-    let player = null;
     let onPadInput = null;
     mapper = createInputMapper((p, id, value) => {
       if (onPadInput) onPadInput(p, id, value);
@@ -275,9 +303,10 @@
         fail("Dragon's Lair player unavailable");
         return;
       }
-      player = window.rycadeDlair.mountDlairPlayer({
+      dlairPlayer = window.rycadeDlair.mountDlairPlayer({
         container: document.querySelector('#game'),
         videoUrl,
+        volume: cabVolume,
         pollPads(now, handler) {
           onPadInput = handler;
           mapper.poll(pads(), system, now);
@@ -291,12 +320,14 @@
           fail(msg);
         }
       });
+      applyCabVolume();
     };
     dlairScript.onerror = () => fail("Dragon's Lair player unavailable");
     document.head.appendChild(dlairScript);
     window.addEventListener('pagehide', () => {
       if (mapper) mapper.release();
-      if (player) player.stop();
+      if (dlairPlayer) dlairPlayer.stop();
+      dlairPlayer = null;
     });
     return;
   }
@@ -410,6 +441,7 @@
         typeof manager.setFastForwardRatio !== 'function' ||
         typeof manager.getFrameNum !== 'function' || !emulator ||
         typeof emulator.setVolume !== 'function') {
+      applyCabVolume();
       startInput();
       return;
     }
@@ -423,7 +455,8 @@
         interval = undefined;
       }
       try { manager.toggleFastForward(0); } catch {}
-      try { emulator.setVolume(emulator.volume); } catch {}
+      skipActive = false;
+      try { emulator.setVolume(restoreVolumeTarget(emulator.volume, cabMode, cabVolume)); } catch {}
       try { clearSavedMute(localStorage); } catch {}
     };
     const finish = () => {
@@ -434,6 +467,7 @@
     };
     try {
       skipStartedAt = Date.now();
+      skipActive = true;
       emulator.setVolume(0);
       manager.setFastForwardRatio(0);
       manager.toggleFastForward(1);

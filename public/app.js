@@ -409,13 +409,21 @@ function openDemo() {
     else requestAnimationFrame(reveal);
   };
   demoVideo.onerror = unavailable;
-  const sound = window.rycadeFeatures?.settings.sound;
-  const masterVolume = Number(sound?.master ?? 70);
-  demoVideo.muted = Boolean(sound?.muted);
-  demoVideo.volume = Number.isFinite(masterVolume) ? Math.max(0, Math.min(1, masterVolume / 100)) : .7;
+  applyDemoVolume();
   demoVideo.src = window.rycadeCab?.clip(game) || game.video || `/videos/${game.id}.mp4`;
   demoVideo.play().catch(unavailable);
 }
+
+function applyDemoVolume() {
+  const sound = window.rycadeFeatures?.settings.sound;
+  const masterVolume = Number(sound?.master ?? 70);
+  demoVideo.muted = Boolean(sound?.muted);
+  const master = Number.isFinite(masterVolume) ? masterVolume / 100 : .7;
+  const cabLevel = cabMode ? window.rycadeCab?.volume ?? 1 : 1;
+  demoVideo.volume = window.rycadeVolume.scaleVolume(master, cabLevel);
+}
+
+if (cabMode) window.addEventListener('rycade-volume', applyDemoVolume);
 
 function closeDemo() {
   window.rycadeAttract.reset();

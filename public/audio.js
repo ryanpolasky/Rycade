@@ -1,7 +1,10 @@
 (() => {
+  const cabMode = new URLSearchParams(location.search).get('cab') === '1';
+  const Volume = window.rycadeVolume;
+  let cabLevel = cabMode ? Volume.clampCabFactor(window.rycadeCab?.volume ?? 1) : 1;
   const AudioContextClass = window.AudioContext || window.webkitAudioContext;
   if (!AudioContextClass) {
-    window.rycadeAudio = { play() {}, setVolumes() {}, setSoundSet() {}, async playBootAudio() {}, stopBootAudio() {} };
+    window.rycadeAudio = { play() {}, setVolumes() {}, setCabLevel() {}, setSoundSet() {}, async playBootAudio() {}, stopBootAudio() {} };
     return;
   }
 
@@ -514,10 +517,16 @@
 
   function setVolumes(next) {
     volumes = { ...volumes, ...next };
-    master.gain.setTargetAtTime(volumes.muted ? 0 : volumes.master / 100, context.currentTime, .01);
+    master.gain.setTargetAtTime(volumes.muted ? 0 : Volume.scaleVolume(volumes.master / 100, cabLevel), context.currentTime, .01);
     Object.entries(categories).forEach(([name, gain]) => {
       gain.gain.setTargetAtTime(volumes[name] / 100, context.currentTime, .01);
     });
+  }
+
+  function setCabLevel(value) {
+    if (!cabMode || !Number.isFinite(Number(value))) return;
+    cabLevel = Volume.clampCabFactor(value);
+    setVolumes(volumes);
   }
 
   function stopBootAudio() {
@@ -732,5 +741,6 @@
   window.addEventListener('pointerdown', resume, { once: true });
   window.addEventListener('keydown', resume, { once: true });
   setVolumes(volumes);
-  window.rycadeAudio = { play, setVolumes, setSoundSet, playBootAudio, stopBootAudio };
+  window.addEventListener('rycade-volume', event => setCabLevel(event.detail));
+  window.rycadeAudio = { play, setVolumes, setCabLevel, setSoundSet, playBootAudio, stopBootAudio };
 })();

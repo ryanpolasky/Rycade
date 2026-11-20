@@ -18,12 +18,14 @@ const SEARCH_GRID = [
 ];
 const SETTINGS_TABS = ['Display', 'Themes', 'Boot', 'Loading', 'Controls', 'Sound', 'Profiles', 'Remote', 'About'];
 const LOADING_STYLES = ['Credit', 'Channel', 'Self Test', 'Demo'];
+const VOLUME_STYLES = ['Meter', 'Bar', 'Popup'];
 const DEFAULT_SETTINGS = {
   display: { scanlines: true, gameCrt: true, backgroundArt: true, controls: true, clock: false },
   theme: 'Cover Flow',
   palette: 'Classic',
   boot: 'Insert Coin',
   loading: 'Credit',
+  volumeStyle: 'Meter',
   attractMinutes: 2,
   sleepMinutes: 60,
   controls: { skimSpeed: 'Normal', letterJump: true },
@@ -52,6 +54,7 @@ function readSettings() {
     palette: PALETTES.some(palette => palette.label === saved.palette) ? saved.palette : DEFAULT_SETTINGS.palette,
     boot: saved.boot || DEFAULT_SETTINGS.boot,
     loading: LOADING_STYLES.includes(saved.loading) ? saved.loading : DEFAULT_SETTINGS.loading,
+    volumeStyle: VOLUME_STYLES.includes(saved.volumeStyle) ? saved.volumeStyle : DEFAULT_SETTINGS.volumeStyle,
     attractMinutes: [0, 1, 2, 5].includes(saved.attractMinutes) ? saved.attractMinutes : DEFAULT_SETTINGS.attractMinutes,
     sleepMinutes: [15, 30, 60, 120, 0].includes(saved.sleepMinutes) ? saved.sleepMinutes : DEFAULT_SETTINGS.sleepMinutes,
     controls: { ...DEFAULT_SETTINGS.controls, ...(saved.controls || {}) },
@@ -684,6 +687,33 @@ function renderSoundSettings() {
     saveSettings();
     renderSettings();
   }, 'Silence every cabinet sound.'));
+  if (!window.rycadeCab?.volumeThumb) return;
+  const heading = document.createElement('h3');
+  heading.className = 'settings-section-title volume-style-title';
+  heading.textContent = 'VOLUME STYLE';
+  const choices = document.createElement('div');
+  choices.className = 'boot-options volume-styles';
+  VOLUME_STYLES.forEach(label => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = `boot-choice${settings.volumeStyle === label ? ' selected' : ''}`;
+    button.setAttribute('aria-pressed', String(settings.volumeStyle === label));
+    const thumb = document.createElement('span');
+    thumb.className = 'vol-thumb';
+    thumb.append(window.rycadeCab.volumeThumb(label));
+    const name = document.createElement('span');
+    name.textContent = label;
+    button.append(thumb, name);
+    button.addEventListener('click', () => {
+      window.rycadeAudio?.play('toggle');
+      settings.volumeStyle = label;
+      saveSettings();
+      renderSettings();
+      window.rycadeCab.previewVolume();
+    });
+    choices.append(button);
+  });
+  settingsContent.append(heading, choices);
 }
 
 function commitMixer(input) {
