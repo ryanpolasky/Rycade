@@ -153,7 +153,9 @@
             const id = actions[slot];
             if (id !== null && pad && pad.buttons[index]) wanted.set(id, 1);
           });
-          if (player < turnCount && since >= player * 240 && since < player * 240 + 120) wanted.set(2, 1);
+          if (player === 0) for (let credit = 0; credit < turnCount; credit++) {
+            if (since >= credit * 240 && since < credit * 240 + 120) wanted.set(2, 1);
+          }
           if (player === turnCount - 1 && since >= startAt && since < startAt + 120) wanted.set(3, 1);
           send(player, wanted);
         }
