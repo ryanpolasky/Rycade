@@ -46,7 +46,7 @@
       const on = slot === run.index ? ' on' : '';
       return `<div class="sp-row${on}" data-slot="${slot}"><span class="sp-cur">${on ? '▶' : ''}</span><span class="sp-in">${count}P</span><span class="sp-lb">${TURN_ROWS[count - 1]}</span></div>`;
     }).join('');
-    frame.innerHTML = `<h2>HOW MANY PLAYERS?</h2><div class="sp-tiles">${rows}</div><div class="sp-hn">PLAYERS SWAP AFTER EACH LIFE<br>ANY STICK PLAYS</div>${ft([['STICK', 'PICK'], ['SHOOT', 'PLAY'], ['PASS', 'BACK']])}`;
+    frame.innerHTML = `<h2>HOW MANY PLAYERS?</h2><div class="sp-tiles">${rows}</div><div class="sp-hn"${run.rows[run.index] > 1 ? '' : ' style="visibility:hidden"'}>PLAYERS SWAP AFTER EACH LIFE<br>PASS THE STICK OR USE YOUR OWN</div>${ft([['STICK', 'PICK'], ['SHOOT', 'PLAY'], ['PASS', 'BACK']])}`;
   }
 
   function renderEnter() {
