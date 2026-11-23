@@ -454,19 +454,28 @@ function launch() {
   release();
   if (barFocus) setBarFocus(false, true);
   renderDetail(game);
-  if (window.rycadeSavePick && window.rycadeProfiles?.usesSaves(game.id)) {
+  if (game.turns && window.rycadeSavePick) {
     window.rycadeAudio?.play('open');
-    window.rycadeSavePick.open(game, profile => startGame(game, profile), () => monitor.focus());
+    window.rycadeSavePick.players(game, turns => pickSave(game, turns), () => monitor.focus());
     return;
   }
-  startGame(game, null);
+  pickSave(game, 1);
 }
 
-function startGame(game, profile) {
+function pickSave(game, turns) {
+  if (window.rycadeSavePick && window.rycadeProfiles?.usesSaves(game.id)) {
+    window.rycadeAudio?.play('open');
+    window.rycadeSavePick.open(game, profile => startGame(game, profile, turns), () => monitor.focus());
+    return;
+  }
+  startGame(game, null, turns);
+}
+
+function startGame(game, profile, turns) {
   window.rycadeAudio?.play('launch');
   playTrack = profile ? { profileId: profile.id, gameId: game.id, start: cabMode ? 0 : performance.now() } : null;
   if (cabMode) {
-    launchCabGame(game, profile);
+    launchCabGame(game, profile, turns);
     return;
   }
   launched = true;
@@ -503,7 +512,7 @@ function flushFrame(frame) {
   });
 }
 
-async function launchCabGame(game, profile) {
+async function launchCabGame(game, profile, turns) {
   launched = true;
   const session = ++playSession;
   monitor.classList.add('loading');
@@ -532,6 +541,7 @@ async function launchCabGame(game, profile) {
       crt: window.rycadeFeatures?.settings.display.gameCrt === false ? '0' : '1'
     });
     if (profile) params.set('profile', profile.id);
+    if (turns > 1) params.set('turns', String(turns));
     playFrame = document.createElement('iframe');
     playFrame.title = `${game.title} emulator`;
     playFrame.allow = 'autoplay; fullscreen; gamepad';

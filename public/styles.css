@@ -601,6 +601,18 @@ body {
   font-weight: 400;
 }
 
+.sp-count .sp-in {
+  width: 64px;
+}
+
+.sp-lb {
+  font-size: 14px;
+}
+
+.sp-count .sp-hn {
+  margin-top: 30px;
+}
+
 .sp-enter,
 .sp-clash {
   align-items: center;

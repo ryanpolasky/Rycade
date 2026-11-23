@@ -2,6 +2,8 @@
   const P = window.rycadeProfiles;
   const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   const BASE = { width: 544, height: 408 };
+  const TURNS_KEY = 'rycade.turns';
+  const TURN_ROWS = [['SOLO', '1 CREDIT'], ['TAKE TURNS', '2 CREDITS'], ['TAKE TURNS', '3 CREDITS']];
   const screen = document.querySelector('#screen');
   const root = document.createElement('div');
   root.id = 'save-pick';
@@ -38,6 +40,16 @@
     frame.innerHTML = `<h2>WHOSE SAVE?</h2>${rows}${ft([['STICK', 'PICK'], ['SHOOT', 'PLAY'], ['PASS', 'BACK']])}`;
   }
 
+  function renderCount() {
+    frame.className = 'sp-frame sp-pick sp-count';
+    const rows = run.rows.map((count, slot) => {
+      const on = slot === run.index ? ' on' : '';
+      const [label, credits] = TURN_ROWS[count - 1];
+      return `<div class="sp-row${on}" data-slot="${slot}"><span class="sp-cur">${on ? '▶' : ''}</span><span class="sp-in">${count}P</span><span class="sp-lb">${label}</span><span class="sp-mt"><b>${credits}</b></span></div>`;
+    }).join('');
+    frame.innerHTML = `<h2>HOW MANY PLAYERS?</h2>${rows}<div class="sp-hn">PLAYERS SWAP AFTER EACH LIFE<br>ANY STICK PLAYS</div>${ft([['STICK', 'PICK'], ['SHOOT', 'PLAY'], ['PASS', 'BACK']])}`;
+  }
+
   function renderEnter() {
     frame.className = 'sp-frame sp-enter';
     const boxes = run.letters.map((letter, slot) => {
@@ -60,7 +72,8 @@
   }
 
   function render() {
-    if (run.mode === 'pick') renderPick();
+    if (run.mode === 'count') renderCount();
+    else if (run.mode === 'pick') renderPick();
     else if (run.mode === 'enter') renderEnter();
     else renderClash();
   }
@@ -91,6 +104,24 @@
     else enter();
   }
 
+  function readTurns() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(TURNS_KEY));
+      return saved && typeof saved === 'object' ? saved : {};
+    } catch {
+      return {};
+    }
+  }
+
+  function players(game, done, cancel) {
+    const rows = Array.from({ length: Math.min(3, Math.max(2, game.players)) }, (_, slot) => slot + 1);
+    run = { game, done, cancel, rows, index: Math.max(0, rows.indexOf(readTurns()[game.id])), mode: 'count' };
+    root.hidden = false;
+    screen.classList.add('save-picking');
+    fit();
+    render();
+  }
+
   function close() {
     if (!run) return;
     run = null;
@@ -107,7 +138,14 @@
   }
 
   function choose() {
-    if (run.mode === 'pick') {
+    if (run.mode === 'count') {
+      const count = run.rows[run.index];
+      try { localStorage.setItem(TURNS_KEY, JSON.stringify({ ...readTurns(), [run.game.id]: count })); } catch {}
+      const done = run.done;
+      sound('confirm');
+      close();
+      done(count);
+    } else if (run.mode === 'pick') {
       const profile = run.rows[run.index];
       sound('confirm');
       if (profile) finish(profile);
@@ -170,7 +208,7 @@
         run.letters[run.cursor] = LETTERS[(at - step + LETTERS.length) % LETTERS.length];
         sound('letter');
       } else {
-        const count = run.mode === 'pick' ? run.rows.length : 2;
+        const count = run.mode === 'clash' ? 2 : run.rows.length;
         const next = Math.max(0, Math.min(count - 1, run.index + step));
         if (next === run.index) return true;
         run.index = next;
@@ -203,5 +241,5 @@
   });
   window.addEventListener('resize', () => run && fit());
 
-  window.rycadeSavePick = { open, close, key, active: () => !!run };
+  window.rycadeSavePick = { open, players, close, key, active: () => !!run };
 })();
