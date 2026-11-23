@@ -478,8 +478,8 @@ while ioreg -r -d 1 -c IODisplayWrangler 2>/dev/null | grep -q '"CurrentPowerSta
 modes=\$(displayplacer list 2>/dev/null)
 id=\$(awk '/^Persistent screen id:/ {print \$4; exit}' <<< "\$modes")
 grep -q "res:$CAB_MODE .*current mode" <<< "\$modes" || { grep -q "res:$CAB_MODE" <<< "\$modes" && displayplacer "id:\$id res:$CAB_MODE scaling:off origin:(0,0) degree:0"; }
-osascript -l JavaScript -e 'ObjC.import("CoreGraphics"); var b = \$.CGDisplayBounds(\$.CGMainDisplayID()); \$.CGWarpMouseCursorPosition({x: b.size.width - 1, y: b.size.height - 1})' >/dev/null 2>&1
 killall NotificationCenter >/dev/null 2>&1
+printf '%s\n' "\$\$" > "$HOME_DIR/kiosk.pid"
 exec "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \\
   --user-data-dir="$HOME_DIR/chrome" --kiosk --no-first-run --no-default-browser-check \\
   --autoplay-policy=no-user-gesture-required --noerrdialogs --disable-session-crashed-bubble --hide-crash-restore-bubble \\
