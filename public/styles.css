@@ -601,8 +601,37 @@ body {
   font-weight: 400;
 }
 
+.sp-tiles {
+  display: flex;
+  margin: auto 0 0;
+  justify-content: center;
+  gap: 20px;
+}
+
+.sp-count .sp-row {
+  position: relative;
+  flex: 0 1 220px;
+  height: 190px;
+  margin: 0;
+  padding: 0;
+  flex-direction: column;
+  justify-content: center;
+  gap: 18px;
+}
+
+.sp-count .sp-row:not(.on) {
+  border-color: #2c2f35;
+}
+
+.sp-count .sp-cur {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+}
+
 .sp-count .sp-in {
-  width: 64px;
+  width: auto;
+  font-size: 64px;
 }
 
 .sp-lb {
@@ -610,7 +639,11 @@ body {
 }
 
 .sp-count .sp-hn {
-  margin-top: 30px;
+  margin: 22px 0 auto;
+}
+
+.sp-count .sp-ft {
+  margin-top: 0;
 }
 
 .sp-enter,

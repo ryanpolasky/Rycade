@@ -3,7 +3,7 @@
   const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   const BASE = { width: 544, height: 408 };
   const TURNS_KEY = 'rycade.turns';
-  const TURN_ROWS = [['SOLO', '1 CREDIT'], ['TAKE TURNS', '2 CREDITS'], ['TAKE TURNS', '3 CREDITS']];
+  const TURN_ROWS = ['SOLO', 'TAKE TURNS', 'TAKE TURNS'];
   const screen = document.querySelector('#screen');
   const root = document.createElement('div');
   root.id = 'save-pick';
@@ -44,10 +44,9 @@
     frame.className = 'sp-frame sp-pick sp-count';
     const rows = run.rows.map((count, slot) => {
       const on = slot === run.index ? ' on' : '';
-      const [label, credits] = TURN_ROWS[count - 1];
-      return `<div class="sp-row${on}" data-slot="${slot}"><span class="sp-cur">${on ? '▶' : ''}</span><span class="sp-in">${count}P</span><span class="sp-lb">${label}</span><span class="sp-mt"><b>${credits}</b></span></div>`;
+      return `<div class="sp-row${on}" data-slot="${slot}"><span class="sp-cur">${on ? '▶' : ''}</span><span class="sp-in">${count}P</span><span class="sp-lb">${TURN_ROWS[count - 1]}</span></div>`;
     }).join('');
-    frame.innerHTML = `<h2>HOW MANY PLAYERS?</h2>${rows}<div class="sp-hn">PLAYERS SWAP AFTER EACH LIFE<br>ANY STICK PLAYS</div>${ft([['STICK', 'PICK'], ['SHOOT', 'PLAY'], ['PASS', 'BACK']])}`;
+    frame.innerHTML = `<h2>HOW MANY PLAYERS?</h2><div class="sp-tiles">${rows}</div><div class="sp-hn">PLAYERS SWAP AFTER EACH LIFE<br>ANY STICK PLAYS</div>${ft([['STICK', 'PICK'], ['SHOOT', 'PLAY'], ['PASS', 'BACK']])}`;
   }
 
   function renderEnter() {
@@ -201,8 +200,8 @@
         sound('back');
         enter(run.letters);
       } else back();
-    } else if (k === 'ArrowUp' || k === 'ArrowDown') {
-      const step = k === 'ArrowDown' ? 1 : -1;
+    } else if (k === 'ArrowUp' || k === 'ArrowDown' || (run.mode === 'count' && (k === 'ArrowLeft' || k === 'ArrowRight'))) {
+      const step = k === 'ArrowDown' || k === 'ArrowRight' ? 1 : -1;
       if (run.mode === 'enter') {
         const at = LETTERS.indexOf(run.letters[run.cursor]);
         run.letters[run.cursor] = LETTERS[(at - step + LETTERS.length) % LETTERS.length];
