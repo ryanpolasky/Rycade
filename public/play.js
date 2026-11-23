@@ -106,9 +106,23 @@
     return players.map(pad => pad || unassigned[next++] || null);
   }
 
-  function createInputMapper(simulateInput, { players, seat, layout, buttons, start: startId } = {}) {
+  function mergePads(pads) {
+    const live = pads.filter(Boolean);
+    if (!live.length) return null;
+    const axis = index => live.map(pad => pad.axes?.[index] || 0).reduce((a, b) => Math.abs(b) > Math.abs(a) ? b : a, 0);
+    return {
+      axes: [axis(0), axis(1)],
+      buttons: PHYSICAL_BUTTONS.reduce((buttons, index) => {
+        buttons[index] = live.some(pad => buttonDown(pad.buttons?.[index]));
+        return buttons;
+      }, [])
+    };
+  }
+
+  function createInputMapper(simulateInput, { players, seat, layout, buttons, start: startId, turns } = {}) {
     const flexible = layout !== 'twin' && Number.isInteger(players) && players >= 1 && players <= 3;
     const capacity = Math.max(2, players);
+    const turnCount = flexible && Number.isInteger(turns) && turns >= 2 ? Math.min(turns, capacity) : 0;
     const seats = flexible
       ? [Number.isInteger(seat) && seat >= 0 && seat <= 3 ? seat : 0]
       : [];
@@ -118,6 +132,35 @@
     function poll(pads, system, now) {
       const actions = buttons || SYSTEM_BUTTONS[system] || SYSTEM_BUTTONS.ARCADE;
       const playerPads = orderPads(pads);
+      const sharing = turnCount && system === 'ARCADE';
+      if (sharing) {
+        const shared = mergePads(playerPads);
+        const startDown = playerPads.some(pad => buttonDown(pad?.buttons?.[6]));
+        const startState = starts[0];
+        if (startDown && !startState.held) startState.at = now;
+        startState.held = startDown;
+        const since = startState.at === null ? Infinity : now - startState.at;
+        const startAt = (turnCount - 1) * 240 + 250;
+        for (let player = 0; player < 4; player++) {
+          const wanted = new Map();
+          const pad = player < turnCount ? shared : null;
+          const axes = pad && pad.axes || [];
+          if (axes[1] < -0.5) wanted.set(DIRECTION_IDS.up, 1);
+          if (axes[1] > 0.5) wanted.set(DIRECTION_IDS.down, 1);
+          if (axes[0] < -0.5) wanted.set(DIRECTION_IDS.left, 1);
+          if (axes[0] > 0.5) wanted.set(DIRECTION_IDS.right, 1);
+          PHYSICAL_BUTTONS.forEach((index, slot) => {
+            const id = actions[slot];
+            if (id !== null && pad && pad.buttons[index]) wanted.set(id, 1);
+          });
+          if (player === 0) for (let credit = 0; credit < turnCount; credit++) {
+            if (since >= credit * 240 && since < credit * 240 + 120) wanted.set(2, 1);
+          }
+          if (player === turnCount - 1 && since >= startAt && since < startAt + 120) wanted.set(3, 1);
+          send(player, wanted);
+        }
+        return;
+      }
       if (flexible) {
         for (let physicalSeat = 0; physicalSeat < 4; physicalSeat++) {
           const startDown = buttonDown(playerPads[physicalSeat]?.buttons?.[6]);
@@ -155,13 +198,16 @@
           if (startState.at !== null && now < startState.at + 120) wanted.set(2, 1);
           if (startState.at !== null && now >= startState.at + 250 && now < startState.at + 370) wanted.set(3, 1);
         } else if (start) wanted.set(startId ?? 3, 1);
-        const old = previous[player];
-        for (const id of new Set([...old.keys(), ...wanted.keys()])) {
-          const value = wanted.get(id) || 0;
-          if ((old.get(id) || 0) !== value) simulateInput(player, id, value);
-        }
-        previous[player] = wanted;
+        send(player, wanted);
       }
+    }
+    function send(player, wanted) {
+      const old = previous[player];
+      for (const id of new Set([...old.keys(), ...wanted.keys()])) {
+        const value = wanted.get(id) || 0;
+        if ((old.get(id) || 0) !== value) simulateInput(player, id, value);
+      }
+      previous[player] = wanted;
     }
     function release() {
       previous.forEach((state, player) => state.forEach((value, id) => value && simulateInput(player, id, 0)));
@@ -305,14 +351,18 @@
     }
     webFrame = document.createElement('iframe');
     webFrame.allow = 'autoplay; gamepad';
-    webFrame.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;border:0;background:#000';
+    webFrame.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;border:0;background:#000;visibility:hidden';
+    webFrame.addEventListener('load', () => {
+      try {
+        const style = webFrame.contentDocument.createElement('style');
+        style.textContent = '*,::before,::after{cursor:none!important}';
+        webFrame.contentDocument.head.appendChild(style);
+      } catch {}
+    });
     webFrame.addEventListener('load', () => {
       const inner = webFrame.contentWindow;
       try {
         inner.navigator.getGamepads = () => standardPads(pads());
-        const style = inner.document.createElement('style');
-        style.textContent = '*,::before,::after{cursor:none!important}';
-        inner.document.head.appendChild(style);
         inner.addEventListener('keydown', event => {
           if (event.key !== 'F19') return;
           event.preventDefault();
@@ -322,6 +372,7 @@
         fail('Game unavailable');
         return;
       }
+      webFrame.style.visibility = '';
       started = true;
       clearTimeout(timeout);
       applyCabVolume();
@@ -479,6 +530,7 @@
         players: Number(params.get('players')),
         seat: Number(params.get('seat')),
         layout: INPUT_LAYOUTS[game],
+        turns: Number(params.get('turns')),
         ...GAME_BUTTONS[game]
       });
       const poll = now => {

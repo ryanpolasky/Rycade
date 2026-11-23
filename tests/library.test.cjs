@@ -386,3 +386,13 @@ test('cab power EventSource reconnects after a 502 close and renders volume even
   assert.equal(volumeEvents.at(-1).detail, 0.7);
   assert.equal(volumeMessages.at(-1)[0].volume, 0.7);
 });
+
+test('take-turns games are flexible two-player arcade games', () => {
+  const turns = GAMES.filter(game => game.turns);
+  assert.ok(turns.length > 30);
+  for (const game of turns) {
+    assert.equal(game.sys, 'ARCADE', game.id);
+    assert.equal(game.players, 2, game.id);
+    assert.ok(!['robotron', 'smashtv', 'dlair'].includes(game.id), game.id);
+  }
+});

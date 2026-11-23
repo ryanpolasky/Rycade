@@ -463,3 +463,35 @@ test('cab seats reach web games as standard pads: SHOOT is A, PASS is B, TURBO i
   assert.deepEqual(standardPads([pad([0, 1], 'Rycade P2')])[0].buttons.map((b, i) => b.pressed ? i : -1).filter(i => i >= 0), [1, 2]);
   assert.equal(other.id, 'Xbox');
 });
+
+test('arcade turns mode drops every credit on slot one, then fires that player count Start', () => {
+  const inputs = [];
+  const mapper = createInputMapper((...input) => inputs.push(input), { players: 2, seat: 2, turns: 2 });
+  const seats = start => [1, 2, 3, 4].map(seat => pad(seat === start ? [6] : [], `Rycade P${seat}`));
+  mapper.poll(seats(4), 'ARCADE', 0);
+  assert.deepEqual(inputs, [[0, 2, 1]]);
+  for (const now of [120, 240, 360, 490, 610]) mapper.poll(seats(), 'ARCADE', now);
+  assert.deepEqual(inputs, [[0, 2, 1], [0, 2, 0], [0, 2, 1], [0, 2, 0], [1, 3, 1], [1, 3, 0]]);
+});
+
+test('arcade turns mode drives both ports from whichever seat is moving', () => {
+  for (const seat of [1, 2, 3, 4]) {
+    const inputs = [];
+    const mapper = createInputMapper((...input) => inputs.push(input), { players: 2, seat: 0, turns: 2 });
+    const pads = [1, 2, 3, 4].map(n => n === seat ? { ...pad([0], `Rycade P${n}`), axes: [-1, 0] } : pad([], `Rycade P${n}`));
+    mapper.poll(pads, 'ARCADE', 0);
+    assert.deepEqual(inputs.sort(), [[0, 0, 1], [0, 6, 1], [1, 0, 1], [1, 6, 1]], `seat ${seat}`);
+  }
+});
+
+test('turns are ignored outside arcade and for one player', () => {
+  const inputs = [];
+  createInputMapper((...input) => inputs.push(input), { players: 2, seat: 0, turns: 2 })
+    .poll([pad(), pad([0], 'Rycade P2')], 'NES', 0);
+  assert.deepEqual(inputs, []);
+  const solo = [];
+  const mapper = createInputMapper((...input) => solo.push(input), { players: 2, seat: 0, turns: 1 });
+  mapper.poll([pad([6])], 'ARCADE', 0);
+  for (const now of [120, 250, 370]) mapper.poll([pad()], 'ARCADE', now);
+  assert.deepEqual(solo, [[0, 2, 1], [0, 2, 0], [0, 3, 1], [0, 3, 0]]);
+});
