@@ -78,18 +78,22 @@
   const kiosk = query => fetch(`/power/kiosk${query}`, { method: 'POST' }).catch(() => {});
   let healTimer = null;
 
+  async function restartKiosk(query) {
+    if (typeof exiting !== 'undefined') await exiting;
+    if (!cab.asleep && !inGame() && !fullscreen()) kiosk(query);
+  }
+
   function heal(delay) {
     clearTimeout(healTimer);
-    healTimer = setTimeout(() => {
-      if (!cab.asleep && !inGame() && !fullscreen()) kiosk('?restart&auto');
-    }, delay);
+    healTimer = setTimeout(() => restartKiosk('?restart&auto'), delay);
   }
 
   function resetKiosk() {
+    if (inGame()) return;
     window.rycadeFeatures?.closeOverlays();
     if (typeof closeDemo === 'function') closeDemo();
     window.rycadeAudio?.play('toggle');
-    if (!fullscreen()) kiosk('?restart');
+    restartKiosk('?restart');
   }
 
   addEventListener('resize', () => heal(3000));

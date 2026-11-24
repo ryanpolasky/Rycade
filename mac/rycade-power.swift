@@ -46,11 +46,17 @@ func enableBackgroundCursor() {
     log("Background cursor permission result: \(result)")
 }
 
+func kioskApplication() -> NSRunningApplication? {
+    guard let saved = try? String(contentsOfFile: kioskPIDFile, encoding: .utf8),
+          let pid = pid_t(saved.trimmingCharacters(in: .whitespacesAndNewlines)),
+          let app = NSRunningApplication(processIdentifier: pid),
+          app.bundleIdentifier == "com.google.Chrome", !app.isTerminated else { return nil }
+    return app
+}
+
 func kioskIsFrontmost() -> Bool {
-    guard let app = NSWorkspace.shared.frontmostApplication, app.bundleIdentifier == "com.google.Chrome",
-          let saved = try? String(contentsOfFile: kioskPIDFile, encoding: .utf8),
-          let pid = pid_t(saved.trimmingCharacters(in: .whitespacesAndNewlines)) else { return false }
-    return app.processIdentifier == pid
+    guard let kiosk = kioskApplication() else { return false }
+    return NSWorkspace.shared.frontmostApplication?.processIdentifier == kiosk.processIdentifier
 }
 
 func setCursorHidden(_ hidden: Bool, reason: String, quiet: Bool = false) {
@@ -128,10 +134,19 @@ func setLive(_ down: Bool) {
     liveTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
         liveTimer = nil
         guard liveHeld, !asleep else { return }
-        let restart = !kioskIsFrontmost()
-        log("LIVE hold: \(restart ? "restart kiosk outside foreground" : "repair foreground kiosk")")
-        if !restart { broadcast("kiosk-reset") }
-        tidyKiosk(restart: restart, auto: false)
+        guard let kiosk = kioskApplication() else {
+            log("LIVE hold: restart missing kiosk")
+            tidyKiosk(restart: true, auto: false)
+            return
+        }
+        if NSWorkspace.shared.frontmostApplication?.processIdentifier == kiosk.processIdentifier {
+            log("LIVE hold: repair foreground kiosk")
+            broadcast("kiosk-reset")
+        } else {
+            log("LIVE hold: activate running kiosk")
+            if !kiosk.activate(options: [.activateIgnoringOtherApps]) { log("LIVE hold: kiosk activation failed") }
+        }
+        tidyKiosk(restart: false, auto: false)
     }
 }
 
