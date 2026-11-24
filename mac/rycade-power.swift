@@ -144,7 +144,7 @@ func setLive(_ down: Bool) {
             broadcast("kiosk-reset")
         } else {
             log("LIVE hold: activate running kiosk")
-            if !kiosk.activate(options: [.activateIgnoringOtherApps]) { log("LIVE hold: kiosk activation failed") }
+            run("/usr/bin/osascript", "-e", "tell application id \"com.google.Chrome\" to activate")
         }
         tidyKiosk(restart: false, auto: false)
     }
@@ -203,7 +203,7 @@ IOHIDManagerRegisterInputReportCallback(manager, { _, result, _, _, reportID, re
     if count == 3 { setLive(keys.contains(liveKey)) }
     else if count == 4, keys[0] == 1 { setLive(keys.dropFirst().contains(liveKey)) }
 }, nil)
-IOHIDManagerRegisterDeviceRemovalCallback(manager, { _, _, _ in setLive(false) }, nil)
+IOHIDManagerRegisterDeviceRemovalCallback(manager, { _, _, _, _ in setLive(false) }, nil)
 IOHIDManagerScheduleWithRunLoop(manager, CFRunLoopGetMain(), CFRunLoopMode.defaultMode.rawValue)
 let hidResult = IOHIDManagerOpen(manager, IOOptionBits(kIOHIDOptionsTypeNone))
 if hidResult != kIOReturnSuccess { log("Cabinet HID open failed: \(hidResult); check Input Monitoring") }
