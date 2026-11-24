@@ -353,13 +353,6 @@
     webFrame.allow = 'autoplay; gamepad';
     webFrame.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;border:0;background:#000;visibility:hidden';
     webFrame.addEventListener('load', () => {
-      try {
-        const style = webFrame.contentDocument.createElement('style');
-        style.textContent = '*,::before,::after{cursor:none!important}';
-        webFrame.contentDocument.head.appendChild(style);
-      } catch {}
-    });
-    webFrame.addEventListener('load', () => {
       const inner = webFrame.contentWindow;
       try {
         inner.navigator.getGamepads = () => standardPads(pads());

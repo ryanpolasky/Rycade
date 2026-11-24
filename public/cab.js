@@ -4,7 +4,6 @@
   const Volume = window.rycadeVolume;
   let initialVolumeLevel = 10;
   try { initialVolumeLevel = Volume.parseCabLevel(localStorage.getItem(VOLUME_KEY)); } catch {}
-  document.head.insertAdjacentHTML('beforeend', '<style>*, ::before, ::after { cursor: none !important; }</style>');
   const pinned = [];
   const clips = new Map();
   const clipUrl = game => game.video || `/videos/${game.id}.mp4`;
@@ -77,31 +76,26 @@
   const fullscreen = () => innerWidth >= screen.width && innerHeight >= screen.height;
   const inGame = () => typeof launched !== 'undefined' && launched;
   const kiosk = query => fetch(`/power/kiosk${query}`, { method: 'POST' }).catch(() => {});
-  let liveHold = null, healTimer = null;
+  let healTimer = null;
+
+  async function restartKiosk(query) {
+    if (typeof exiting !== 'undefined') await exiting;
+    if (!cab.asleep && !inGame() && !fullscreen()) kiosk(query);
+  }
 
   function heal(delay) {
     clearTimeout(healTimer);
-    healTimer = setTimeout(() => {
-      if (!cab.asleep && !inGame() && !fullscreen()) kiosk('?restart&auto');
-    }, delay);
+    healTimer = setTimeout(() => restartKiosk('?restart&auto'), delay);
   }
 
   function resetKiosk() {
+    if (inGame()) return;
     window.rycadeFeatures?.closeOverlays();
     if (typeof closeDemo === 'function') closeDemo();
     window.rycadeAudio?.play('toggle');
-    kiosk(fullscreen() ? '' : '?restart');
+    restartKiosk('?restart');
   }
 
-  addEventListener('keydown', event => {
-    if (event.key !== 'F19' || event.repeat || cab.asleep || inGame()) return;
-    clearTimeout(liveHold);
-    liveHold = setTimeout(resetKiosk, 1500);
-  }, true);
-  addEventListener('keyup', event => {
-    if (event.key === 'F19') clearTimeout(liveHold);
-  }, true);
-  addEventListener('blur', () => clearTimeout(liveHold));
   addEventListener('resize', () => heal(3000));
 
   const VOLUME_SPEAKER = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6h3l4-3v10l-4-3H2z"/><path class="wave" d="M11 5.5q2 2.5 0 5"/></svg>';
@@ -162,6 +156,10 @@
       }
       if (event.data.startsWith('volume:')) {
         setVolumeLevel(event.data.slice(7), true);
+        return;
+      }
+      if (event.data === 'kiosk-reset') {
+        if (!cab.asleep) resetKiosk();
         return;
       }
       known = true;

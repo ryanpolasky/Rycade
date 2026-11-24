@@ -576,7 +576,10 @@ function exitGame() {
     const fade = new Promise(resolve => setTimeout(resolve, 300));
     exiting = Promise.all([fade, frame ? flushFrame(frame) : null]).then(() => {
       frame?.remove();
-      if (!launched) monitor.focus();
+      if (!launched) {
+        monitor.focus();
+        fetch('/power/cursor', { method: 'POST' }).catch(() => {});
+      }
     });
     return;
   }
