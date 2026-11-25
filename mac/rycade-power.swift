@@ -9,7 +9,7 @@ import IOKit.hid
 import Network
 
 let powerOn = 0x6C, powerOff = 0x6D
-let liveKey: UInt8 = 0x6E
+let liveKey = 0x6E
 var asleep = false
 let offFile = NSHomeDirectory() + "/Rycade/off"
 let volumeFile = NSHomeDirectory() + "/Rycade/volume"
@@ -72,8 +72,17 @@ func setCursorHidden(_ hidden: Bool, reason: String, quiet: Bool = false) {
     }
 }
 
+func parkCursor() {
+    let screen = CGDisplayBounds(CGMainDisplayID())
+    let corner = CGPoint(x: screen.maxX - 1, y: screen.maxY - 1)
+    guard let at = CGEvent(source: nil)?.location, at != corner else { return }
+    _ = CGWarpMouseCursorPosition(corner)
+    CGEvent(mouseEventSource: nil, mouseType: .mouseMoved, mouseCursorPosition: corner, mouseButton: .left)?.post(tap: .cghidEventTap)
+}
+
 func syncCursor(_ reason: String, reassert: Bool = false, quiet: Bool = false) {
     let shouldHide = !asleep && kioskIsFrontmost()
+    if shouldHide { parkCursor() }
     let refreshing = reassert && shouldHide && cursorHidden
     if refreshing { setCursorHidden(false, reason: reason, quiet: true) }
     setCursorHidden(shouldHide, reason: reason, quiet: refreshing && quiet)
@@ -191,17 +200,13 @@ IOHIDManagerSetDeviceMatchingMultiple(manager, [0x4004, 0x4005, 0x4006, 0x4007].
 } as CFArray)
 IOHIDManagerRegisterInputValueCallback(manager, { _, _, _, value in
     let element = IOHIDValueGetElement(value)
-    guard IOHIDValueGetIntegerValue(value) == 1 else { return }
     let page = Int(IOHIDElementGetUsagePage(element)), usage = Int(IOHIDElementGetUsage(element))
+    let down = IOHIDValueGetIntegerValue(value) == 1
+    if page == kHIDPage_KeyboardOrKeypad && usage == liveKey { setLive(down) }
+    guard down else { return }
     if page == kHIDPage_KeyboardOrKeypad && usage == powerOff { sleepCab() }
     else if page == kHIDPage_KeyboardOrKeypad && usage == powerOn { wakeCab() }
     else if page == kHIDPage_Button && asleep { wakeCab() }
-}, nil)
-IOHIDManagerRegisterInputReportCallback(manager, { _, result, _, _, reportID, report, count in
-    guard result == kIOReturnSuccess, reportID == 1 else { return }
-    let keys = UnsafeBufferPointer(start: report, count: count)
-    if count == 3 { setLive(keys.contains(liveKey)) }
-    else if count == 4, keys[0] == 1 { setLive(keys.dropFirst().contains(liveKey)) }
 }, nil)
 IOHIDManagerRegisterDeviceRemovalCallback(manager, { _, _, _, _ in setLive(false) }, nil)
 IOHIDManagerScheduleWithRunLoop(manager, CFRunLoopGetMain(), CFRunLoopMode.defaultMode.rawValue)
