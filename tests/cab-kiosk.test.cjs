@@ -42,6 +42,7 @@ function cabinet() {
     context,
     requests,
     live: () => power.onmessage({ data: 'kiosk-reset' }),
+    hold: () => { events.get('keydown')({ key: 'F19', repeat: false }); return timer(); },
     resize: () => { events.get('resize')(); return timer(); }
   };
 }
@@ -65,4 +66,12 @@ test('kiosk repair waits for game saves before restarting a windowed menu', asyn
   saved();
   await auto;
   assert.deepEqual(cab.requests, ['/power/kiosk?restart', '/power/kiosk?restart&auto']);
+});
+
+test('holding LIVE in the menu repairs the kiosk once even when the helper also reports it', async () => {
+  const cab = cabinet();
+  cab.hold();
+  cab.live();
+  await new Promise(setImmediate);
+  assert.deepEqual(cab.requests, ['/power/kiosk?restart']);
 });

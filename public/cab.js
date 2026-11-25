@@ -76,7 +76,7 @@
   const fullscreen = () => innerWidth >= screen.width && innerHeight >= screen.height;
   const inGame = () => typeof launched !== 'undefined' && launched;
   const kiosk = query => fetch(`/power/kiosk${query}`, { method: 'POST' }).catch(() => {});
-  let healTimer = null;
+  let healTimer = null, liveHold = null, lastReset = 0;
 
   async function restartKiosk(query) {
     if (typeof exiting !== 'undefined') await exiting;
@@ -89,13 +89,23 @@
   }
 
   function resetKiosk() {
-    if (inGame()) return;
+    if (inGame() || Date.now() - lastReset < 3000) return;
+    lastReset = Date.now();
     window.rycadeFeatures?.closeOverlays();
     if (typeof closeDemo === 'function') closeDemo();
     window.rycadeAudio?.play('toggle');
     restartKiosk('?restart');
   }
 
+  addEventListener('keydown', event => {
+    if (event.key !== 'F19' || event.repeat || cab.asleep || inGame()) return;
+    clearTimeout(liveHold);
+    liveHold = setTimeout(resetKiosk, 1500);
+  }, true);
+  addEventListener('keyup', event => {
+    if (event.key === 'F19') clearTimeout(liveHold);
+  }, true);
+  addEventListener('blur', () => clearTimeout(liveHold));
   addEventListener('resize', () => heal(3000));
 
   const VOLUME_SPEAKER = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6h3l4-3v10l-4-3H2z"/><path class="wave" d="M11 5.5q2 2.5 0 5"/></svg>';
