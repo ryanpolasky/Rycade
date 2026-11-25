@@ -76,6 +76,7 @@ func parkCursor() {
     let screen = CGDisplayBounds(CGMainDisplayID())
     let corner = CGPoint(x: screen.maxX - 1, y: screen.maxY - 1)
     guard let at = CGEvent(source: nil)?.location, at != corner else { return }
+    _ = CGWarpMouseCursorPosition(corner)
     CGEvent(mouseEventSource: nil, mouseType: .mouseMoved, mouseCursorPosition: corner, mouseButton: .left)?.post(tap: .cghidEventTap)
 }
 
